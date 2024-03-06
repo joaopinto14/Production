@@ -1,0 +1,8 @@
+*
+!.gitignore
+!entrypoint
+!entrypoint/entrypoint.sh
+!nginx
+!nginx/default.conf
+!Dockerfile
+!README.md
