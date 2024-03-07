@@ -10,6 +10,17 @@ ENV MEMORY_LIMIT=512M \
 RUN apk update && apk add --no-cache \
     php \
     php-fpm \
+    php-ctype \
+    php-curl \
+    php-dom \
+    php-fileinfo \
+    php-mbstring \
+    php-openssl \
+    php-pdo \
+    php-pdo_mysql \
+    php-session \
+    php-tokenizer \
+    php-xml \
     nginx
 
 # Limit memory and upload size
