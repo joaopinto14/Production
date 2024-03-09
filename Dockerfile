@@ -14,6 +14,7 @@ RUN apk update && apk add --no-cache \
     php83-openssl \
     php83-pdo \
     php83-pdo_mysql \
+    php83-mysqli \
     php83-session \
     php83-tokenizer \
     php83-xml \
