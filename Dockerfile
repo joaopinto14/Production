@@ -1,32 +1,27 @@
-FROM alpine
+FROM alpine:3.19
 
 LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 
-# Set environment variables
-ENV MEMORY_LIMIT=512M \
-    UPLOAD_LIMIT=100M
-
 # Install PHP and Nginx
 RUN apk update && apk add --no-cache \
-    php \
-    php-fpm \
-    php-ctype \
-    php-curl \
-    php-dom \
-    php-fileinfo \
-    php-mbstring \
-    php-openssl \
-    php-pdo \
-    php-pdo_mysql \
-    php-session \
-    php-tokenizer \
-    php-xml \
-    nginx
+    php83 \
+    php83-fpm \
+    php83-ctype \
+    php83-curl \
+    php83-dom \
+    php83-fileinfo \
+    php83-mbstring \
+    php83-openssl \
+    php83-pdo \
+    php83-pdo_mysql \
+    php83-session \
+    php83-tokenizer \
+    php83-xml \
+    nginx=1.24.0-r15 && \
+    rm -rf /var/cache/apk/*
 
-# Limit memory and upload size
-RUN echo "memory_limit = ${MEMORY_LIMIT}" > /etc/php82/conf.d/memory-limit.ini && \
-    echo "upload_max_filesize = ${UPLOAD_LIMIT}" > /etc/php82/conf.d/upload-limit.ini && \
-    echo "post_max_size = ${UPLOAD_LIMIT}" >> /etc/php82/conf.d/upload-limit.ini
+# Copy PHP configuration file
+COPY php/production.ini /etc/php83/conf.d/production.ini
 
 # Copy Nginx configuration file and custom startup script
 COPY nginx/default.conf /etc/nginx/http.d/default.conf

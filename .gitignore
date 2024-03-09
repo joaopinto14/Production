@@ -4,5 +4,7 @@
 !entrypoint/entrypoint.sh
 !nginx
 !nginx/default.conf
+!php
+!php/production.ini
 !Dockerfile
 !README.md
