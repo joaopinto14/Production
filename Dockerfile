@@ -22,7 +22,7 @@ RUN apk update && apk add --no-cache \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file
-COPY php/production.ini /etc/php83/conf.d/production.ini
+COPY php/settings.ini /etc/php83/conf.d/settings.ini
 COPY php/www.conf /etc/php83/php-fpm.d/www.conf
 
 # Copy Nginx configuration file and custom startup script
