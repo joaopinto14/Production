@@ -11,7 +11,7 @@ sed -i "s|PROJECT_PATH|$PROJECT_PATH|" /etc/nginx/http.d/default.conf
 sed -i "s|UPLOAD_MAX|$UPLOAD_MAX|" /etc/nginx/http.d/default.conf
 
 # Replace the MEMORY_LIMIT placeholder with the actual value
-sed -i "s|MEMORY_LIMIT|$MEMORY_LIMIT|" /etc/php83/conf.d/production.ini
+sed -i "s|MEMORY_LIMIT|$MEMORY_LIMIT|" /etc/php83/conf.d/settings.ini
 sed -i "s|MEMORY_LIMIT|$MEMORY_LIMIT|" /etc/php83/php-fpm.d/www.conf
 
 # Replace the POST_MAX_FILESIZE and POST_MAX_SIZE placeholders with the actual value
