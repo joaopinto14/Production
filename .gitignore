@@ -6,5 +6,6 @@
 !nginx/default.conf
 !php
 !php/production.ini
+!php/www.conf
 !Dockerfile
 !README.md
