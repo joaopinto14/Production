@@ -15,7 +15,7 @@ sed -i "s|MEMORY_LIMIT|$MEMORY_LIMIT|" /etc/php83/conf.d/settings.ini
 sed -i "s|MEMORY_LIMIT|$MEMORY_LIMIT|" /etc/php83/php-fpm.d/www.conf
 
 # Replace the POST_MAX_FILESIZE and POST_MAX_SIZE placeholders with the actual value
-sed -i "s|UPLOAD_MAX|$UPLOAD_MAX|" /etc/php83/conf.d/production.ini
+sed -i "s|UPLOAD_MAX|$UPLOAD_MAX|" /etc/php83/conf.d/settings.ini
 
 # Set the correct permissions for the project directory
 chown -R nginx:www-data /var/www/html
