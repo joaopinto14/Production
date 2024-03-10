@@ -34,6 +34,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose web server port and set healthcheck
 EXPOSE 80
-HEALTHCHECK --interval=10s --timeout=30s CMD curl --fail http://localhost:80 || exit 1
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s --retries=3 CMD wget -q -O /dev/null http://localhost
 
 CMD ["entrypoint.sh"]
