@@ -37,6 +37,8 @@ In addition, it is possible to define the MEMORY_LIMIT and UPLOAD_MAX environmen
 
 When using this image, you don't need to worry about checking the correct operation of the container or the permissions required for your project. Everything is configured and verified automatically.
 
+At this moment it is only possible to use the MSQL or MariaDB service for databases.
+
 ## Examples
 
 - Simple example:
