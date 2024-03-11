@@ -37,7 +37,7 @@ In addition, it is possible to define the MEMORY_LIMIT and UPLOAD_MAX environmen
 
 When using this image, you don't need to worry about checking the correct operation of the container or the permissions required for your project. Everything is configured and verified automatically.
 
-At this moment it is only possible to use the MSQL or MariaDB service for databases.
+At this moment it is only possible to use the MySQL/MariaDB service for databases.
 
 ## Examples
 
@@ -59,6 +59,14 @@ docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PROJECT_PATH=/v
 - **PROJECT_PATH**: The path to the project directory. Default: /var/www/html
 - **MEMORY_LIMIT**: The memory limit that PHP can use. Default: 128M
 - **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 100M
+
+## Issues
+
+If you encounter any issues with the image or have any improvement suggestions, feel free to open an [issue](https://github.com/joaopinto14/Production/issues) on GitHub. Please provide as many details as possible to help resolve the issue.
+
+## License
+
+This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md) file for more details.
 
 ## Author
 

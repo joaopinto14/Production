@@ -8,4 +8,5 @@
 !php/settings.ini
 !php/www.conf
 !Dockerfile
+!LICENSE.md
 !README.md
