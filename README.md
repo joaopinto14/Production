@@ -12,7 +12,7 @@ For tasks such as setting up the environment, installing dependencies, compiling
 - **PHP**: 8.3
 - **NGINX**: 1.24.0-r15
 
-## Installation
+## Build
 
 Follow the steps below to build the Docker image:
 
@@ -34,6 +34,8 @@ docker build -t production .
 This image is easy to use, it is only necessary to mount the project volume. If the project is located in a subdirectory, it may be necessary to define the PROJECT_PATH environment variable.
 
 In addition, it is possible to define the MEMORY_LIMIT and UPLOAD_MAX environment variables to adjust the memory limit for PHP and the maximum size of files that can be uploaded to the server, respectively.
+
+When using this image, you don't need to worry about checking the correct operation of the container or the permissions required for your project. Everything is configured and verified automatically.
 
 ## Examples
 
