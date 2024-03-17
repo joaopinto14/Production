@@ -1,9 +1,18 @@
 #!/bin/sh
 
 # Define default values for environment variables if they are not set
+PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
 PROJECT_PATH=${PROJECT_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
-UPLOAD_MAX=${UPLOAD_MAX:-100M}
+UPLOAD_MAX=${UPLOAD_MAX:-8M}
+
+# Install the required PHP extensions
+if [ -n "$PHP_EXTENSIONS" ]; then
+    if ! apk add --no-cache php83-$PHP_EXTENSIONS; then
+        echo "Error installing PHP extensions."
+        exit 1
+    fi
+fi
 
 # Replace the PROJECT_PATH placeholder with the actual path
 sed -i "s|PROJECT_PATH|$PROJECT_PATH|" /etc/nginx/http.d/default.conf
@@ -24,4 +33,4 @@ mkdir -p /var/run/php
 chown -R nginx:www-data /var/www/html /var/run/php
 
 # Start PHP-FPM and Nginx
-php-fpm83 & nginx -g "daemon off;"
+php-fpm & nginx -g "daemon off;"

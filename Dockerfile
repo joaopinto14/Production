@@ -6,18 +6,6 @@ LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
-    php83-ctype \
-    php83-curl \
-    php83-dom \
-    php83-fileinfo \
-    php83-mbstring \
-    php83-openssl \
-    php83-pdo \
-    php83-pdo_mysql \
-    php83-mysqli \
-    php83-session \
-    php83-tokenizer \
-    php83-xml \
     nginx=1.24.0-r15 && \
     rm -rf /var/cache/apk/*
 
@@ -31,6 +19,10 @@ COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Move PHP and PHP-FPM binaries to the default path
+RUN mv /usr/bin/php83 /usr/bin/php && \
+    mv /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
 # Expose web server port and set healthcheck
 EXPOSE 80
