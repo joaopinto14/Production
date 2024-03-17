@@ -6,6 +6,12 @@ PROJECT_PATH=${PROJECT_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
 UPLOAD_MAX=${UPLOAD_MAX:-8M}
 
+# Check if there is something in the PROJECT_PATH directory
+if [ ! -d "$PROJECT_PATH" ]; then
+    echo "There is nothing in the path '/var/www/html'."
+    exit 1
+fi
+
 # Install the required PHP extensions
 if [ -n "$PHP_EXTENSIONS" ]; then
     if ! apk add --no-cache php83-$PHP_EXTENSIONS; then
