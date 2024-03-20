@@ -6,12 +6,30 @@ PROJECT_PATH=${PROJECT_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
 UPLOAD_MAX=${UPLOAD_MAX:-8M}
 
+# Get the list of already installed extensions via "php -m" command
+INSTALLED_EXTENSIONS=$(php -m | tr -d ' ' | sed 's/\[PHPModules\]//g' | sed 's/\[ZendModules\]//g')
+
 # Install the required PHP extensions
-if [ -n "$PHP_EXTENSIONS" ]; then
-    if ! apk add --no-cache php83-$PHP_EXTENSIONS; then
-        echo "Error installing PHP extensions."
-        exit 1
+if [ -n "${PHP_EXTENSIONS}" ]; then
+  for i in ${PHP_EXTENSIONS}; do
+    # Check if the extension is already installed
+    if echo "${INSTALLED_EXTENSIONS}" | grep -q "${i}"; then
+      echo "The PHP extension ${i} is already installed."
+    else
+      # Install the extension
+      if apk add --no-cache php83-${i} > /dev/nu&1; then
+        echo "The PHP extension ${i} has been installed successfully."
+      else
+        echo "The PHP extension ${i} could not be installed."
+      fi
     fi
+  done
+fi
+
+# Check if the /var/www/html directory is empty
+if [ -z "$(ls -A /var/www/html)" ]; then
+  echo "The directory 'var/www/html' is empty"
+  exit 1
 fi
 
 # Replace the PROJECT_PATH placeholder with the actual path
