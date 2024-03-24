@@ -12,7 +12,7 @@ PHP_INI="/etc/php83/conf.d/settings.ini"
 PHP_FPM_CONF="/etc/php83/php-fpm.d/www.conf"
 
 # Check if the project directory exists and is not empty
-if [ ! -d "${PROJECT_PATH}" ] || [ -z "$(ls -A ${PROJECT_PATH})" ]; then
+if [ ! -d "${PROJECT_PATH}" ] || [ -z "$(ls -A "${PROJECT_PATH}")" ]; then
   echo "You need to put your project in the ${PROJECT_PATH} directory."
   exit 1
 fi
@@ -34,8 +34,9 @@ check_and_install_extension() {
   if [ -n "${not_installed_extensions}" ]; then
     echo "Installing PHP extensions: ${not_installed_extensions}..."
     for extension in ${not_installed_extensions}; do
-      apk add -q --no-cache php83-${extension} > /dev/null 2>&1 || { echo "Failed to install PHP extension: ${extension}."; exit 1; }
+      apk add -q --no-cache php83-"${extension}" > /dev/null 2>&1 || { echo "Failed to install PHP extension: ${extension}."; exit 1; }
     done
+    rm -rf /var/cache/apk/*
     echo "PHP extensions installed successfully."
   fi
 }
@@ -54,7 +55,7 @@ fi
 mkdir -p /var/run/php || { echo "Failed to create directory '/var/run/php'."; exit 1; }
 
 # Set the correct permissions for the project directory and the sock file directory
-chown -R nginx:www-data ${PROJECT_PATH} /var/run/php || { echo "Failed to set permissions for '${PROJECT_PATH}' and '/var/run/php'."; exit 1; }
+chown -R nginx:www-data /var/www/html /var/run/php || { echo "Failed to set permissions for '/var/www/html' and '/var/run/php'."; exit 1; }
 
 # Start PHP-FPM and Nginx
 php-fpm & nginx -g "daemon off;"
