@@ -28,4 +28,7 @@ RUN mv /usr/bin/php83 /usr/bin/php && \
 EXPOSE 80
 HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 CMD wget -q -O /dev/null http://localhost
 
+# Set the working directory
+WORKDIR /var/www/html
+
 CMD ["entrypoint.sh"]
