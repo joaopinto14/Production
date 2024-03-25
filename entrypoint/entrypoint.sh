@@ -58,4 +58,4 @@ mkdir -p /var/run/php || { echo "Failed to create directory '/var/run/php'."; ex
 chown -R nginx:www-data /var/www/html /var/run/php || { echo "Failed to set permissions for '/var/www/html' and '/var/run/php'."; exit 1; }
 
 # Start PHP-FPM and Nginx
-php-fpm & nginx -g "daemon off;"
+php-fpm -F & nginx -g "daemon off;"
