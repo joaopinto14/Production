@@ -1,101 +1,53 @@
-# Production
+# ⚙️ *Production*
 
-This repository contains the source code for the "Production" Docker image. This Docker image, designed to be compact and efficient, has the sole purpose of running your web project in a production environment.
+&nbsp;&nbsp;&nbsp;&nbsp;This repository contains the source code for the *Docker* image "***Production***". This *Docker* image 
+was specifically designed to be compact and efficient, with the sole purpose of enabling the execution of your web project
+in a production environment.
 
-Equipped with all the essential tools for an efficient, safe, and lightweight launch, it includes only the PHP and NGINX packages, which are the essential resources to ensure the project's operation.
+## 📖 **Project Description**
 
-For tasks such as environment configuration, dependency installation, code compilation, or test execution, it is advisable to use a dedicated development image, like the [Development](https://github.com/joaopinto14/Development) image, which was specifically designed to facilitate and optimize these tasks.
+&nbsp;&nbsp;&nbsp;&nbsp;The *Docker* image "***Production***", based on the Linux distribution *Alpine* 3.19, was designed to be efficient and easy
+to use. It comes equipped with *PHP* 8.3 and the extensions *core, date, filter, hash, json, libxml, pcre, random, readline,
+reflection, spl, standard, and zlib*. For the web server, *NGINX* 1.24.0-r15 is used, thus allowing the efficient execution
+of web projects. If additional adjustments are necessary, they can be made simply and easily, using the available 
+[environment variables](#-environment-variables).
 
-## Index
+## ⚒️ **Image Build**
 
-- [Image Components](#image-components)
-    - [Default Installed PHP Extensions](#default-installed-php-extensions)
-- [Image Build](#image-build)
-- [Usage](#usage)
-- [Usage Examples](#usage-examples)
-    - [Using the command line](#using-the-command-line)
-    - [Using Docker Compose](#using-docker-compose)
-- [Environment Variables](#environment-variables)
-- [Issues](#issues)
-- [License](#license)
-- [Author](#author)
-## Image Components:
-
-- **Alpine**: 3.19
-- **PHP**: 8.3
-- **NGINX**: 1.24.0-r15
-
-### Default Installed PHP Extensions:
-
-- **Core**
-- **date**
-- **filter**
-- **hash**
-- **json**
-- **libxml**
-- **pcre**
-- **random**
-- **readline**
-- **Reflection**
-- **SPL**
-- **standard**
-- **zlib**
-
-## Image Build
-
-Follow the steps below to build the Docker image:
+Follow the steps below to build the *Docker* image:
 
 1. Clone the repository with the command:
+
 ```
 git clone https://github.com/joaopinto14/Production.git
 ```
-2. Navigate to the project directory with the command: 
+
+1. Navigate to the project directory with the command:
+
 ```
 cd Production
 ```
-3. Build the Docker image with the command:
+
+1. Build the *Docker* image with the command:
+
 ```
 docker build -t production .
 ```
 
-## Usage
+## 📑 Environment Variables
 
-This Docker image is easy to use, requiring only the mounting of the volume of your PHP project. If the index.php file is located in a subdirectory, you will need to specify its location using the **PROJECT_PATH** environment variable.
+- **PHP_EXTENSIONS**: The *PHP* extensions to be installed. Default: null (e.g.: pdo_mysql mysqli)
+- **PROJECT_PATH**: The path to the project directory. Default: /var/www/html
+- **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
+- **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
 
-If your project requires additional PHP extensions, you can set the **PHP_EXTENSIONS** environment variable with the names of the extensions you want to install.
+## ▶️ **Usage Examples**
 
-Additionally, the **MEMORY_LIMIT** and **UPLOAD_MAX** environment variables can be set to adjust, respectively, the memory limit that PHP can use and the maximum size of files that can be uploaded to the server.
-
-When using this Docker image, you don't need to worry about checking the container's functionality or the necessary permissions for your project. Everything is configured and checked automatically for you.
-
-## Usage Examples
-
-### Using the command line
-- Simple example:
+### - Using the command line:
 ```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html production
+docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e PROJECT_PATH=/var/www/html/public production
 ```
-- Example with environment variables:
-```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M production
-```
-- Example with a Laravel project:
-```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PROJECT_PATH=/var/www/html/public production
-```
-### Using Docker Compose
-- Simple example:
-```
-version: '3'
-services:
-  web:
-    image: production
-    ports:
-      - "80:80"
-    volumes:
-      - ./path/to/your/project:/var/www/html
-```
-- Example with environment variables:
+### - Using *Docker Compose*:
 ```
 version: '3'
 services:
@@ -109,38 +61,25 @@ services:
       - PHP_EXTENSIONS=pdo_mysql mysqli
       - MEMORY_LIMIT=256M
       - UPLOAD_MAX=16M
-```
-- Example with a Laravel project:
-```
-version: '3'
-services:
-  web:
-    image: production
-    ports:
-      - "80:80"
-    volumes:
-      - ./path/to/your/project:/var/www/html
-    environment:
       - PROJECT_PATH=/var/www/html/public
 ```
 
-## Environment Variables
+## 📝 Issues and Suggestions
 
-- **PHP_EXTENSIONS**: The PHP extensions to be installed. Default: null
-- **PROJECT_PATH**: The path to the project directory. Default: /var/www/html
-- **MEMORY_LIMIT**: The memory limit that PHP can use. Default: 128M
-- **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
+&nbsp;&nbsp;&nbsp;&nbsp;If you encounter any issues related to the image or have suggestions for improvements, do not hesitate to open an
+[issue](https://github.com/joaopinto14/Production/issues/new/choose) on *GitHub*. Please provide as many
+details as possible to assist in resolving the issue or implementing your suggestion.
 
-## Issues
+## 🪧 **Extra**
 
-If you encounter any issues with the image or have any improvement suggestions, feel free to open an [issue](https://github.com/joaopinto14/Production/issues/new/choose) on GitHub. Please provide as many details as possible to help resolve the issue.
+&nbsp;&nbsp;&nbsp;&nbsp;If you need a *Docker* image for tasks such as environment setup, dependency installation, code 
+compilation, or test execution, it is recommended to use a dedicated development image, use the image 
+"[Development](https://github.com/joaopinto14/Development)". This was specifically designed to facilitate and optimize these tasks.
 
-## License
+## 👥 Contributors
 
-This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md) file for more details.
+- [João Pinto](https://github.com/joaopinto14) (Developer)
 
-## Author
+## 🧾️ License
 
-This image was created by [João Pinto](https://github.com/joaopinto14).
-
-For more information or support, please send an email to suport@joaopinto.pt.
+&nbsp;&nbsp;&nbsp;&nbsp;This project is licensed under the *MIT* license - see the [LICENSE.md](LICENSE.md) file for more details.
