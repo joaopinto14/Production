@@ -66,7 +66,7 @@ services:
 
 ## 📝 Issues and Suggestions
 
-&nbsp;&nbsp;&nbsp;&nbsp;If you encounter any issues related to the image or have suggestions for improvements, do not hesitate to open an
+&nbsp;&nbsp;&nbsp;&nbsp;If you find any issues related to the image or have suggestions for improvements, do not hesitate to open an
 [issue](https://github.com/joaopinto14/Production/issues/new/choose) on *GitHub*. Please provide as many
 details as possible to assist in resolving the issue or implementing your suggestion.
 
