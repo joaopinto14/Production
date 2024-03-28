@@ -19,21 +19,23 @@ fi
 
 # Function to check and install PHP extensions
 check_and_install_extension() {
+  installed_extensions=$(php -m)
+    
   for extension in ${PHP_EXTENSIONS}; do
     # Check if there is any uninstalled extension
-    if ! php -m | grep -q "${extension}"; then
-      if [ -z "${not_installed_extensions}" ]; then
-        not_installed_extensions="${extension}"
+    if ! echo "${installed_extensions}" | grep -q "${extension}"; then
+      if [ -z "${extensions_to_install}" ]; then
+        extensions_to_install="${extension}"
       else
-        not_installed_extensions="${not_installed_extensions} ${extension}"
+        extensions_to_install="${extensions_to_install} ${extension}"
       fi
     fi
   done
 
   # Install uninstalled PHP extensions
-  if [ -n "${not_installed_extensions}" ]; then
-    echo "Installing PHP extensions: ${not_installed_extensions}..."
-    for extension in ${not_installed_extensions}; do
+  if [ -n "${extensions_to_install}" ]; then
+    echo "Installing PHP extensions: ${extensions_to_install}..."
+    for extension in ${extensions_to_install}; do
       apk add -q --no-cache php83-"${extension}" > /dev/null 2>&1 || { echo "Failed to install PHP extension: ${extension}."; exit 1; }
     done
     rm -rf /var/cache/apk/*
@@ -42,9 +44,9 @@ check_and_install_extension() {
 }
 
 # Replace placeholders with actual values in configuration files
-sed -i "s|PROJECT_PATH|${PROJECT_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF}
-sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${PHP_INI}
-sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF}
+sed -i "s|PROJECT_PATH|${PROJECT_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
+sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${PHP_INI} || { echo "Failed to replace placeholders in ${PHP_INI}."; exit 1; }
+sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF} || { echo "Failed to replace placeholders in ${PHP_FPM_CONF}."; exit 1; }
 
 # Install the required PHP extensions
 if [ -n "${PHP_EXTENSIONS}" ]; then

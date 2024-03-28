@@ -20,7 +20,7 @@ COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Move PHP and PHP-FPM binaries to the default path
+# Change names of PHP and PHP-FPM binaries
 RUN mv /usr/bin/php83 /usr/bin/php && \
     mv /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
