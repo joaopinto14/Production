@@ -1,10 +1,11 @@
 # ⚙️ *Production*
 
-&nbsp;&nbsp;&nbsp;&nbsp;This repository contains the source code for the *Docker* image "***Production***". This *Docker* image 
-was specifically designed to be compact and efficient, with the sole purpose of enabling the execution of your web project
+&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image that is compact and efficient, with the sole purpose of running your web project 
 in a production environment.
 
 ## 📖 **Project Description**
+
+A imagem Docker "Production", baseada na distribuição Linux Alpine 3.19, foi projetada para ser eficiente e fácil de usar. Ela vem equipada com PHP 8.3 e as extensões core, date, filter, hash, json, libxml, pcre, random, readline, reflection, spl, standard, e zlib. Para o servidor web, é usado o NGINX 1.24.0-r15, permitindo assim a execução eficiente de projetos web. Se ajustes adicionais forem necessários, eles podem ser feitos de forma simples e fácil, usando as variáveis de ambiente disponíveis.
 
 &nbsp;&nbsp;&nbsp;&nbsp;The *Docker* image "***Production***", based on the Linux distribution *Alpine* 3.19, was designed to be efficient and easy
 to use. It comes equipped with *PHP* 8.3 and the extensions *core, date, filter, hash, json, libxml, pcre, random, readline,

@@ -6,7 +6,8 @@ LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
-    nginx=1.24.0-r15 && \
+    nginx=1.24.0-r15  \
+    supervisor=4.2.5-r4 && \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file
@@ -23,6 +24,9 @@ COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Copy Supervisor configuration file
+COPY supervisor/supervisord.conf /etc/supervisord/supervisord.conf
 
 # Expose web server port and set healthcheck
 EXPOSE 80
