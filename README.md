@@ -5,7 +5,17 @@ in a production environment.
 
 ## 📖 **Project Description**
 
-A imagem Docker "Production", baseada na distribuição Linux Alpine 3.19, foi projetada para ser eficiente e fácil de usar. Ela vem equipada com PHP 8.3 e as extensões core, date, filter, hash, json, libxml, pcre, random, readline, reflection, spl, standard, e zlib. Para o servidor web, é usado o NGINX 1.24.0-r15, permitindo assim a execução eficiente de projetos web. Se ajustes adicionais forem necessários, eles podem ser feitos de forma simples e fácil, usando as variáveis de ambiente disponíveis.
+&nbsp;&nbsp;&nbsp;&nbsp;***Production*** é uma imagem Docker baseada na distribuição Linux **Alpine 3.19**, conhecida por 
+sua leveza e eficiência. Esta imagem foi equipada com o interpretador **PHP** na versão 8.3, que inclui as extensões *core,
+date, filter, hash, json, libxml, pcre, random, readline, reflection, spl, standard e zlib*. Além disso, o servidor web 
+**NGINX** na versão 1.24.0-r15 foi instalado para permitir a execução eficiente dos seus projetos web.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Para facilitar o gerenciamento dos processos foi instalado o **Supervisor** na versão 4.2.5-r4, que permite
+controlar a execução de múltiplos processos, como o servidor web e o interpretador PHP. O **Supervisor** também é responsável
+por monitorar e reiniciar os processos em caso de falhas, garantindo uma maior disponibilidade do seu projeto.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Se ajustes adicionais forem necessários, eles podem ser realizados de maneira simples e fácil, utilizando as 
+[variáveis de ambiente](#-variáveis-de-ambiente) disponíveis.
 
 &nbsp;&nbsp;&nbsp;&nbsp;The *Docker* image "***Production***", based on the Linux distribution *Alpine* 3.19, was designed to be efficient and easy
 to use. It comes equipped with *PHP* 8.3 and the extensions *core, date, filter, hash, json, libxml, pcre, random, readline,
