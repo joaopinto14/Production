@@ -39,10 +39,24 @@ cd Production
 docker build -t production .
 ```
 
+## 🚀 How to Run Your Project in the Image
+
+To run your project in the Docker image ***Production***, follow the steps below:
+
+1. **Project Directory**: The main directory of your project should be mapped to the `/var/www/html` directory of the container. This is where the web server and the PHP interpreter will run your project safely and efficiently.
+
+2. **Execution File**: If the execution file of your project `index.php` is not in the `/var/www/html` directory, you can define the directory of your project through the `INDEX_PATH` environment variable.
+
+3. **PHP Extensions**: If your project requires additional PHP extensions or adjustments in the PHP settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX` environment variables as needed.
+
+4. **Additional Processes**: If you need to run more processes in addition to those existing in the image (for example, queues, workers, etc.), you can add the Supervisor configuration files to the `/etc/supervisor/conf` directory of the container.
+
+By following these steps, you will be able to run your project in the Docker image ***Production*** efficiently and safely.
+
 ## 📑 Environment Variables
 
 - **PHP_EXTENSIONS**: The *PHP* extensions to be installed. Default: null (e.g.: pdo_mysql mysqli)
-- **PROJECT_PATH**: The path to the project directory. Default: /var/www/html
+- **INDEX_PATH**: The path to the project directory. Default: /var/www/html
 - **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
 - **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
 
@@ -50,7 +64,7 @@ docker build -t production .
 
 ### - Using the command line:
 ```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e PROJECT_PATH=/var/www/html/public production
+docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e INDEX_PATH=/var/www/html/public production
 ```
 ### - Using *Docker Compose*:
 ```
@@ -66,7 +80,7 @@ services:
       - PHP_EXTENSIONS=pdo_mysql mysqli
       - MEMORY_LIMIT=256M
       - UPLOAD_MAX=16M
-      - PROJECT_PATH=/var/www/html/public
+      - INDEX_PATH=/var/www/html/public
 ```
 
 ## 📝 Issues and Suggestions

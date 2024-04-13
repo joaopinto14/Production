@@ -2,7 +2,7 @@
 
 # Define default values for environment variables if they are not set
 PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
-PROJECT_PATH=${PROJECT_PATH:-/var/www/html}
+INDEX_PATH=${INDEX_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
 UPLOAD_MAX=${UPLOAD_MAX:-8M}
 
@@ -11,10 +11,9 @@ NGINX_CONF="/etc/nginx/http.d/default.conf"
 PHP_INI="/etc/php83/conf.d/settings.ini"
 PHP_FPM_CONF="/etc/php83/php-fpm.d/www.conf"
 
-# Check if the project directory exists and is not empty
-if [ ! -d "${PROJECT_PATH}" ] || [ -z "$(ls -A "${PROJECT_PATH}")" ]; then
-  echo "You need to put your project in the ${PROJECT_PATH} directory."
-  exit 1
+# Check if the file index.php exists in the INDEX_PATH directory
+if [ ! -f "${INDEX_PATH}/index.php" ]; then
+  echo "The path specified in INDEX_PATH does not contain the 'index.php' file."
 fi
 
 # Function to check and install PHP extensions
@@ -44,7 +43,7 @@ check_and_install_extension() {
 }
 
 # Replace placeholders with actual values in configuration files
-sed -i "s|PROJECT_PATH|${PROJECT_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
+sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
 sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${PHP_INI} || { echo "Failed to replace placeholders in ${PHP_INI}."; exit 1; }
 sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF} || { echo "Failed to replace placeholders in ${PHP_FPM_CONF}."; exit 1; }
 
