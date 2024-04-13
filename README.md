@@ -3,27 +3,21 @@
 &nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image that is compact and efficient, with the sole purpose of running your web project 
 in a production environment.
 
-## 📖 **Project Description**
+## 📖 Project Description
 
-&nbsp;&nbsp;&nbsp;&nbsp;***Production*** é uma imagem Docker criada usando a distribuição Linux **Alpine** na versão 3.19 e
-instalado o interpretador **PHP** na versão 8.3, que inclui as extensões *core, date, filter, hash, json, libxml, pcre, 
-random, readline, reflection, spl, standard e zlib*. Além disso, o servidor web **NGINX** na versão 1.24.0-r15 foi instalado
-para permitir a execução eficiente dos seus projetos web.
+&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a Docker image created using the Linux distribution ***Alpine*** version 3.19.
+The ***PHP*** interpreter version 8.3 was installed, including the extensions *core, date, filter, hash, json, libxml, pcre,
+random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** version 1.24.0-r15 was installed
+to allow the efficient execution of your web projects.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Para facilitar o gerenciamento dos processos foi instalado o **Supervisor** na versão 4.2.5-r4, que permite
-controlar a execução de múltiplos processos, como o servidor web e o interpretador PHP. O **Supervisor** também é responsável
-por monitorar e reiniciar os processos em caso de falhas, garantindo uma maior disponibilidade do seu projeto.
+&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** version 4.2.5-r4 was installed, which allows
+the control of the execution of multiple processes, such as the web server and the PHP interpreter. The ***Supervisor*** is also responsible
+for monitoring and restarting processes in case of failures, ensuring greater availability of your project.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Se ajustes adicionais forem necessários, eles podem ser realizados de maneira simples e fácil, utilizando as 
-[variáveis de ambiente](#-variáveis-de-ambiente) disponíveis.
-
-&nbsp;&nbsp;&nbsp;&nbsp;The *Docker* image "***Production***", based on the Linux distribution *Alpine* 3.19, was designed to be efficient and easy
-to use. It comes equipped with *PHP* 8.3 and the extensions *core, date, filter, hash, json, libxml, pcre, random, readline,
-reflection, spl, standard, and zlib*. For the web server, *NGINX* 1.24.0-r15 is used, thus allowing the efficient execution
-of web projects. If additional adjustments are necessary, they can be made simply and easily, using the available 
+&nbsp;&nbsp;&nbsp;&nbsp;If additional adjustments are necessary, they can be made simply and easily, using the available
 [environment variables](#-environment-variables).
 
-## ⚒️ **Image Build**
+## ⚒️ Image Build
 
 Follow the steps below to build the *Docker* image:
 
@@ -52,7 +46,7 @@ docker build -t production .
 - **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
 - **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
 
-## ▶️ **Usage Examples**
+## ▶️ Usage Examples
 
 ### - Using the command line:
 ```
@@ -81,7 +75,7 @@ services:
 [issue](https://github.com/joaopinto14/Production/issues/new/choose) on *GitHub*. Please provide as many
 details as possible to assist in resolving the issue or implementing your suggestion.
 
-## 🪧 **Extra**
+## 🪧 Extra
 
 &nbsp;&nbsp;&nbsp;&nbsp;If you need a *Docker* image for tasks such as environment setup, dependency installation, code 
 compilation, or test execution, it is recommended to use a dedicated development image, use the image 
