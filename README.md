@@ -51,6 +51,8 @@ To run your project in the Docker image ***Production***, follow the steps below
 
 4. **Additional Processes**: If you need to run more processes in addition to those existing in the image (for example, queues, workers, etc.), you can add the *Supervisor* configuration files to the `/etc/supervisor/conf` directory of the container.
 
+5. **Viewing Logs**: If you need to view the logs, they are located in the `/var/log` directory within the container.
+
 By following these steps, you will be able to run your project in the *Docker* image ***Production*** efficiently and safely.
 
 ## 📑 Environment Variables

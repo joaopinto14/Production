@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 # Define default values for environment variables if they are not set
 PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
@@ -14,6 +14,7 @@ PHP_FPM_CONF="/etc/php83/php-fpm.d/www.conf"
 # Check if the file index.php exists in the INDEX_PATH directory
 if [ ! -f "${INDEX_PATH}/index.php" ]; then
   echo "The path specified in INDEX_PATH does not contain the 'index.php' file."
+  exit 1
 fi
 
 # Function to check and install PHP extensions
