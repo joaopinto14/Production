@@ -20,10 +20,10 @@ fi
 # Function to check and install PHP extensions
 check_and_install_extension() {
   installed_extensions=$(php -m)
-    
+
   for extension in ${PHP_EXTENSIONS}; do
     # Check if there is any uninstalled extension
-    if ! echo "${installed_extensions}" | grep -q "${extension}"; then
+    if ! echo "${installed_extensions}" | grep -wq "${extension}"; then
       if [ -z "${extensions_to_install}" ]; then
         extensions_to_install="${extension}"
       else
