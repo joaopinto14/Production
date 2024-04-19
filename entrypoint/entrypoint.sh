@@ -60,4 +60,4 @@ mkdir -p /var/run/php || { echo "Failed to create directory '/var/run/php'."; ex
 chown -R nginx:www-data /var/www/html /var/run/php || { echo "Failed to set permissions for '/var/www/html' and '/var/run/php'."; exit 1; }
 
 # Start supervisord
-exec /usr/bin/supervisord -n -c /etc/supervisord/supervisord.conf
+exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

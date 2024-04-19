@@ -26,7 +26,7 @@ COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Copy Supervisor configuration file
-COPY supervisor/supervisord.conf /etc/supervisord/supervisord.conf
+COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Expose web server port and set healthcheck
 EXPOSE 80
