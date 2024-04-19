@@ -5,7 +5,7 @@ PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
 INDEX_PATH=${INDEX_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
 UPLOAD_MAX=${UPLOAD_MAX:-8M}
-SUPERVISOR_FILE=${SUPERVISOR_FILE:-}
+SUPERVISOR_CONF=${SUPERVISOR_CONF:-}
 
 # Define file paths
 NGINX_CONF="/etc/nginx/http.d/default.conf"
@@ -56,13 +56,13 @@ sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} |
 sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${PHP_INI} || { echo "Failed to replace placeholders in ${PHP_INI}."; exit 1; }
 sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF} || { echo "Failed to replace placeholders in ${PHP_FPM_CONF}."; exit 1; }
 
-# Check if the SUPERVISOR_FILE environment variable is set
-if [ -n "${SUPERVISOR_FILE}" ]; then
+# Check if the SUPERVISOR_CONF environment variable is set
+if [ -n "${SUPERVISOR_CONF}" ]; then
   # Check if the file exists
-  if [ -f "${SUPERVISOR_FILE}" ]; then
-    cp -f "${SUPERVISOR_FILE}" /etc/supervisor/conf/${SUPERVISOR_FILE##*/} || { echo "Falha ao copiar o arquivo '${SUPERVISOR_FILE}' para '/etc/supervisor/conf.d/'."; exit 1; }
+  if [ -f "${SUPERVISOR_CONF}" ]; then
+    cp -f "${SUPERVISOR_CONF}" /etc/supervisor/conf/"${SUPERVISOR_CONF##*/}" || { echo "Falha ao copiar o arquivo '${SUPERVISOR_CONF}' para '/etc/supervisor/conf.d/'."; exit 1; }
   else
-    echo "The file specified in SUPERVISOR_FILE does not exist."
+    echo "The file specified in SUPERVISOR_CONF does not exist."
     exit 1
   fi
 fi
