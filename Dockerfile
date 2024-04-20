@@ -29,7 +29,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Create directory for Supervisor configuration files
-RUN mkdir -p /etc/supervisor/conf
+RUN mkdir -p /etc/supervisor/conf /var/log/supervisor
 
 # Expose web server port and set healthcheck
 EXPOSE 80
