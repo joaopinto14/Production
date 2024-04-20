@@ -6,7 +6,8 @@ LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
-    nginx=1.24.0-r15 && \
+    nginx=1.24.0-r15  \
+    supervisor=4.2.5-r4 && \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file
@@ -17,12 +18,18 @@ COPY php/www.conf /etc/php83/php-fpm.d/www.conf
 RUN mv /usr/bin/php83 /usr/bin/php && \
     mv /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
-# Copy Nginx configuration file and custom startup script
+# Copy Nginx configuration file and entrypoint script
 COPY nginx/default.conf /etc/nginx/http.d/default.conf
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Copy Supervisor configuration file
+COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Create directory for Supervisor configuration files
+RUN mkdir -p /etc/supervisor/conf /var/log/supervisor
 
 # Expose web server port and set healthcheck
 EXPOSE 80
