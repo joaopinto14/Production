@@ -60,7 +60,7 @@ sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF} || { echo "Failed to re
 if [ -n "${SUPERVISOR_CONF}" ]; then
   # Check if the file exists
   if [ -f "${SUPERVISOR_CONF}" ]; then
-    cp -f "${SUPERVISOR_CONF}" /etc/supervisor/conf/"${SUPERVISOR_CONF##*/}" || { echo "Falha ao copiar o arquivo '${SUPERVISOR_CONF}' para '/etc/supervisor/conf.d/'."; exit 1; }
+    cp -f "${SUPERVISOR_CONF}" /etc/supervisor/conf/"${SUPERVISOR_CONF##*/}" || { echo "Failed to copy the file '${SUPERVISOR_CONF}' to '/etc/supervisor/conf.d/'."; exit 1; }
   else
     echo "The file specified in SUPERVISOR_CONF does not exist."
     exit 1
