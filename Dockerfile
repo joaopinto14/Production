@@ -18,9 +18,8 @@ COPY php/www.conf /etc/php83/php-fpm.d/www.conf
 RUN mv /usr/bin/php83 /usr/bin/php && \
     mv /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
-# Copy Nginx configuration files and entrypoint script
+# Copy Nginx configuration file and entrypoint script
 COPY nginx/default.conf /etc/nginx/http.d/default.conf
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the startup script executable

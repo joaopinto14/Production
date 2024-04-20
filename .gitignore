@@ -7,7 +7,6 @@
 !entrypoint/entrypoint.sh
 !nginx
 !nginx/default.conf
-!nginx/nginx.conf
 !php
 !php/settings.ini
 !php/www.conf
