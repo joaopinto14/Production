@@ -5,12 +5,12 @@ in a production environment.
 
 ## 📖 Project Description
 
-&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image created using the Linux distribution ***Alpine*** version 3.19.
+&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image created using the Linux distribution ***Alpine***.
 The ***PHP*** interpreter version 8.3 was installed, including the extensions *core, date, filter, hash, json, libxml, pcre,
-random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** version 1.24.0-r15 was installed
+random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** was installed
 to allow the efficient execution of your web projects.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** version 4.2.5-r4 was installed, which allows
+&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** was installed, which allows
 the control of the execution of multiple processes, such as the web server and the PHP interpreter. The ***Supervisor*** is also responsible
 for monitoring and restarting processes in case of failures, ensuring greater availability of your project.
 

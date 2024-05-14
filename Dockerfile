@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine
 
 LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 
@@ -6,8 +6,8 @@ LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
-    nginx=1.24.0-r15  \
-    supervisor=4.2.5-r4 && \
+    nginx \
+    supervisor && \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file
