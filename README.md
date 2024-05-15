@@ -58,6 +58,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 ## 📑 Environment Variables
 
 - **PHP_EXTENSIONS**: The *PHP* extensions to be installed. Default: null (e.g.: pdo_mysql mysqli)
+- **TIMEZONE**: The timezone to be used by system. Default: UTC
 - **INDEX_PATH**: The directory where the execution file of your project is located. Default: /var/www/html
 - **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
 - **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M

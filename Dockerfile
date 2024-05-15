@@ -7,7 +7,8 @@ RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
     nginx \
-    supervisor && \
+    supervisor \
+    tzdata && \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file

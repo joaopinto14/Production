@@ -2,6 +2,7 @@
 
 # Define default values for environment variables if they are not set
 PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
+TIMEZONE=${TIMEZONE:-UTC}
 INDEX_PATH=${INDEX_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
 UPLOAD_MAX=${UPLOAD_MAX:-8M}
@@ -50,6 +51,12 @@ check_and_install_extension() {
     echo "PHP extensions installed successfully."
   fi
 }
+
+# Set the timezone
+if [ -n "${TIMEZONE}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime || { echo "Failed to set timezone to '${TIMEZONE}'."; exit 1; }
+  echo "${TIMEZONE}" > /etc/timezone || { echo "Failed to set timezone to '${TIMEZONE}'."; exit 1; }
+fi
 
 # Replace placeholders with actual values in configuration files
 sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
