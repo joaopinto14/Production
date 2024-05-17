@@ -47,7 +47,7 @@ To run your project in the Docker image ***Production***, follow the steps below
 
 2. **Execution File**: If the execution file of your project `index.php` is not in the `/var/www/html` directory, you can define the directory of your project through the `INDEX_PATH` environment variable.
 
-3. ***PHP* Extensions**: If your project requires additional *PHP* extensions or adjustments in the *PHP* settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX` environment variables as needed.
+3. ***PHP* Extensions**: If your project requires additional *PHP* extensions or adjustments in the *PHP* settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX_SIZE` environment variables as needed.
 
 4. ***Additional Processes***: If you need to run more processes in addition to those existing in the image (for example, queues, workers, etc.), you can use the `SUPERVISOR_CONF` environment variable to indicate the path of the *Supervisor* configuration file.
 
@@ -68,7 +68,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 
 ### - Using the command line:
 ```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e TIMEZONE=Europe/Lisbon -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e INDEX_PATH=/var/www/html/public production
+docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e TIMEZONE=Europe/Lisbon -e MEMORY_LIMIT=256M -e UPLOAD_MAX_SIZE=16M -e INDEX_PATH=/var/www/html/public -e SUPERVISOR_CONF=/var/www/html/supervisor.conf production
 ```
 ### - Using *Docker Compose*:
 ```
@@ -83,8 +83,9 @@ services:
       - PHP_EXTENSIONS=pdo_mysql mysqli
       - TIMEZONE=Europe/Lisbon
       - MEMORY_LIMIT=256M
-      - UPLOAD_MAX=16M
+      - UPLOAD_MAX_SIZE=16M
       - INDEX_PATH=/var/www/html/public
+      - SUPERVISOR_CONF=/var/www/html/supervisor.conf
 ```
 
 ## 📝 Issues and Suggestions
