@@ -68,7 +68,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 
 ### - Using the command line:
 ```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e INDEX_PATH=/var/www/html/public production
+docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e TIMEZONE=Europe/Lisbon -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e INDEX_PATH=/var/www/html/public production
 ```
 ### - Using *Docker Compose*:
 ```
@@ -81,6 +81,7 @@ services:
       - ./path/to/your/project:/var/www/html
     environment:
       - PHP_EXTENSIONS=pdo_mysql mysqli
+      - TIMEZONE=Europe/Lisbon
       - MEMORY_LIMIT=256M
       - UPLOAD_MAX=16M
       - INDEX_PATH=/var/www/html/public
