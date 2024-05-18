@@ -5,12 +5,12 @@ in a production environment.
 
 ## 📖 Project Description
 
-&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image created using the Linux distribution ***Alpine*** version 3.19.
+&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image created using the Linux distribution ***Alpine***.
 The ***PHP*** interpreter version 8.3 was installed, including the extensions *core, date, filter, hash, json, libxml, pcre,
-random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** version 1.24.0-r15 was installed
+random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** was installed
 to allow the efficient execution of your web projects.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** version 4.2.5-r4 was installed, which allows
+&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** was installed, which allows
 the control of the execution of multiple processes, such as the web server and the PHP interpreter. The ***Supervisor*** is also responsible
 for monitoring and restarting processes in case of failures, ensuring greater availability of your project.
 
@@ -47,7 +47,7 @@ To run your project in the Docker image ***Production***, follow the steps below
 
 2. **Execution File**: If the execution file of your project `index.php` is not in the `/var/www/html` directory, you can define the directory of your project through the `INDEX_PATH` environment variable.
 
-3. ***PHP* Extensions**: If your project requires additional *PHP* extensions or adjustments in the *PHP* settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX` environment variables as needed.
+3. ***PHP* Extensions**: If your project requires additional *PHP* extensions or adjustments in the *PHP* settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX_SIZE` environment variables as needed.
 
 4. ***Additional Processes***: If you need to run more processes in addition to those existing in the image (for example, queues, workers, etc.), you can use the `SUPERVISOR_CONF` environment variable to indicate the path of the *Supervisor* configuration file.
 
@@ -58,6 +58,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 ## 📑 Environment Variables
 
 - **PHP_EXTENSIONS**: The *PHP* extensions to be installed. Default: null (e.g.: pdo_mysql mysqli)
+- **TIMEZONE**: The timezone to be used by system. Default: UTC ([List of Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones))
 - **INDEX_PATH**: The directory where the execution file of your project is located. Default: /var/www/html
 - **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
 - **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
@@ -67,7 +68,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 
 ### - Using the command line:
 ```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e MEMORY_LIMIT=256M -e UPLOAD_MAX=16M -e INDEX_PATH=/var/www/html/public production
+docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e TIMEZONE=Europe/Lisbon -e MEMORY_LIMIT=256M -e UPLOAD_MAX_SIZE=16M -e INDEX_PATH=/var/www/html/public -e SUPERVISOR_CONF=/var/www/html/supervisor.conf production
 ```
 ### - Using *Docker Compose*:
 ```
@@ -80,9 +81,11 @@ services:
       - ./path/to/your/project:/var/www/html
     environment:
       - PHP_EXTENSIONS=pdo_mysql mysqli
+      - TIMEZONE=Europe/Lisbon
       - MEMORY_LIMIT=256M
-      - UPLOAD_MAX=16M
+      - UPLOAD_MAX_SIZE=16M
       - INDEX_PATH=/var/www/html/public
+      - SUPERVISOR_CONF=/var/www/html/supervisor.conf
 ```
 
 ## 📝 Issues and Suggestions

@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine
 
 LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 
@@ -6,8 +6,9 @@ LABEL maintainer="João Pinto [suport@joaopinto.pt]"
 RUN apk update && apk add --no-cache \
     php83 \
     php83-fpm \
-    nginx=1.24.0-r15  \
-    supervisor=4.2.5-r4 && \
+    nginx \
+    supervisor \
+    tzdata && \
     rm -rf /var/cache/apk/*
 
 # Copy PHP configuration file
@@ -20,6 +21,7 @@ RUN mv /usr/bin/php83 /usr/bin/php && \
 
 # Copy Nginx configuration file and entrypoint script
 COPY nginx/default.conf /etc/nginx/http.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the startup script executable

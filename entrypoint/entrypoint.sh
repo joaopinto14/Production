@@ -2,13 +2,15 @@
 
 # Define default values for environment variables if they are not set
 PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
+TIMEZONE=${TIMEZONE:-UTC}
 INDEX_PATH=${INDEX_PATH:-/var/www/html}
 MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
-UPLOAD_MAX=${UPLOAD_MAX:-8M}
+UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-8M}
 SUPERVISOR_CONF=${SUPERVISOR_CONF:-}
 
 # Define file paths
-NGINX_CONF="/etc/nginx/http.d/default.conf"
+NGINX_CONF="/etc/nginx/nginx.conf"
+NGINX_VIRTUAL_HOST_CONF="/etc/nginx/http.d/default.conf"
 PHP_INI="/etc/php83/conf.d/settings.ini"
 PHP_FPM_CONF="/etc/php83/php-fpm.d/www.conf"
 
@@ -51,9 +53,16 @@ check_and_install_extension() {
   fi
 }
 
+# Set the timezone
+if [ -n "${TIMEZONE}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime || { echo "Failed to set timezone to '${TIMEZONE}'."; exit 1; }
+  echo "${TIMEZONE}" > /etc/timezone || { echo "Failed to set timezone to '${TIMEZONE}'."; exit 1; }
+fi
+
 # Replace placeholders with actual values in configuration files
-sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
-sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX|${UPLOAD_MAX}|" ${PHP_INI} || { echo "Failed to replace placeholders in ${PHP_INI}."; exit 1; }
+sed -i "s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
+sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${NGINX_VIRTUAL_HOST_CONF} || { echo "Failed to replace placeholders in ${NGINX_VIRTUAL_HOST_CONF}."; exit 1; }
+sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${PHP_INI} || { echo "Failed to replace placeholders in ${PHP_INI}."; exit 1; }
 sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_FPM_CONF} || { echo "Failed to replace placeholders in ${PHP_FPM_CONF}."; exit 1; }
 
 # Check if the SUPERVISOR_CONF environment variable is set
