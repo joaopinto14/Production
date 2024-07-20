@@ -86,7 +86,7 @@ fi
 mkdir -p /var/run/php || { echo "Failed to create directory '/var/run/php'."; exit 1; }
 
 # Set the correct permissions for the project directory and the sock file directory
-chown -R nginx:www-data /var/www/html /var/run/php || { echo "Failed to set permissions for '/var/www/html' and '/var/run/php'."; exit 1; }
+chown -R www:www /var/www/html /var/run/php || { echo "Failed to set permissions for '/var/www/html' and '/var/run/php'."; exit 1; }
 
 # Start supervisord
 exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

@@ -33,6 +33,9 @@ COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 # Create directory for Supervisor configuration files
 RUN mkdir -p /etc/supervisor/conf /var/log/supervisor
 
+# Add new user
+RUN adduser -D -g 'www' www
+
 # Expose web server port and set healthcheck
 EXPOSE 80
 HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 CMD wget -q -O /dev/null http://localhost
