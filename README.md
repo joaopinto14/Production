@@ -61,7 +61,7 @@ By following these steps, you will be able to run your project in the *Docker* i
 - **TIMEZONE**: The timezone to be used by system. Default: UTC ([List of Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones))
 - **INDEX_PATH**: The directory where the execution file of your project is located. Default: /var/www/html
 - **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
-- **UPLOAD_MAX**: The maximum size of files that can be uploaded. Default: 8M
+- **UPLOAD_MAX_SIZE**: The maximum size of files that can be uploaded. Default: 8M
 - **SUPERVISOR_CONF**: The path of the *Supervisor* configuration file. Default: null (e.g.: /var/www/html/supervisor.conf)
 
 ## ▶️ Usage Examples
