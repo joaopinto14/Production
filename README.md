@@ -1,28 +1,122 @@
 # Production
 
-Production is a small general-purpose Docker runtime for PHP web applications. The 2.x line keeps the image simple while providing a solid base for framework-specific variants such as Laravel.
+Imagem Docker PHP leve e genérica, preparada para utilização em produção e pensada para servir de base a aplicações PHP e, futuramente, a uma variante otimizada para Laravel.
 
-> **Current development version:** `2.0.0-dev.2`
->
-> This is a development release. It is not intended to replace the latest stable 1.x image yet.
+## Estado
 
-## Runtime
+Versão de desenvolvimento: **2.0.0-dev.3**.
 
-`2.0.0-dev.2` contains:
+Esta versão introduz um único código-base para PHP **8.3**, **8.4** e **8.5**.
+
+## Base
 
 - Alpine Linux 3.24
-- PHP 8.5
-- PHP-FPM
 - Nginx
+- PHP-FPM
 - Supervisor
-- tzdata and CA certificates
-- non-root runtime (`www`)
+- Runtime non-root (`www`)
+- Porta interna 8080
+- Healthcheck `/healthz`
 
-PHP 8.5 includes OPcache as part of PHP core. The image configures OPcache with conservative production defaults.
+## Variantes PHP
 
-### Included PHP extensions
+A mesma `2.0.0-dev.3` pode gerar:
 
-The generic image intentionally keeps the extension set small:
+```text
+production:2.0.0-dev.3-php8.3
+production:2.0.0-dev.3-php8.4
+production:2.0.0-dev.3-php8.5
+```
+
+A variante predefinida é PHP 8.5.
+
+## Build individual
+
+PHP 8.5:
+
+```bash
+docker build \
+  --build-arg VERSION=2.0.0-dev.3 \
+  --build-arg PHP_VERSION=8.5 \
+  -t production:2.0.0-dev.3-php8.5 .
+```
+
+PHP 8.4:
+
+```bash
+docker build \
+  --build-arg VERSION=2.0.0-dev.3 \
+  --build-arg PHP_VERSION=8.4 \
+  -t production:2.0.0-dev.3-php8.4 .
+```
+
+PHP 8.3:
+
+```bash
+docker build \
+  --build-arg VERSION=2.0.0-dev.3 \
+  --build-arg PHP_VERSION=8.3 \
+  -t production:2.0.0-dev.3-php8.3 .
+```
+
+Valores diferentes de `8.3`, `8.4` ou `8.5` fazem o build falhar explicitamente.
+
+## Build das três variantes
+
+Com Docker Buildx Bake:
+
+```bash
+docker buildx bake
+```
+
+Ou uma variante específica:
+
+```bash
+docker buildx bake php85
+```
+
+Targets disponíveis:
+
+```text
+php83
+php84
+php85
+```
+
+## Smoke tests
+
+Testar a variante predefinida (PHP 8.5):
+
+```bash
+./tests/smoke.sh
+```
+
+Testar uma versão específica:
+
+```bash
+PHP_VERSION=8.4 ./tests/smoke.sh
+```
+
+Testar as três versões:
+
+```bash
+./tests/smoke-all.sh
+```
+
+Cada smoke test valida:
+
+1. build da imagem;
+2. versão PHP correta;
+3. runtime non-root;
+4. OPcache carregado;
+5. arranque Nginx + PHP-FPM;
+6. healthcheck;
+7. execução PHP através de HTTP;
+8. shutdown gracioso.
+
+## Extensões PHP base
+
+Todas as variantes incluem o mesmo conjunto funcional:
 
 - ctype
 - curl
@@ -33,185 +127,57 @@ The generic image intentionally keeps the extension set small:
 - session
 - tokenizer
 - XML
+- OPcache
 
-Database drivers and framework-specific extensions are intentionally not included in this generic development image. They will be handled by later variants, including the planned Laravel image.
+A futura variante Laravel acrescentará extensões próprias sem tornar a imagem genérica desnecessariamente pesada.
 
-## Security model
+## Variáveis de ambiente
 
-The default runtime does not run as root. `supervisord`, Nginx and PHP-FPM all run as the `www` user.
+| Variável | Predefinição | Descrição |
+|---|---:|---|
+| `TIMEZONE` | `UTC` | Timezone PHP/runtime |
+| `DOCUMENT_ROOT` | `/var/www/html` | Document root do Nginx |
+| `PHP_MEMORY_LIMIT` | `128M` | Limite de memória PHP |
+| `UPLOAD_MAX_SIZE` | `8M` | Limite de upload e POST |
+| `SUPERVISOR_CONF` | vazio | Configuração adicional opcional do Supervisor |
 
-Because an unprivileged process cannot bind to port 80, Nginx listens on `8080` inside the container.
-
-The image also no longer needs to modify `/etc` during startup. Runtime-generated files are placed under `/run/production`.
-
-## Build
-
-```bash
-docker build \
-  --build-arg VERSION=2.0.0-dev.2 \
-  -t production:2.0.0-dev.2-php8.5 .
-```
-
-## Run
-
-Mount the application into `/var/www/html`:
+Exemplo:
 
 ```bash
-docker run -d \
-  --name production \
-  -p 8080:8080 \
-  -v /path/to/project:/var/www/html:ro \
-  production:2.0.0-dev.2-php8.5
-```
-
-Open `http://localhost:8080`.
-
-### Custom document root
-
-For applications whose public directory is different, set `DOCUMENT_ROOT`:
-
-```bash
-docker run -d \
-  -p 8080:8080 \
-  -v /path/to/project:/var/www/html:ro \
-  -e DOCUMENT_ROOT=/var/www/html/public \
-  production:2.0.0-dev.2-php8.5
-```
-
-This is also the layout normally used by Laravel, although a dedicated Laravel variant is planned for a later 2.0.0 development release.
-
-## Environment variables
-
-| Variable | Default | Description |
-|---|---|---|
-| `TIMEZONE` | `UTC` | Runtime and PHP timezone. |
-| `DOCUMENT_ROOT` | `/var/www/html` | Directory served by Nginx. |
-| `PHP_MEMORY_LIMIT` | `128M` | PHP memory limit. |
-| `UPLOAD_MAX_SIZE` | `8M` | PHP and Nginx upload limit. |
-| `SUPERVISOR_CONF` | empty | Optional additional Supervisor configuration file. |
-
-### Example
-
-```bash
-docker run -d \
-  -p 8080:8080 \
-  -v /path/to/project:/var/www/html \
+docker run --rm \
   -e TIMEZONE=Europe/Lisbon \
   -e DOCUMENT_ROOT=/var/www/html/public \
   -e PHP_MEMORY_LIMIT=256M \
   -e UPLOAD_MAX_SIZE=32M \
-  production:2.0.0-dev.2-php8.5
+  production:2.0.0-dev.3-php8.5
 ```
 
-## File permissions
+## Execução de comandos PHP
 
-The image intentionally does not change ownership or permissions of mounted application files.
-
-For read-only applications, make sure the `www` user can traverse directories and read the files. For applications that need writable paths, create/mount those paths with suitable permissions on the host or in the application image.
-
-A future Laravel variant will document and optimise the writable `storage` and `bootstrap/cache` paths specifically.
-
-## Docker Compose
-
-```yaml
-services:
-  web:
-    image: production:2.0.0-dev.2-php8.5
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./app:/var/www/html
-    environment:
-      TIMEZONE: Europe/Lisbon
-      DOCUMENT_ROOT: /var/www/html/public
-      PHP_MEMORY_LIMIT: 256M
-      UPLOAD_MAX_SIZE: 32M
-```
-
-## Smoke test
-
-The Docker-based smoke test builds the image and verifies:
-
-- PHP CLI
-- non-root execution
-- Nginx/PHP-FPM startup
-- Docker healthcheck
-- PHP HTTP response
-- graceful container shutdown
-
-Run it with:
+O comando `php` é estável em todas as variantes:
 
 ```bash
-./tests/smoke.sh
+docker run --rm production:2.0.0-dev.3-php8.3 php -v
+docker run --rm production:2.0.0-dev.3-php8.4 php -v
+docker run --rm production:2.0.0-dev.3-php8.5 php -v
 ```
 
-To use a different local image tag:
+Internamente, a imagem liga esse comando ao binário correspondente da Alpine.
 
-```bash
-IMAGE=my-production:test ./tests/smoke.sh
-```
+## Estrutura PHP independente da versão
 
-## Healthcheck
-
-The image exposes an infrastructure health endpoint on the internal port `8080`:
+A configuração da imagem deixa de depender de caminhos como `/etc/php85`:
 
 ```text
-/healthz
+/etc/php-active                 -> configuração da versão selecionada
+/etc/production/php             -> configuração da imagem Production
+/run/production/php             -> configuração/estado gerado em runtime
+/usr/local/bin/php              -> PHP selecionado
+/usr/local/sbin/php-fpm         -> PHP-FPM selecionado
 ```
 
-It returns HTTP `200` without executing the application or querying external services.
+Isto permite manter Nginx, Supervisor e entrypoint iguais entre todas as variantes.
 
-## Logs
+## Laravel
 
-Nginx and PHP-FPM write directly to Docker stdout/stderr:
-
-```bash
-docker logs production
-```
-
-## CLI commands
-
-The entrypoint does not force Nginx/Supervisor when a custom command is supplied:
-
-```bash
-docker run --rm production:2.0.0-dev.2-php8.5 php -v
-```
-
-Or, with an application mounted:
-
-```bash
-docker run --rm \
-  -v /path/to/project:/var/www/html:ro \
-  production:2.0.0-dev.2-php8.5 \
-  php /var/www/html/script.php
-```
-
-## Breaking changes from `dev.1`
-
-- Internal HTTP port changed from `80` to `8080`.
-- The image now runs as the non-root `www` user.
-- Runtime configuration files are generated below `/run/production` instead of `/etc`.
-- Mounted files must be readable (and, where required, writable) by the non-root runtime user.
-
-## Breaking changes from 1.x
-
-- `PHP_EXTENSIONS` has been removed. Runtime package installation is no longer supported.
-- `INDEX_PATH` is now `DOCUMENT_ROOT`.
-- `MEMORY_LIMIT` is now `PHP_MEMORY_LIMIT`.
-- The container no longer changes ownership recursively on `/var/www/html`.
-- Logs are available through Docker rather than being primarily stored under `/var/log`.
-- The default internal HTTP port is now `8080`.
-- The runtime is non-root by default.
-
-## Roadmap to 2.0.0
-
-1. `2.0.0-dev.1`: clean PHP 8.5 generic runtime. ✅
-2. `2.0.0-dev.2`: non-root runtime, port 8080, runtime/signal cleanup. ✅
-3. Add builds/tags for multiple supported PHP versions.
-4. Add a Laravel-optimised variant built from the same source.
-5. Add multi-architecture builds and automated release/tag generation.
-6. Release candidate and final `2.0.0`.
-
-## License
-
-MIT. See [LICENSE.md](LICENSE.md).
+A `2.0.0-dev.3` continua a ser uma imagem genérica. A variante Laravel será criada numa iteração posterior sobre esta mesma base multi-PHP.

@@ -1,63 +1,51 @@
 # Changelog
 
-## 2.0.0-dev.2
+Todas as alterações relevantes do projeto Production são documentadas neste ficheiro.
 
-- Corrigidos os diretórios temporários `uwsgi` e `scgi` do Nginx para execução non-root.
-- Nginx passa a fixar explicitamente o error log em `/dev/stderr` logo no arranque.
-- Adicionado placeholder de configuração para evitar o aviso de include vazio do Supervisor.
+## 2.0.0-dev.3 - 2026-08-19
 
-Second development release of the Production 2.x line.
+### Adicionado
 
-### Changed
+- Suporte a múltiplas versões de PHP a partir do mesmo Dockerfile:
+  - PHP 8.3
+  - PHP 8.4
+  - PHP 8.5
+- Argumento de build `PHP_VERSION`.
+- Metadado OCI `io.joaopinto.production.php-version`.
+- `docker-bake.hcl` para construir as três variantes com um único comando.
+- `tests/smoke-all.sh` para validar todas as variantes.
+- O smoke test valida agora a versão PHP esperada e a presença do OPcache.
 
-- The container now runs as the unprivileged `www` user by default.
-- Nginx now listens on port `8080` inside the container instead of privileged port `80`.
-- Runtime-generated configuration moved from `/etc` to `/run/production`.
-- PHP runtime overrides are loaded from `/run/production/php/conf.d` through `PHP_INI_SCAN_DIR`.
-- Nginx runtime server configuration is generated under `/run/production/nginx/http.d`.
-- Optional Supervisor configuration is copied to `/run/production/supervisor/conf.d`.
-- Timezone selection no longer modifies `/etc/localtime` or `/etc/timezone` during startup; the runtime exports `TZ` and configures PHP directly.
-- PHP-FPM and Nginx PID/socket/temp paths are now kept under `/run/production`.
-- PHP-FPM pool no longer contains root-only user/group switching directives.
-- Docker `STOPSIGNAL` is explicitly set to `SIGTERM`.
-- Supervisor child shutdown settings were made explicit for graceful Nginx/PHP-FPM termination.
-- Smoke tests now verify non-root execution and graceful shutdown in addition to HTTP/PHP health.
+### Alterado
 
-### Kept
+- Os caminhos internos deixaram de estar presos a PHP 8.5.
+- `php` é exposto de forma estável em `/usr/local/bin/php`.
+- `php-fpm` é exposto de forma estável em `/usr/local/sbin/php-fpm`.
+- A configuração PHP ativa é exposta através de `/etc/php-active`.
+- A configuração própria da imagem foi movida para `/etc/production/php`.
+- Supervisor usa o caminho genérico de PHP-FPM, independentemente da versão PHP escolhida.
+- PHP 8.3 e 8.4 instalam explicitamente o pacote OPcache; em PHP 8.5 o OPcache faz parte do runtime.
+
+### Mantido
 
 - Alpine 3.24.
-- PHP 8.5.
-- Nginx + PHP-FPM.
-- Supervisor as PID 1/process manager.
-- The same intentionally small generic PHP extension set from `dev.1`.
+- Runtime non-root com utilizador `www`.
+- Nginx na porta 8080.
+- Supervisor como PID 1.
+- Healthcheck `/healthz`.
+- Logs em stdout/stderr.
+- Configuração runtime em `/run/production`.
 
-## 2.0.0-dev.1
+## 2.0.0-dev.2 - 2026-08-19
 
-First development release of the Production 2.x line.
+- Runtime non-root.
+- Nginx na porta 8080.
+- Configuração runtime em `/run/production`.
+- Shutdown gracioso com `SIGTERM`.
 
-### Changed
+## 2.0.0-dev.1 - 2026-08-19
 
-- Base image pinned to Alpine 3.24.
-- PHP upgraded from 8.3 to 8.5.
-- PHP extensions are installed at image build time instead of container startup.
-- `INDEX_PATH` was replaced by `DOCUMENT_ROOT`.
-- `MEMORY_LIMIT` was replaced by `PHP_MEMORY_LIMIT` for clearer naming.
-- Nginx and PHP-FPM logs are sent to stdout/stderr.
-- Runtime configuration is generated from immutable defaults on every startup.
-- PHP-FPM now uses a dedicated, explicit pool configuration.
-- The image now uses a proper Docker `ENTRYPOINT` + `CMD` split, allowing commands such as `docker run IMAGE php -v`.
-- Healthcheck now uses the dedicated `/healthz` endpoint.
-
-### Removed
-
-- Runtime package installation through `PHP_EXTENSIONS`.
-- Recursive `chown -R` of `/var/www/html` during container startup.
-- Renaming packaged PHP binaries.
-- Requirement for an `index.php` file to exist before the container starts.
-- File-based Nginx logs under `/var/log/nginx`.
-
-### Kept for this development release
-
-- Nginx + PHP-FPM architecture.
-- Supervisor as the process manager.
-- Optional `SUPERVISOR_CONF` support for additional processes.
+- Nova base Alpine 3.24 + PHP 8.5.
+- Extensões instaladas no build.
+- Remoção de instalação dinâmica de extensões no arranque.
+- `DOCUMENT_ROOT` e `/healthz`.
