@@ -2,39 +2,53 @@
 
 Todas as alterações relevantes do projeto Production são documentadas neste ficheiro.
 
-## 2.0.0-dev.3 - 2026-08-19
+## 2.0.0-dev.4 - 2026-08-19
+
+### Removido
+
+- Supervisor.
+- Python 3 e dependências transitivas trazidas pelo Supervisor.
+- `SUPERVISOR_CONF`.
+- Diretórios e configuração específicos do Supervisor.
 
 ### Adicionado
 
-- Suporte a múltiplas versões de PHP a partir do mesmo Dockerfile:
-  - PHP 8.3
-  - PHP 8.4
-  - PHP 8.5
-- Argumento de build `PHP_VERSION`.
-- Metadado OCI `io.joaopinto.production.php-version`.
-- `docker-bake.hcl` para construir as três variantes com um único comando.
-- `tests/smoke-all.sh` para validar todas as variantes.
-- O smoke test valida agora a versão PHP esperada e a presença do OPcache.
-
-### Alterado
-
-- Os caminhos internos deixaram de estar presos a PHP 8.5.
-- `php` é exposto de forma estável em `/usr/local/bin/php`.
-- `php-fpm` é exposto de forma estável em `/usr/local/sbin/php-fpm`.
-- A configuração PHP ativa é exposta através de `/etc/php-active`.
-- A configuração própria da imagem foi movida para `/etc/production/php`.
-- Supervisor usa o caminho genérico de PHP-FPM, independentemente da versão PHP escolhida.
-- PHP 8.3 e 8.4 instalam explicitamente o pacote OPcache; em PHP 8.5 o OPcache faz parte do runtime.
+- `/usr/local/bin/production-runtime`, um gestor mínimo em POSIX shell para Nginx e PHP-FPM.
+- Deteção da saída inesperada de Nginx ou PHP-FPM.
+- Encerramento do processo restante quando um serviço falha.
+- Encaminhamento de shutdown gracioso para Nginx e PHP-FPM.
+- Teste explícito de ausência de Supervisor/Python.
+- Medição do tamanho da imagem no smoke test.
+- `tests/compare-size.sh` para comparar dev.3 e dev.4.
 
 ### Mantido
 
 - Alpine 3.24.
+- PHP 8.3, 8.4 e 8.5 a partir do mesmo Dockerfile.
+- O mesmo conjunto de extensões PHP da dev.3.
 - Runtime non-root com utilizador `www`.
 - Nginx na porta 8080.
-- Supervisor como PID 1.
 - Healthcheck `/healthz`.
 - Logs em stdout/stderr.
 - Configuração runtime em `/run/production`.
+
+## 2.0.0-dev.3 - 2026-08-19
+
+### Adicionado
+
+- Suporte multi-PHP num único Dockerfile:
+  - PHP 8.3
+  - PHP 8.4
+  - PHP 8.5
+- `docker-bake.hcl`.
+- `tests/smoke-all.sh`.
+- Caminhos PHP estáveis em `/usr/local/bin/php`, `/usr/local/sbin/php-fpm` e `/etc/php-active`.
+
+### Mantido
+
+- Supervisor como PID 1.
+- Runtime non-root.
+- Nginx na porta 8080.
 
 ## 2.0.0-dev.2 - 2026-08-19
 

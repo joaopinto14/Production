@@ -1,6 +1,6 @@
 FROM alpine:3.24
 
-ARG VERSION=2.0.0-dev.3
+ARG VERSION=2.0.0-dev.4
 ARG PHP_VERSION=8.5
 
 LABEL org.opencontainers.image.title="Production" \
@@ -47,7 +47,6 @@ RUN set -eux; \
     apk add --no-cache \
         ca-certificates \
         nginx \
-        supervisor \
         tzdata \
         ${PHP_PACKAGES}; \
     addgroup -S www; \
@@ -64,9 +63,7 @@ RUN set -eux; \
         /run/production/nginx/fastcgi \
         /run/production/nginx/uwsgi \
         /run/production/nginx/scgi \
-        /run/production/php/conf.d \
-        /run/production/supervisor/conf.d; \
-    printf '# placeholder\n' > /run/production/supervisor/conf.d/00-placeholder.conf; \
+        /run/production/php/conf.d; \
     ln -s "/etc/php${PHP_SLOT}" /etc/php-active; \
     ln -s "/usr/bin/php${PHP_SLOT}" /usr/local/bin/php; \
     ln -s "/usr/sbin/php-fpm${PHP_SLOT}" /usr/local/sbin/php-fpm; \
@@ -80,10 +77,10 @@ COPY php/www.conf /etc/production/php/php-fpm.d/www.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf.template /etc/nginx/default.conf.template
 
-COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint/runtime.sh /usr/local/bin/production-runtime
 
-RUN chmod 0755 /usr/local/bin/entrypoint.sh
+RUN chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime
 
 WORKDIR /var/www/html
 
@@ -97,4 +94,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/local/bin/production-runtime"]

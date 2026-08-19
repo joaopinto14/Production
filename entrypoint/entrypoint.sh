@@ -5,12 +5,10 @@ TIMEZONE="${TIMEZONE:-UTC}"
 DOCUMENT_ROOT="${DOCUMENT_ROOT:-/var/www/html}"
 PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT:-128M}"
 UPLOAD_MAX_SIZE="${UPLOAD_MAX_SIZE:-8M}"
-SUPERVISOR_CONF="${SUPERVISOR_CONF:-}"
 
 NGINX_TEMPLATE="/etc/nginx/default.conf.template"
 NGINX_CONF="/run/production/nginx/http.d/default.conf"
 PHP_RUNTIME_CONF="/run/production/php/conf.d/99-production-runtime.ini"
-SUPERVISOR_CONF_DIR="/run/production/supervisor/conf.d"
 
 log() {
     printf '[Production] %s\n' "$*"
@@ -52,23 +50,12 @@ configure_nginx() {
         "${NGINX_TEMPLATE}" > "${NGINX_CONF}"
 }
 
-configure_supervisor_extension() {
-    rm -f "${SUPERVISOR_CONF_DIR}/custom.conf"
-
-    [ -n "${SUPERVISOR_CONF}" ] || return 0
-    [ -f "${SUPERVISOR_CONF}" ] || fail "Supervisor configuration not found: ${SUPERVISOR_CONF}"
-    [ -r "${SUPERVISOR_CONF}" ] || fail "Supervisor configuration is not readable: ${SUPERVISOR_CONF}"
-
-    cp "${SUPERVISOR_CONF}" "${SUPERVISOR_CONF_DIR}/custom.conf"
-}
-
 configure_timezone
 configure_php
 
 case "${1:-}" in
-    /usr/bin/supervisord|supervisord)
+    /usr/local/bin/production-runtime|production-runtime)
         configure_nginx
-        configure_supervisor_extension
         log "Version ${PRODUCTION_VERSION:-unknown}"
         log "PHP $(php -r 'echo PHP_VERSION;')"
         log "Runtime user: $(id -u):$(id -g)"

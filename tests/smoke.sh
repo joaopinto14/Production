@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-dev.3}"
+VERSION="${VERSION:-2.0.0-dev.4}"
 PHP_VERSION="${PHP_VERSION:-8.5}"
 IMAGE="${IMAGE:-production:${VERSION}-php${PHP_VERSION}}"
 CONTAINER="production-smoke-$$"
@@ -29,13 +29,13 @@ echo 'production-ok';
 EOF_PHP
 chmod 0644 "${APP_DIR}/index.php"
 
-echo "[1/6] Building ${IMAGE}"
+echo "[1/7] Building ${IMAGE}"
 docker build \
     --build-arg VERSION="${VERSION}" \
     --build-arg PHP_VERSION="${PHP_VERSION}" \
     -t "${IMAGE}" .
 
-echo "[2/6] Checking PHP ${PHP_VERSION} and non-root runtime"
+echo "[2/7] Checking PHP ${PHP_VERSION} and non-root runtime"
 actual_php_version="$(docker run --rm "${IMAGE}" php -r 'echo PHP_MAJOR_VERSION, ".", PHP_MINOR_VERSION;')"
 [ "${actual_php_version}" = "${PHP_VERSION}" ] || {
     echo "Smoke test failed: expected PHP ${PHP_VERSION}, got ${actual_php_version}." >&2
@@ -49,10 +49,17 @@ runtime_uid="$(docker run --rm --entrypoint /usr/bin/id "${IMAGE}" -u)"
     exit 1
 }
 
-echo "[3/6] Checking OPcache"
+echo "[3/7] Checking slim runtime"
+docker run --rm --entrypoint /bin/sh "${IMAGE}" -c '
+    ! command -v supervisord >/dev/null 2>&1
+    ! command -v python3 >/dev/null 2>&1
+    test -x /usr/local/bin/production-runtime
+'
+
+echo "[4/7] Checking OPcache"
 docker run --rm "${IMAGE}" php -r 'exit(extension_loaded("Zend OPcache") ? 0 : 1);'
 
-echo "[4/6] Starting web runtime"
+echo "[5/7] Starting web runtime"
 docker run -d \
     --name "${CONTAINER}" \
     -v "${APP_DIR}:/var/www/html:ro" \
@@ -75,14 +82,14 @@ status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{
     exit 1
 }
 
-echo "[5/6] Checking HTTP/PHP response"
+echo "[6/7] Checking HTTP/PHP response"
 response="$(docker exec "${CONTAINER}" wget -q -O - http://127.0.0.1:8080/)"
 [ "${response}" = "production-ok" ] || {
     echo "Smoke test failed: unexpected response '${response}'." >&2
     exit 1
 }
 
-echo "[6/6] Checking graceful shutdown"
+echo "[7/7] Checking graceful shutdown"
 docker stop -t 10 "${CONTAINER}" >/dev/null
 state="$(docker inspect --format '{{.State.Status}}' "${CONTAINER}")"
 [ "${state}" = "exited" ] || {
@@ -91,4 +98,6 @@ state="$(docker inspect --format '{{.State.Status}}' "${CONTAINER}")"
     exit 1
 }
 
+size="$(docker image inspect "${IMAGE}" --format='{{.Size}}')"
 echo "Smoke test passed for PHP ${PHP_VERSION}."
+echo "Image size: ${size} bytes"
