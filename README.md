@@ -1,109 +1,184 @@
-# ⚙️ *Production*
+# Production
 
-&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image that is compact and efficient, with the sole purpose of running your web project 
-in a production environment.
+Production is a small general-purpose Docker runtime for PHP web applications. The 2.x line keeps the image simple while providing a solid base for framework-specific variants such as Laravel.
 
-## 📖 Project Description
+> **Current development version:** `2.0.0-dev.1`
+>
+> This is a development release. It is not intended to replace the latest stable 1.x image yet.
 
-&nbsp;&nbsp;&nbsp;&nbsp;***Production*** is a *Docker* image created using the Linux distribution ***Alpine***.
-The ***PHP*** interpreter version 8.3 was installed, including the extensions *core, date, filter, hash, json, libxml, pcre,
-random, readline, reflection, spl, standard, and zlib*. In addition, the web server ***NGINX*** was installed
-to allow the efficient execution of your web projects.
+## Runtime
 
-&nbsp;&nbsp;&nbsp;&nbsp;To facilitate the management of processes, the ***Supervisor*** was installed, which allows
-the control of the execution of multiple processes, such as the web server and the PHP interpreter. The ***Supervisor*** is also responsible
-for monitoring and restarting processes in case of failures, ensuring greater availability of your project.
+`2.0.0-dev.1` contains:
 
-&nbsp;&nbsp;&nbsp;&nbsp;If additional adjustments are necessary, they can be made simply and easily, using the available
-[environment variables](#-environment-variables).
+- Alpine Linux 3.24
+- PHP 8.5
+- PHP-FPM
+- Nginx
+- Supervisor
+- tzdata and CA certificates
 
-## ⚒️ Image Build
+PHP 8.5 includes OPcache as part of PHP core. The image configures OPcache with conservative production defaults.
 
-Follow the steps below to build the *Docker* image:
+### Included PHP extensions
 
-1. Clone the repository with the command:
+The generic image intentionally keeps the extension set small:
 
+- ctype
+- curl
+- fileinfo
+- mbstring
+- openssl
+- PDO
+- session
+- tokenizer
+- XML
+
+Database drivers and framework-specific extensions are intentionally not included in this first generic development image. They will be handled by later variants, including the planned Laravel image.
+
+## Build
+
+```bash
+docker build \
+  --build-arg VERSION=2.0.0-dev.1 \
+  -t production:2.0.0-dev.1-php8.5 .
 ```
-git clone https://github.com/joaopinto14/Production.git
+
+## Run
+
+Mount the application into `/var/www/html`:
+
+```bash
+docker run -d \
+  --name production \
+  -p 8080:80 \
+  -v /path/to/project:/var/www/html \
+  production:2.0.0-dev.1-php8.5
 ```
 
-1. Navigate to the project directory with the command:
+Open `http://localhost:8080`.
 
+### Custom document root
+
+For applications whose public directory is different, set `DOCUMENT_ROOT`:
+
+```bash
+docker run -d \
+  -p 8080:80 \
+  -v /path/to/project:/var/www/html \
+  -e DOCUMENT_ROOT=/var/www/html/public \
+  production:2.0.0-dev.1-php8.5
 ```
-cd Production
+
+This is also the layout normally used by Laravel, although a dedicated Laravel variant is planned for a later 2.0.0 development release.
+
+## Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `TIMEZONE` | `UTC` | System and PHP timezone. |
+| `DOCUMENT_ROOT` | `/var/www/html` | Directory served by Nginx. |
+| `PHP_MEMORY_LIMIT` | `128M` | PHP memory limit. |
+| `UPLOAD_MAX_SIZE` | `8M` | PHP and Nginx upload limit. |
+| `SUPERVISOR_CONF` | empty | Optional additional Supervisor configuration file. |
+
+### Example
+
+```bash
+docker run -d \
+  -p 8080:80 \
+  -v /path/to/project:/var/www/html \
+  -e TIMEZONE=Europe/Lisbon \
+  -e DOCUMENT_ROOT=/var/www/html/public \
+  -e PHP_MEMORY_LIMIT=256M \
+  -e UPLOAD_MAX_SIZE=32M \
+  production:2.0.0-dev.1-php8.5
 ```
 
-1. Build the *Docker* image with the command:
+## Docker Compose
 
-```
-docker build -t production .
-```
-
-## 🚀 How to Run Your Project in the Image
-
-To run your project in the Docker image ***Production***, follow the steps below:
-
-1. **Project Directory**: The main directory of your project should be mapped to the `/var/www/html` directory of the container. This is where the web server and the PHP interpreter will run your project safely and efficiently.
-
-2. **Execution File**: If the execution file of your project `index.php` is not in the `/var/www/html` directory, you can define the directory of your project through the `INDEX_PATH` environment variable.
-
-3. ***PHP* Extensions**: If your project requires additional *PHP* extensions or adjustments in the *PHP* settings, you can define the `PHP_EXTENSIONS`, `MEMORY_LIMIT`, and `UPLOAD_MAX_SIZE` environment variables as needed.
-
-4. ***Additional Processes***: If you need to run more processes in addition to those existing in the image (for example, queues, workers, etc.), you can use the `SUPERVISOR_CONF` environment variable to indicate the path of the *Supervisor* configuration file.
-
-5. **Viewing Logs**: If you need to view the logs, they are located in the `/var/log` directory within the container.
-
-By following these steps, you will be able to run your project in the *Docker* image ***Production*** efficiently and safely.
-
-## 📑 Environment Variables
-
-- **PHP_EXTENSIONS**: The *PHP* extensions to be installed. Default: null (e.g.: pdo_mysql mysqli)
-- **TIMEZONE**: The timezone to be used by system. Default: UTC ([List of Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones))
-- **INDEX_PATH**: The directory where the execution file of your project is located. Default: /var/www/html
-- **MEMORY_LIMIT**: The memory limit that *PHP* can use. Default: 128M
-- **UPLOAD_MAX_SIZE**: The maximum size of files that can be uploaded. Default: 8M
-- **SUPERVISOR_CONF**: The path of the *Supervisor* configuration file. Default: null (e.g.: /var/www/html/supervisor.conf)
-
-## ▶️ Usage Examples
-
-### - Using the command line:
-```
-docker run -d -p 80:80 -v /path/to/your/project:/var/www/html -e PHP_EXTENSIONS="pdo_mysql mysqli" -e TIMEZONE=Europe/Lisbon -e MEMORY_LIMIT=256M -e UPLOAD_MAX_SIZE=16M -e INDEX_PATH=/var/www/html/public -e SUPERVISOR_CONF=/var/www/html/supervisor.conf production
-```
-### - Using *Docker Compose*:
-```
+```yaml
 services:
   web:
-    image: production
+    image: production:2.0.0-dev.1-php8.5
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
-      - ./path/to/your/project:/var/www/html
+      - ./app:/var/www/html
     environment:
-      - PHP_EXTENSIONS=pdo_mysql mysqli
-      - TIMEZONE=Europe/Lisbon
-      - MEMORY_LIMIT=256M
-      - UPLOAD_MAX_SIZE=16M
-      - INDEX_PATH=/var/www/html/public
-      - SUPERVISOR_CONF=/var/www/html/supervisor.conf
+      TIMEZONE: Europe/Lisbon
+      DOCUMENT_ROOT: /var/www/html/public
+      PHP_MEMORY_LIMIT: 256M
+      UPLOAD_MAX_SIZE: 32M
 ```
 
-## 📝 Issues and Suggestions
+## Smoke test
 
-&nbsp;&nbsp;&nbsp;&nbsp;If you find any issues related to the image or have suggestions for improvements, do not hesitate to open an
-[issue](https://github.com/joaopinto14/Production/issues/new/choose) on *GitHub*. Please provide as many
-details as possible to assist in resolving the issue or implementing your suggestion.
+A Docker-based smoke test is included. It builds the image, checks the PHP CLI, starts Nginx/PHP-FPM, waits for the healthcheck, and executes a PHP request:
 
-## 🪧 Extra
+```bash
+./tests/smoke.sh
+```
 
-&nbsp;&nbsp;&nbsp;&nbsp;If you need a *Docker* image for tasks such as environment setup, dependency installation, code 
-compilation, or test execution, it is recommended to use a dedicated development image, use the image 
-"[Development](https://github.com/joaopinto14/Development)". This was specifically designed to facilitate and optimize these tasks.
+To use a different local image tag:
 
-## 👥 Contributors
+```bash
+IMAGE=my-production:test ./tests/smoke.sh
+```
 
-- [João Pinto](https://github.com/joaopinto14) (Developer)
+## Healthcheck
 
-## 🧾️ License
+The image exposes an infrastructure health endpoint:
 
-&nbsp;&nbsp;&nbsp;&nbsp;This project is licensed under the *MIT* license - see the [LICENSE.md](LICENSE.md) file for more details.
+```text
+/healthz
+```
+
+It returns HTTP `200` without executing the application or querying external services.
+
+## Logs
+
+Nginx and PHP-FPM write directly to Docker stdout/stderr:
+
+```bash
+docker logs production
+```
+
+## CLI commands
+
+The entrypoint does not force Nginx/Supervisor when a custom command is supplied. For example:
+
+```bash
+docker run --rm production:2.0.0-dev.1-php8.5 php -v
+```
+
+Or, with an application mounted:
+
+```bash
+docker run --rm \
+  -v /path/to/project:/var/www/html \
+  production:2.0.0-dev.1-php8.5 \
+  php /var/www/html/script.php
+```
+
+## Breaking changes from 1.x
+
+- `PHP_EXTENSIONS` has been removed. Runtime package installation is no longer supported.
+- `INDEX_PATH` is now `DOCUMENT_ROOT`.
+- `MEMORY_LIMIT` is now `PHP_MEMORY_LIMIT`.
+- The container no longer changes ownership recursively on `/var/www/html`.
+- Logs are available through Docker rather than being primarily stored under `/var/log`.
+
+## Roadmap to 2.0.0
+
+The initial development plan is:
+
+1. `2.0.0-dev.1`: clean PHP 8.5 generic runtime.
+2. Evaluate the process model and whether Supervisor should remain.
+3. Add builds/tags for multiple supported PHP versions.
+4. Add a Laravel-optimised variant built from the same source.
+5. Add multi-architecture builds and automated release/tag generation.
+6. Release candidate and final `2.0.0`.
+
+## License
+
+MIT. See [LICENSE.md](LICENSE.md).

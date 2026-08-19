@@ -1,40 +1,68 @@
-FROM alpine
+FROM alpine:3.24
 
-LABEL maintainer="João Pinto [suport@joaopinto.pt]"
+ARG VERSION=2.0.0-dev.1
 
-# Install necessary packages
-RUN apk update && apk add --no-cache php83 php83-fpm nginx supervisor tzdata && rm -rf /var/cache/apk/*
+LABEL org.opencontainers.image.title="Production" \
+      org.opencontainers.image.description="Lightweight general-purpose PHP production runtime" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.authors="João Pinto <suport@joaopinto.pt>" \
+      org.opencontainers.image.source="https://github.com/joaopinto14/Production" \
+      org.opencontainers.image.licenses="MIT"
 
-# PHP-FPM Configuration
-COPY php/settings.ini /etc/php83/conf.d/
-RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php83/php.ini
-RUN sed -i 's/user = nobody/user = www/' /etc/php83/php-fpm.d/www.conf
-RUN sed -i 's/group = nobody/group = www/' /etc/php83/php-fpm.d/www.conf
-RUN sed -i 's/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/' /etc/php83/php-fpm.d/www.conf
-RUN sed -i 's/;listen.owner = nobody/listen.owner = www/' /etc/php83/php-fpm.d/www.conf
-RUN sed -i 's/;listen.group = www/listen.group = www/' /etc/php83/php-fpm.d/www.conf
-RUN sed -i 's/;listen.mode = 0660/listen.mode = 0660/' /etc/php83/php-fpm.d/www.conf
+ENV PRODUCTION_VERSION="${VERSION}" \
+    TIMEZONE="UTC" \
+    DOCUMENT_ROOT="/var/www/html" \
+    PHP_MEMORY_LIMIT="128M" \
+    UPLOAD_MAX_SIZE="8M"
 
-# Nginx Configuration
-COPY nginx/default.conf /etc/nginx/http.d/
+RUN apk add --no-cache \
+        ca-certificates \
+        nginx \
+        supervisor \
+        tzdata \
+        php85 \
+        php85-fpm \
+        php85-ctype \
+        php85-curl \
+        php85-fileinfo \
+        php85-mbstring \
+        php85-openssl \
+        php85-pdo \
+        php85-session \
+        php85-tokenizer \
+        php85-xml \
+    && addgroup -S www \
+    && adduser -S -D -H -G www www \
+    && mkdir -p \
+        /var/www/html \
+        /run/nginx \
+        /run/php \
+        /tmp/nginx/client_body \
+        /tmp/nginx/proxy \
+        /tmp/nginx/fastcgi \
+        /etc/supervisor/conf.d \
+    && chown -R www:www /var/www/html /run/nginx /run/php /tmp/nginx \
+    && rm -f /etc/nginx/http.d/default.conf \
+    && ln -sf /usr/bin/php85 /usr/local/bin/php
+
+COPY php/settings.ini /etc/php85/conf.d/50-production.ini
+COPY php/php-fpm.conf /etc/php85/php-fpm.conf
+COPY php/www.conf /etc/php85/php-fpm.d/www.conf
+
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf.template /etc/nginx/http.d/default.conf.template
 
-# Rename PHP and PHP-FPM binaries
-RUN mv /usr/bin/php83 /usr/bin/php && mv /usr/sbin/php-fpm83 /usr/sbin/php-fpm
+COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Copy entrypoint script and make it executable
-COPY entrypoint/entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod 0755 /usr/local/bin/entrypoint.sh
 
-# Copy Supervisor configuration file and create necessary directories
-COPY supervisor/supervisord.conf /etc/supervisor/
-RUN mkdir -p /etc/supervisor/conf /var/log/supervisor
-
-# Add new user
-RUN adduser -D -g 'www' www
-
-# Expose web server port and set healthcheck
-EXPOSE 80
-HEALTHCHECK --interval=60s --timeout=3s --start-period=5s --retries=3 CMD wget -q -O /dev/null http://localhost
 WORKDIR /var/www/html
-CMD ["entrypoint.sh"]
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget -q -O /dev/null http://127.0.0.1/healthz || exit 1
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
