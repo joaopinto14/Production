@@ -1,77 +1,64 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-dev.6}"
-PHP_VERSION="${PHP_VERSION:-8.5}"
-IMAGE="${IMAGE:-production:${VERSION}-php${PHP_VERSION}}"
+. ./tests/lib.sh
+
+section "Runtime crash and signal handling"
+
+IMAGE="$(image_for generic 8.5)"
+ensure_image "${IMAGE}"
 APP_DIR="$(mktemp -d)"
 chmod 0755 "${APP_DIR}"
-
 cat > "${APP_DIR}/index.php" <<'EOF_PHP'
-<?php
-header('Content-Type: text/plain');
-echo 'runtime-failure-test';
+<?php echo 'runtime-ok';
 EOF_PHP
 chmod 0644 "${APP_DIR}/index.php"
 
+CONTAINERS=""
 cleanup() {
-    docker rm -f production-crash-nginx production-crash-fpm >/dev/null 2>&1 || true
+    for c in ${CONTAINERS}; do remove_container "${c}"; done
     rm -rf "${APP_DIR}"
 }
 trap cleanup EXIT INT TERM
 
-if ! docker image inspect "${IMAGE}" >/dev/null 2>&1; then
-    echo "Building ${IMAGE}"
-    docker build \
-        --build-arg VERSION="${VERSION}" \
-        --build-arg PHP_VERSION="${PHP_VERSION}" \
-        --build-arg VARIANT=generic \
-        -t "${IMAGE}" .
-fi
-
-wait_healthy() {
-    container="$1"
-    attempt=0
-    while [ "${attempt}" -lt 20 ]; do
-        status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' "${container}" 2>/dev/null || true)"
-        [ "${status}" = "healthy" ] && return 0
-        attempt=$((attempt + 1))
-        sleep 1
-    done
-    docker logs "${container}" >&2 || true
-    echo "Container ${container} did not become healthy." >&2
-    return 1
+LAST_CONTAINER=""
+start_container() {
+    suffix="$1"
+    LAST_CONTAINER="production-runtime-${suffix}-$$"
+    CONTAINERS="${CONTAINERS} ${LAST_CONTAINER}"
+    docker run -d --name "${LAST_CONTAINER}" -v "${APP_DIR}:/var/www/html:ro" "${IMAGE}" >/dev/null
+    wait_healthy "${LAST_CONTAINER}"
 }
 
-wait_stopped_with_code_1() {
+assert_exit_code() {
     container="$1"
-    attempt=0
-    while [ "${attempt}" -lt 15 ]; do
-        state="$(docker inspect --format '{{.State.Status}}' "${container}" 2>/dev/null || true)"
-        [ "${state}" = "exited" ] && break
-        attempt=$((attempt + 1))
-        sleep 1
-    done
-
-    state="$(docker inspect --format '{{.State.Status}}' "${container}")"
-    code="$(docker inspect --format '{{.State.ExitCode}}' "${container}")"
-    [ "${state}" = "exited" ] && [ "${code}" = "1" ] || {
+    expected="$2"
+    wait_exited "${container}" 20
+    actual="$(docker inspect --format '{{.State.ExitCode}}' "${container}")"
+    [ "${actual}" = "${expected}" ] || {
         docker logs "${container}" >&2 || true
-        echo "Expected ${container} to exit with code 1, got state=${state} code=${code}." >&2
-        exit 1
+        fail "${container} exited with ${actual}, expected ${expected}."
     }
 }
 
-echo "[1/2] Killing Nginx and checking fail-fast behaviour"
-docker run -d --name production-crash-nginx -v "${APP_DIR}:/var/www/html:ro" "${IMAGE}" >/dev/null
-wait_healthy production-crash-nginx
-docker exec production-crash-nginx sh -c 'kill -KILL "$(cat /run/production/nginx/nginx.pid)"'
-wait_stopped_with_code_1 production-crash-nginx
+log "Killing Nginx: PID 1 must fail the container and terminate PHP-FPM"
+start_container nginx-crash
+container="${LAST_CONTAINER}"
+docker exec "${container}" sh -c 'kill -KILL "$(cat /run/production/nginx/nginx.pid)"'
+assert_exit_code "${container}" 1
 
-echo "[2/2] Killing PHP-FPM and checking fail-fast behaviour"
-docker run -d --name production-crash-fpm -v "${APP_DIR}:/var/www/html:ro" "${IMAGE}" >/dev/null
-wait_healthy production-crash-fpm
-docker exec production-crash-fpm sh -c 'kill -KILL "$(cat /run/production/php/php-fpm.pid)"'
-wait_stopped_with_code_1 production-crash-fpm
+log "Killing PHP-FPM: PID 1 must fail the container and terminate Nginx"
+start_container fpm-crash
+container="${LAST_CONTAINER}"
+docker exec "${container}" sh -c 'kill -KILL "$(cat /run/production/php/php-fpm.pid)"'
+assert_exit_code "${container}" 1
 
-echo "Runtime failure tests passed."
+for signal in TERM INT QUIT; do
+    log "Sending ${signal} to PID 1: graceful exit must return 0"
+    start_container "signal-${signal}"
+    container="${LAST_CONTAINER}"
+    docker kill --signal="${signal}" "${container}" >/dev/null
+    assert_exit_code "${container}" 0
+done
+
+printf '%s\n' 'Runtime crash and signal tests passed.'

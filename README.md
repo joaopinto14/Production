@@ -4,18 +4,18 @@ Imagem Docker PHP leve para produção, com variantes genérica e Laravel, vári
 
 ## Estado
 
-Versão de desenvolvimento: **2.0.0-dev.6**.
+Versão de desenvolvimento: **2.0.0-dev.7**.
 
-A `dev.6` mantém a base slim da `dev.5` e concentra-se na preparação para release: `amd64` + `arm64`, metadata OCI, testes de crash, execução endurecida e CI.
+A `dev.7` mantém o runtime da `dev.6` e concentra-se numa suite de testes muito mais completa, com maior cobertura e menos rebuilds redundantes.
 
 ## Variantes
 
 ### Genérica
 
 ```text
-production:2.0.0-dev.6-php8.3
-production:2.0.0-dev.6-php8.4
-production:2.0.0-dev.6-php8.5
+production:2.0.0-dev.7-php8.3
+production:2.0.0-dev.7-php8.4
+production:2.0.0-dev.7-php8.5
 ```
 
 Document root predefinido:
@@ -27,9 +27,9 @@ Document root predefinido:
 ### Laravel
 
 ```text
-production:2.0.0-dev.6-laravel-php8.3
-production:2.0.0-dev.6-laravel-php8.4
-production:2.0.0-dev.6-laravel-php8.5
+production:2.0.0-dev.7-laravel-php8.3
+production:2.0.0-dev.7-laravel-php8.4
+production:2.0.0-dev.7-laravel-php8.5
 ```
 
 Document root predefinido:
@@ -111,7 +111,7 @@ Para publicar num registry, define o nome completo da imagem e usa `--push`:
 
 ```bash
 IMAGE_NAME=registry.example.com/user/production \
-VERSION=2.0.0-dev.6 \
+VERSION=2.0.0-dev.7 \
 docker buildx bake multiarch --push
 ```
 
@@ -119,45 +119,59 @@ Em hosts que não executem ambas as arquiteturas nativamente, é necessário um 
 
 ## Testes
 
-### Todos os testes de runtime
+### Suite completa local
 
 ```bash
 ./tests/test-all.sh
 ```
 
-Executa:
+A suite completa faz um único build local das seis imagens e reutiliza-as nas fases seguintes. Atualmente cobre:
 
-1. smoke tests das seis imagens;
-2. testes de crash de Nginx e PHP-FPM;
-3. testes com root filesystem read-only e `no-new-privileges`.
+1. validação estática de shell, versões, Bake e Dockerfile;
+2. builds inválidos (PHP/variant não suportados);
+3. build paralelo das seis imagens;
+4. contrato das seis imagens e respetivas extensões;
+5. arranque, healthcheck e shutdown das seis combinações;
+6. overrides de timezone, memória, upload e document root;
+7. contrato HTTP/Nginx aprofundado;
+8. 50 pedidos PHP concorrentes por variante principal;
+9. logs PHP e access logs JSON em stdout/stderr;
+10. crashes de Nginx/PHP-FPM e sinais TERM/INT/QUIT;
+11. hardening (`read-only`, `cap-drop ALL`, `no-new-privileges`, `pids-limit`, `tmpfs`) e budgets de tamanho.
 
-### Apenas as seis variantes
+Para repetir a suite sem reconstruir imagens já existentes:
+
+```bash
+SKIP_BUILD=1 ./tests/test-all.sh
+```
+
+### Suite rápida de desenvolvimento
+
+```bash
+./tests/test-fast.sh
+```
+
+Usa apenas PHP 8.5 genérico + Laravel e executa as verificações de maior valor para iterações rápidas.
+
+### Smoke matrix
 
 ```bash
 ./tests/smoke-all.sh
 ```
 
-### Falha de processos
+Testa as seis combinações PHP/variante sem reconstruir as imagens.
+
+### Testes específicos
 
 ```bash
+./tests/image-contract.sh
+./tests/configuration.sh
+./tests/http-contract.sh
+./tests/concurrency.sh
+./tests/logging.sh
 ./tests/runtime-failure.sh
-```
-
-O teste mata Nginx e PHP-FPM separadamente e confirma que o runtime termina o outro serviço e o contentor sai com erro.
-
-### Runtime endurecido
-
-```bash
 ./tests/security.sh
-```
-
-Valida PHP 8.5 genérico e Laravel com:
-
-```text
---read-only
---security-opt no-new-privileges:true
-/run/production em tmpfs
-/tmp em tmpfs
+./tests/size-budget.sh
 ```
 
 ### Build multi-arquitetura
@@ -166,6 +180,14 @@ Valida PHP 8.5 genérico e Laravel com:
 ./tests/multiarch-build.sh
 ```
 
+### Validação de nível release
+
+```bash
+./tests/test-release.sh
+```
+
+Executa primeiro toda a suite local e depois valida as seis imagens para `linux/amd64` e `linux/arm64`.
+
 ## Executar com root filesystem read-only
 
 A imagem pode ser usada com root filesystem read-only. Como Nginx/PHP precisam de estado temporário, fornece `tmpfs` para `/run/production` e `/tmp`.
@@ -173,8 +195,8 @@ A imagem pode ser usada com root filesystem read-only. Como Nginx/PHP precisam d
 Os UID/GID podem ser obtidos diretamente da imagem:
 
 ```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.6-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.6-php8.5 -g)
+UID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.7-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.7-php8.5 -g)
 ```
 
 Exemplo:
@@ -186,7 +208,7 @@ docker run --rm \
   --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${UID_RUNTIME},gid=${GID_RUNTIME}" \
   --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
   -v /caminho/app:/var/www/html:ro \
-  production:2.0.0-dev.6-php8.5
+  production:2.0.0-dev.7-php8.5
 ```
 
 Uma aplicação Laravel real continua a precisar de escrita em `storage/` e `bootstrap/cache/`; esses caminhos devem ser volumes/directórios graváveis quando se usa `--read-only`.
@@ -205,12 +227,12 @@ Uma aplicação Laravel real continua a precisar de escrita em `storage/` e `boo
 A mesma imagem Laravel pode executar comandos sem arrancar Nginx/PHP-FPM:
 
 ```bash
-docker run --rm production:2.0.0-dev.6-laravel-php8.5 \
+docker run --rm production:2.0.0-dev.7-laravel-php8.5 \
   php artisan queue:work
 ```
 
 ```bash
-docker run --rm production:2.0.0-dev.6-laravel-php8.5 \
+docker run --rm production:2.0.0-dev.7-laravel-php8.5 \
   php artisan schedule:work
 ```
 

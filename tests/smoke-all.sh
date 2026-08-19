@@ -1,17 +1,17 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-dev.6}"
+. ./tests/lib.sh
 
-for VARIANT in generic laravel; do
-    for PHP_VERSION in 8.3 8.4 8.5; do
-        echo
-        echo "============================================================"
-        echo "Testing Production ${VERSION} / ${VARIANT} / PHP ${PHP_VERSION}"
-        echo "============================================================"
-        VARIANT="${VARIANT}" PHP_VERSION="${PHP_VERSION}" VERSION="${VERSION}" ./tests/smoke.sh
+section "Smoke tests for all image variants"
+
+PHP_VERSIONS="${PHP_VERSIONS:-8.3 8.4 8.5}"
+VARIANTS="${VARIANTS:-generic laravel}"
+
+for variant in ${VARIANTS}; do
+    for php_version in ${PHP_VERSIONS}; do
+        VARIANT="${variant}" PHP_VERSION="${php_version}" VERSION="${TEST_VERSION}" IMAGE_NAME="${TEST_IMAGE_NAME}" ./tests/smoke.sh
     done
 done
 
-echo
-echo "All generic and Laravel PHP variants passed."
+printf '%s\n' 'All smoke tests passed.'

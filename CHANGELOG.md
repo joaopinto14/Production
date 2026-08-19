@@ -2,6 +2,35 @@
 
 Todas as alterações relevantes do projeto Production são documentadas neste ficheiro.
 
+## 2.0.0-dev.7 - 2026-08-19
+
+### Adicionado
+
+- Suite de testes reorganizada em camadas, com build único das seis imagens e reutilização entre testes.
+- `tests/lib.sh` com helpers partilhados para reduzir duplicação e tornar os testes mais consistentes.
+- Validação estática de scripts, versões, Docker Bake e Dockerfile checks quando suportados.
+- Testes negativos de build para versões PHP e variantes inválidas.
+- Testes de contrato das seis imagens: labels OCI, utilizador, porta, entrypoint/CMD, healthcheck, symlinks e extensões.
+- Testes de configuração runtime para timezone, memória, uploads e document root personalizados.
+- Testes HTTP aprofundados para headers de segurança, ficheiros estáticos, dotfiles, `.well-known`, front controllers e limites de POST.
+- Testes de concorrência com 50 pedidos PHP simultâneos nas variantes genérica e Laravel.
+- Testes de logging para confirmar logs PHP e access logs JSON em stdout/stderr.
+- Testes de sinais `TERM`, `INT` e `QUIT`, além de crashes de Nginx e PHP-FPM.
+- Hardening testado com `--read-only`, `--cap-drop ALL`, `no-new-privileges`, `pids-limit` e `tmpfs`.
+- Orçamentos de tamanho por imagem para detetar regressões relevantes.
+- `tests/test-fast.sh` para iterações locais rápidas em PHP 8.5.
+- `tests/test-release.sh` para executar a suite completa seguida dos builds multi-arquitetura.
+
+### Melhorado
+
+- `tests/test-all.sh` mede o tempo de cada fase e evita reconstruir cada imagem em cada smoke test.
+- Os smoke tests validam agora também a configuração de Nginx e PHP-FPM antes do shutdown.
+- A suite completa testa todas as versões PHP onde a diferença de pacote importa e usa PHP 8.5 para testes profundos de comportamento comum, reduzindo trabalho repetido.
+
+### Mantido
+
+- Runtime e composição das imagens inalterados face à `2.0.0-dev.6`; esta versão é focada em qualidade e cobertura de testes.
+
 ## 2.0.0-dev.6 - 2026-08-19
 
 ### Adicionado

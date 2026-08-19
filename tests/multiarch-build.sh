@@ -1,10 +1,16 @@
 #!/bin/sh
 set -eu
 
-echo "Checking Buildx builder"
-docker buildx inspect --bootstrap >/dev/null
+. ./tests/lib.sh
 
-echo "Building linux/amd64 + linux/arm64 variants"
-docker buildx bake multiarch
+section "Multi-architecture build validation"
 
-echo "Multi-architecture build passed."
+log "Bootstrapping Buildx builder"
+builder_info="$(docker buildx inspect --bootstrap)"
+assert_contains "${builder_info}" 'linux/amd64' "Buildx builder does not advertise amd64"
+assert_contains "${builder_info}" 'linux/arm64' "Buildx builder does not advertise arm64; configure QEMU/binfmt first"
+
+log "Building all six variants for linux/amd64 + linux/arm64"
+VERSION="${TEST_VERSION}" IMAGE_NAME="${TEST_IMAGE_NAME}" docker buildx bake multiarch
+
+printf '%s\n' 'Multi-architecture build validation passed.'
