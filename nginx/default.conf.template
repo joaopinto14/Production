@@ -1,6 +1,6 @@
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+    listen 8080 default_server;
+    listen [::]:8080 default_server;
     server_name _;
 
     root __DOCUMENT_ROOT__;
@@ -40,7 +40,7 @@ server {
         fastcgi_param DOCUMENT_ROOT $document_root;
         fastcgi_hide_header X-Powered-By;
 
-        fastcgi_pass unix:/run/php/php-fpm.sock;
+        fastcgi_pass unix:/run/production/php/php-fpm.sock;
         fastcgi_read_timeout 300s;
     }
 

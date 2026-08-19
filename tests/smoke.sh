@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-IMAGE="${IMAGE:-production:2.0.0-dev.1-php8.5}"
+IMAGE="${IMAGE:-production:2.0.0-dev.2-php8.5}"
 CONTAINER="production-smoke-$$"
 APP_DIR="$(mktemp -d)"
 chmod 0755 "${APP_DIR}"
@@ -19,13 +19,18 @@ echo 'production-ok';
 EOF_PHP
 chmod 0644 "${APP_DIR}/index.php"
 
-echo "[1/4] Building ${IMAGE}"
-docker build --build-arg VERSION=2.0.0-dev.1 -t "${IMAGE}" .
+echo "[1/5] Building ${IMAGE}"
+docker build --build-arg VERSION=2.0.0-dev.2 -t "${IMAGE}" .
 
-echo "[2/4] Checking PHP CLI"
+echo "[2/5] Checking PHP CLI and non-root runtime"
 docker run --rm "${IMAGE}" php -v
+runtime_uid="$(docker run --rm --entrypoint /usr/bin/id "${IMAGE}" -u)"
+[ "${runtime_uid}" != "0" ] || {
+    echo "Smoke test failed: image runs as root." >&2
+    exit 1
+}
 
-echo "[3/4] Starting web runtime"
+echo "[3/5] Starting web runtime"
 docker run -d \
     --name "${CONTAINER}" \
     -v "${APP_DIR}:/var/www/html:ro" \
@@ -48,10 +53,19 @@ status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{
     exit 1
 }
 
-echo "[4/4] Checking HTTP/PHP response"
-response="$(docker exec "${CONTAINER}" wget -q -O - http://127.0.0.1/)"
+echo "[4/5] Checking HTTP/PHP response"
+response="$(docker exec "${CONTAINER}" wget -q -O - http://127.0.0.1:8080/)"
 [ "${response}" = "production-ok" ] || {
     echo "Smoke test failed: unexpected response '${response}'." >&2
+    exit 1
+}
+
+echo "[5/5] Checking graceful shutdown"
+docker stop -t 10 "${CONTAINER}" >/dev/null
+state="$(docker inspect --format '{{.State.Status}}' "${CONTAINER}")"
+[ "${state}" = "exited" ] || {
+    docker logs "${CONTAINER}" >&2 || true
+    echo "Smoke test failed: container did not stop cleanly (state: ${state})." >&2
     exit 1
 }
 
