@@ -1,21 +1,23 @@
 FROM alpine:3.24
 
-ARG VERSION=2.0.0-dev.4
+ARG VERSION=2.0.0-dev.5
 ARG PHP_VERSION=8.5
+ARG VARIANT=generic
 
 LABEL org.opencontainers.image.title="Production" \
-      org.opencontainers.image.description="Lightweight general-purpose PHP production runtime" \
+      org.opencontainers.image.description="Lightweight PHP production runtime with optional Laravel variant" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.authors="João Pinto <suport@joaopinto.pt>" \
       org.opencontainers.image.source="https://github.com/joaopinto14/Production" \
       org.opencontainers.image.licenses="MIT" \
-      io.joaopinto.production.php-version="${PHP_VERSION}"
+      io.joaopinto.production.php-version="${PHP_VERSION}" \
+      io.joaopinto.production.variant="${VARIANT}"
 
 ENV PRODUCTION_VERSION="${VERSION}" \
     PRODUCTION_PHP_VERSION="${PHP_VERSION}" \
+    PRODUCTION_VARIANT="${VARIANT}" \
     TIMEZONE="UTC" \
     TZ="UTC" \
-    DOCUMENT_ROOT="/var/www/html" \
     PHP_MEMORY_LIMIT="128M" \
     UPLOAD_MAX_SIZE="8M" \
     PHPRC="/etc/php-active" \
@@ -27,6 +29,10 @@ RUN set -eux; \
     case "${PHP_SLOT}" in \
         83|84|85) ;; \
         *) echo "Unsupported PHP version: ${PHP_VERSION}. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;; \
+    esac; \
+    case "${VARIANT}" in \
+        generic|laravel) ;; \
+        *) echo "Unsupported variant: ${VARIANT}. Supported: generic, laravel." >&2; exit 1 ;; \
     esac; \
     PHP_PACKAGES=" \
         php${PHP_SLOT} \
@@ -43,6 +49,19 @@ RUN set -eux; \
     "; \
     if [ "${PHP_SLOT}" != "85" ]; then \
         PHP_PACKAGES="${PHP_PACKAGES} php${PHP_SLOT}-opcache"; \
+    fi; \
+    if [ "${VARIANT}" = "laravel" ]; then \
+        PHP_PACKAGES="${PHP_PACKAGES} \
+            php${PHP_SLOT}-bcmath \
+            php${PHP_SLOT}-dom \
+            php${PHP_SLOT}-intl \
+            php${PHP_SLOT}-pcntl \
+            php${PHP_SLOT}-pdo_mysql \
+            php${PHP_SLOT}-pdo_pgsql \
+            php${PHP_SLOT}-pdo_sqlite \
+            php${PHP_SLOT}-pecl-redis \
+            php${PHP_SLOT}-zip \
+        "; \
     fi; \
     apk add --no-cache \
         ca-certificates \
@@ -76,6 +95,7 @@ COPY php/www.conf /etc/production/php/php-fpm.d/www.conf
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf.template /etc/nginx/default.conf.template
+COPY nginx/laravel.conf.template /etc/nginx/laravel.conf.template
 
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY entrypoint/runtime.sh /usr/local/bin/production-runtime

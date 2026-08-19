@@ -1,28 +1,25 @@
 #!/bin/sh
 set -eu
 
-BASE_VERSION="${BASE_VERSION:-2.0.0-dev.3}"
-TARGET_VERSION="${TARGET_VERSION:-2.0.0-dev.4}"
+VERSION="${VERSION:-2.0.0-dev.5}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-dev.4}"
 
-printf '%-8s %15s %15s %15s\n' 'PHP' 'dev.3 bytes' 'dev.4 bytes' 'difference'
-printf '%-8s %15s %15s %15s\n' '---' '-----------' '-----------' '----------'
+printf '%-8s %14s %14s %14s %14s\n' "PHP" "dev.4 generic" "dev.5 generic" "dev.5 laravel" "Laravel extra"
+printf '%-8s %14s %14s %14s %14s\n' "---" "-------------" "-------------" "-------------" "-------------"
 
 for PHP_VERSION in 8.3 8.4 8.5; do
-    base="production:${BASE_VERSION}-php${PHP_VERSION}"
-    target="production:${TARGET_VERSION}-php${PHP_VERSION}"
+    previous="production:${PREVIOUS_VERSION}-php${PHP_VERSION}"
+    generic="production:${VERSION}-php${PHP_VERSION}"
+    laravel="production:${VERSION}-laravel-php${PHP_VERSION}"
 
-    docker image inspect "${base}" >/dev/null 2>&1 || {
-        echo "Missing base image: ${base}" >&2
-        exit 1
-    }
-    docker image inspect "${target}" >/dev/null 2>&1 || {
-        echo "Missing target image: ${target}" >&2
-        exit 1
-    }
+    previous_size="$(docker image inspect "${previous}" --format='{{.Size}}' 2>/dev/null || echo '-')"
+    generic_size="$(docker image inspect "${generic}" --format='{{.Size}}' 2>/dev/null || echo '-')"
+    laravel_size="$(docker image inspect "${laravel}" --format='{{.Size}}' 2>/dev/null || echo '-')"
 
-    base_size="$(docker image inspect "${base}" --format='{{.Size}}')"
-    target_size="$(docker image inspect "${target}" --format='{{.Size}}')"
-    diff=$((target_size - base_size))
+    extra='-'
+    if [ "${generic_size}" != '-' ] && [ "${laravel_size}" != '-' ]; then
+        extra=$((laravel_size - generic_size))
+    fi
 
-    printf '%-8s %15s %15s %+15d\n' "${PHP_VERSION}" "${base_size}" "${target_size}" "${diff}"
+    printf '%-8s %14s %14s %14s %14s\n' "${PHP_VERSION}" "${previous_size}" "${generic_size}" "${laravel_size}" "${extra}"
 done

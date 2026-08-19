@@ -1,119 +1,67 @@
 # Production
 
-Imagem Docker PHP leve e genérica, preparada para produção e pensada para servir de base a aplicações PHP e, futuramente, a uma variante otimizada para Laravel.
+Imagem Docker PHP leve e genérica para produção, com uma variante Laravel construída a partir do mesmo código-base.
 
 ## Estado
 
-Versão de desenvolvimento: **2.0.0-dev.4**.
+Versão de desenvolvimento: **2.0.0-dev.5**.
 
-Esta iteração é a variante **slim runtime**: mantém o suporte PHP 8.3/8.4/8.5 da dev.3, mas remove Supervisor e toda a cadeia Python que este adicionava à imagem.
+A `dev.5` mantém o runtime slim da `dev.4` e introduz uma variante Laravel para PHP 8.3, 8.4 e 8.5.
 
-## Base
+## Variantes
+
+### Genérica
+
+```text
+production:2.0.0-dev.5-php8.3
+production:2.0.0-dev.5-php8.4
+production:2.0.0-dev.5-php8.5
+```
+
+Document root predefinido:
+
+```text
+/var/www/html
+```
+
+### Laravel
+
+```text
+production:2.0.0-dev.5-laravel-php8.3
+production:2.0.0-dev.5-laravel-php8.4
+production:2.0.0-dev.5-laravel-php8.5
+```
+
+Document root predefinido:
+
+```text
+/var/www/html/public
+```
+
+A variante Laravel não contém o framework, Composer ou Node. É apenas um runtime de produção preparado para receber uma aplicação já construída.
+
+## Base comum
 
 - Alpine Linux 3.24
 - Nginx
 - PHP-FPM
-- BusyBox `sh` como gestor mínimo dos dois processos
-- Runtime non-root (`www`)
-- Porta interna 8080
-- Healthcheck `/healthz`
-- Shutdown gracioso com `SIGTERM` -> `SIGQUIT` para Nginx e PHP-FPM
+- runtime shell mínimo sem Supervisor/Python
+- runtime non-root (`www`)
+- porta interna 8080
+- OPcache
+- healthcheck `/healthz`
+- logs em stdout/stderr
+- shutdown gracioso
 
-## O que mudou na dev.4
+## PHP suportado
 
-A dev.3 utilizava Supervisor para gerir Nginx e PHP-FPM. O pacote Supervisor puxava também Python 3 e várias dependências Python.
+- PHP 8.3
+- PHP 8.4
+- PHP 8.5
 
-Na dev.4, o processo PID 1 é `/usr/local/bin/production-runtime`, um pequeno script POSIX shell que:
+O mesmo Dockerfile constrói todas as variantes.
 
-- arranca PHP-FPM;
-- arranca Nginx;
-- acompanha os dois processos;
-- termina o contentor se um deles morrer inesperadamente;
-- encaminha o shutdown para ambos;
-- espera pelos processos filhos para evitar zombies.
-
-Não são instalados `supervisor`, `python3`, `setuptools` ou dependências associadas.
-
-## Variantes PHP
-
-```text
-production:2.0.0-dev.4-php8.3
-production:2.0.0-dev.4-php8.4
-production:2.0.0-dev.4-php8.5
-```
-
-A variante predefinida é PHP 8.5.
-
-## Build individual
-
-```bash
-docker build \
-  --build-arg VERSION=2.0.0-dev.4 \
-  --build-arg PHP_VERSION=8.5 \
-  -t production:2.0.0-dev.4-php8.5 .
-```
-
-Substitui `8.5` por `8.4` ou `8.3` conforme necessário.
-
-## Build das três variantes
-
-```bash
-docker buildx bake
-```
-
-Targets disponíveis:
-
-```text
-php83
-php84
-php85
-```
-
-## Smoke tests
-
-PHP 8.5:
-
-```bash
-./tests/smoke.sh
-```
-
-Uma versão específica:
-
-```bash
-PHP_VERSION=8.4 ./tests/smoke.sh
-```
-
-As três versões:
-
-```bash
-./tests/smoke-all.sh
-```
-
-O teste valida:
-
-1. build da imagem;
-2. versão PHP correta;
-3. runtime non-root;
-4. ausência de Supervisor e Python;
-5. OPcache;
-6. Nginx + PHP-FPM;
-7. healthcheck e resposta PHP via HTTP;
-8. shutdown gracioso;
-9. tamanho final da imagem.
-
-## Comparar dev.3 e dev.4
-
-Se tiveres as imagens das duas versões construídas:
-
-```bash
-./tests/compare-size.sh
-```
-
-O script compara, em bytes, as variantes PHP 8.3, 8.4 e 8.5.
-
-## Extensões PHP base
-
-Todas as variantes incluem o mesmo conjunto funcional da dev.3:
+## Extensões da imagem genérica
 
 - ctype
 - curl
@@ -126,48 +74,118 @@ Todas as variantes incluem o mesmo conjunto funcional da dev.3:
 - XML
 - OPcache
 
-Nesta dev.4 não foram removidas extensões para que a comparação de tamanho com a dev.3 seja justa.
+## Extensões adicionais da variante Laravel
+
+Além das extensões da imagem genérica:
+
+- bcmath
+- DOM
+- intl
+- pcntl
+- PDO MySQL
+- PDO PostgreSQL
+- PDO SQLite
+- PhpRedis
+- zip
+
+A inclusão de PDO SQLite permite executar também a configuração SQLite que Laravel usa por defeito em novas aplicações.
+
+## Nginx na variante Laravel
+
+A configuração Laravel:
+
+- serve `/var/www/html/public` por defeito;
+- encaminha pedidos para `public/index.php`;
+- não permite executar outros ficheiros `.php` diretamente;
+- bloqueia ficheiros ocultos, exceto `.well-known`;
+- mantém `/healthz` como healthcheck da infraestrutura.
+
+## Build das seis variantes
+
+```bash
+docker buildx bake
+```
+
+Targets:
+
+```text
+php83
+php84
+php85
+laravel-php83
+laravel-php84
+laravel-php85
+```
+
+## Build individual Laravel
+
+```bash
+docker build \
+  --build-arg VERSION=2.0.0-dev.5 \
+  --build-arg PHP_VERSION=8.5 \
+  --build-arg VARIANT=laravel \
+  -t production:2.0.0-dev.5-laravel-php8.5 .
+```
+
+## Testes
+
+Testar a variante genérica PHP 8.5:
+
+```bash
+./tests/smoke.sh
+```
+
+Testar Laravel PHP 8.5:
+
+```bash
+VARIANT=laravel ./tests/smoke.sh
+```
+
+Testar as seis imagens:
+
+```bash
+./tests/smoke-all.sh
+```
+
+O teste Laravel valida também as extensões esperadas, o document root `public/` e que um ficheiro PHP arbitrário em `public/` não é executado diretamente.
+
+## Comparar tamanhos
+
+Depois de teres `dev.4` e `dev.5` construídas:
+
+```bash
+./tests/compare-size.sh
+```
+
+Mostra o tamanho da `dev.4`, da genérica `dev.5`, da Laravel `dev.5` e o custo adicional da variante Laravel.
 
 ## Variáveis de ambiente
 
 | Variável | Predefinição | Descrição |
 |---|---:|---|
 | `TIMEZONE` | `UTC` | Timezone PHP/runtime |
-| `DOCUMENT_ROOT` | `/var/www/html` | Document root do Nginx |
+| `DOCUMENT_ROOT` | depende da variante | Root do Nginx |
 | `PHP_MEMORY_LIMIT` | `128M` | Limite de memória PHP |
 | `UPLOAD_MAX_SIZE` | `8M` | Limite de upload e POST |
 
-Exemplo:
+A variável `DOCUMENT_ROOT` pode sempre substituir o default da variante.
+
+## Laravel: permissões
+
+A imagem não faz `chown -R` à aplicação durante o arranque. Em produção, `storage/` e `bootstrap/cache/` devem estar graváveis pelo utilizador que corre o contentor.
+
+## Queue workers e scheduler
+
+A mesma imagem Laravel pode ser usada com um comando diferente, sem arrancar Nginx/PHP-FPM:
 
 ```bash
-docker run --rm \
-  -e TIMEZONE=Europe/Lisbon \
-  -e DOCUMENT_ROOT=/var/www/html/public \
-  -e PHP_MEMORY_LIMIT=256M \
-  -e UPLOAD_MAX_SIZE=32M \
-  production:2.0.0-dev.4-php8.5
+docker run --rm production:2.0.0-dev.5-laravel-php8.5 \
+  php artisan queue:work
 ```
 
-## Execução de comandos PHP
-
-O entrypoint continua a permitir substituir o runtime por um comando normal:
+ou:
 
 ```bash
-docker run --rm production:2.0.0-dev.4-php8.5 php -v
+docker run --rm production:2.0.0-dev.5-laravel-php8.5 \
+  php artisan schedule:work
 ```
-
-Isto será útil mais tarde para workers e comandos Laravel em contentores separados.
-
-## Estrutura PHP independente da versão
-
-```text
-/etc/php-active                 -> configuração da versão selecionada
-/etc/production/php             -> configuração da imagem Production
-/run/production/php             -> configuração/estado gerado em runtime
-/usr/local/bin/php              -> PHP selecionado
-/usr/local/sbin/php-fpm         -> PHP-FPM selecionado
-```
-
-## Laravel
-
-A `2.0.0-dev.4` continua genérica. A variante Laravel fica para a próxima iteração, caso a abordagem slim prove valer a pena nos testes de tamanho e estabilidade.

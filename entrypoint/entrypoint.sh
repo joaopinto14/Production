@@ -2,11 +2,26 @@
 set -eu
 
 TIMEZONE="${TIMEZONE:-UTC}"
-DOCUMENT_ROOT="${DOCUMENT_ROOT:-/var/www/html}"
+PRODUCTION_VARIANT="${PRODUCTION_VARIANT:-generic}"
 PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT:-128M}"
 UPLOAD_MAX_SIZE="${UPLOAD_MAX_SIZE:-8M}"
 
-NGINX_TEMPLATE="/etc/nginx/default.conf.template"
+case "${PRODUCTION_VARIANT}" in
+    generic)
+        DEFAULT_DOCUMENT_ROOT="/var/www/html"
+        NGINX_TEMPLATE="/etc/nginx/default.conf.template"
+        ;;
+    laravel)
+        DEFAULT_DOCUMENT_ROOT="/var/www/html/public"
+        NGINX_TEMPLATE="/etc/nginx/laravel.conf.template"
+        ;;
+    *)
+        printf '[Production] ERROR: Unsupported variant: %s\n' "${PRODUCTION_VARIANT}" >&2
+        exit 1
+        ;;
+esac
+
+DOCUMENT_ROOT="${DOCUMENT_ROOT:-${DEFAULT_DOCUMENT_ROOT}}"
 NGINX_CONF="/run/production/nginx/http.d/default.conf"
 PHP_RUNTIME_CONF="/run/production/php/conf.d/99-production-runtime.ini"
 
@@ -57,6 +72,7 @@ case "${1:-}" in
     /usr/local/bin/production-runtime|production-runtime)
         configure_nginx
         log "Version ${PRODUCTION_VERSION:-unknown}"
+        log "Variant ${PRODUCTION_VARIANT}"
         log "PHP $(php -r 'echo PHP_VERSION;')"
         log "Runtime user: $(id -u):$(id -g)"
         log "Document root: ${DOCUMENT_ROOT}"
