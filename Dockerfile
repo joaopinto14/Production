@@ -1,17 +1,29 @@
-FROM alpine:3.24
+# syntax=docker/dockerfile:1
 
-ARG VERSION=2.0.0-dev.5
+ARG ALPINE_VERSION=3.24
+FROM alpine:${ALPINE_VERSION}
+
+ARG ALPINE_VERSION
+ARG VERSION=2.0.0-dev.6
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
+ARG VCS_REF=unknown
 
 LABEL org.opencontainers.image.title="Production" \
       org.opencontainers.image.description="Lightweight PHP production runtime with optional Laravel variant" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.authors="João Pinto <suport@joaopinto.pt>" \
+      org.opencontainers.image.vendor="João Pinto" \
+      org.opencontainers.image.url="https://github.com/joaopinto14/Production" \
+      org.opencontainers.image.documentation="https://github.com/joaopinto14/Production#readme" \
       org.opencontainers.image.source="https://github.com/joaopinto14/Production" \
+      org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.base.name="docker.io/library/alpine:${ALPINE_VERSION}" \
       io.joaopinto.production.php-version="${PHP_VERSION}" \
-      io.joaopinto.production.variant="${VARIANT}"
+      io.joaopinto.production.variant="${VARIANT}" \
+      io.joaopinto.production.runtime-user="www" \
+      io.joaopinto.production.runtime-port="8080"
 
 ENV PRODUCTION_VERSION="${VERSION}" \
     PRODUCTION_PHP_VERSION="${PHP_VERSION}" \

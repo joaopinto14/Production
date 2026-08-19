@@ -1,21 +1,21 @@
 # Production
 
-Imagem Docker PHP leve e genérica para produção, com uma variante Laravel construída a partir do mesmo código-base.
+Imagem Docker PHP leve para produção, com variantes genérica e Laravel, várias versões PHP e suporte multi-arquitetura.
 
 ## Estado
 
-Versão de desenvolvimento: **2.0.0-dev.5**.
+Versão de desenvolvimento: **2.0.0-dev.6**.
 
-A `dev.5` mantém o runtime slim da `dev.4` e introduz uma variante Laravel para PHP 8.3, 8.4 e 8.5.
+A `dev.6` mantém a base slim da `dev.5` e concentra-se na preparação para release: `amd64` + `arm64`, metadata OCI, testes de crash, execução endurecida e CI.
 
 ## Variantes
 
 ### Genérica
 
 ```text
-production:2.0.0-dev.5-php8.3
-production:2.0.0-dev.5-php8.4
-production:2.0.0-dev.5-php8.5
+production:2.0.0-dev.6-php8.3
+production:2.0.0-dev.6-php8.4
+production:2.0.0-dev.6-php8.5
 ```
 
 Document root predefinido:
@@ -27,9 +27,9 @@ Document root predefinido:
 ### Laravel
 
 ```text
-production:2.0.0-dev.5-laravel-php8.3
-production:2.0.0-dev.5-laravel-php8.4
-production:2.0.0-dev.5-laravel-php8.5
+production:2.0.0-dev.6-laravel-php8.3
+production:2.0.0-dev.6-laravel-php8.4
+production:2.0.0-dev.6-laravel-php8.5
 ```
 
 Document root predefinido:
@@ -38,28 +38,23 @@ Document root predefinido:
 /var/www/html/public
 ```
 
-A variante Laravel não contém o framework, Composer ou Node. É apenas um runtime de produção preparado para receber uma aplicação já construída.
+A variante Laravel não contém Laravel, Composer ou Node. É um runtime de produção para uma aplicação já construída.
 
 ## Base comum
 
 - Alpine Linux 3.24
 - Nginx
 - PHP-FPM
-- runtime shell mínimo sem Supervisor/Python
+- PHP 8.3, 8.4 ou 8.5
+- runtime shell mínimo, sem Supervisor/Python
 - runtime non-root (`www`)
 - porta interna 8080
 - OPcache
 - healthcheck `/healthz`
 - logs em stdout/stderr
 - shutdown gracioso
-
-## PHP suportado
-
-- PHP 8.3
-- PHP 8.4
-- PHP 8.5
-
-O mesmo Dockerfile constrói todas as variantes.
+- labels OCI
+- `linux/amd64` e `linux/arm64`
 
 ## Extensões da imagem genérica
 
@@ -76,8 +71,6 @@ O mesmo Dockerfile constrói todas as variantes.
 
 ## Extensões adicionais da variante Laravel
 
-Além das extensões da imagem genérica:
-
 - bcmath
 - DOM
 - intl
@@ -88,76 +81,115 @@ Além das extensões da imagem genérica:
 - PhpRedis
 - zip
 
-A inclusão de PDO SQLite permite executar também a configuração SQLite que Laravel usa por defeito em novas aplicações.
-
-## Nginx na variante Laravel
-
-A configuração Laravel:
-
-- serve `/var/www/html/public` por defeito;
-- encaminha pedidos para `public/index.php`;
-- não permite executar outros ficheiros `.php` diretamente;
-- bloqueia ficheiros ocultos, exceto `.well-known`;
-- mantém `/healthz` como healthcheck da infraestrutura.
-
-## Build das seis variantes
+## Build local das seis variantes
 
 ```bash
 docker buildx bake
 ```
 
-Targets:
-
-```text
-php83
-php84
-php85
-laravel-php83
-laravel-php84
-laravel-php85
-```
-
-## Build individual Laravel
+Também existem grupos específicos:
 
 ```bash
-docker build \
-  --build-arg VERSION=2.0.0-dev.5 \
-  --build-arg PHP_VERSION=8.5 \
-  --build-arg VARIANT=laravel \
-  -t production:2.0.0-dev.5-laravel-php8.5 .
+docker buildx bake generic
+docker buildx bake laravel
 ```
+
+## Multi-arquitetura
+
+O grupo `multiarch` constrói todas as variantes para:
+
+```text
+linux/amd64
+linux/arm64
+```
+
+```bash
+docker buildx bake multiarch
+```
+
+Para publicar num registry, define o nome completo da imagem e usa `--push`:
+
+```bash
+IMAGE_NAME=registry.example.com/user/production \
+VERSION=2.0.0-dev.6 \
+docker buildx bake multiarch --push
+```
+
+Em hosts que não executem ambas as arquiteturas nativamente, é necessário um builder com suporte de emulação/QEMU ou builders nativos para cada plataforma.
 
 ## Testes
 
-Testar a variante genérica PHP 8.5:
+### Todos os testes de runtime
 
 ```bash
-./tests/smoke.sh
+./tests/test-all.sh
 ```
 
-Testar Laravel PHP 8.5:
+Executa:
 
-```bash
-VARIANT=laravel ./tests/smoke.sh
-```
+1. smoke tests das seis imagens;
+2. testes de crash de Nginx e PHP-FPM;
+3. testes com root filesystem read-only e `no-new-privileges`.
 
-Testar as seis imagens:
+### Apenas as seis variantes
 
 ```bash
 ./tests/smoke-all.sh
 ```
 
-O teste Laravel valida também as extensões esperadas, o document root `public/` e que um ficheiro PHP arbitrário em `public/` não é executado diretamente.
-
-## Comparar tamanhos
-
-Depois de teres `dev.4` e `dev.5` construídas:
+### Falha de processos
 
 ```bash
-./tests/compare-size.sh
+./tests/runtime-failure.sh
 ```
 
-Mostra o tamanho da `dev.4`, da genérica `dev.5`, da Laravel `dev.5` e o custo adicional da variante Laravel.
+O teste mata Nginx e PHP-FPM separadamente e confirma que o runtime termina o outro serviço e o contentor sai com erro.
+
+### Runtime endurecido
+
+```bash
+./tests/security.sh
+```
+
+Valida PHP 8.5 genérico e Laravel com:
+
+```text
+--read-only
+--security-opt no-new-privileges:true
+/run/production em tmpfs
+/tmp em tmpfs
+```
+
+### Build multi-arquitetura
+
+```bash
+./tests/multiarch-build.sh
+```
+
+## Executar com root filesystem read-only
+
+A imagem pode ser usada com root filesystem read-only. Como Nginx/PHP precisam de estado temporário, fornece `tmpfs` para `/run/production` e `/tmp`.
+
+Os UID/GID podem ser obtidos diretamente da imagem:
+
+```bash
+UID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.6-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.6-php8.5 -g)
+```
+
+Exemplo:
+
+```bash
+docker run --rm \
+  --read-only \
+  --security-opt no-new-privileges:true \
+  --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${UID_RUNTIME},gid=${GID_RUNTIME}" \
+  --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
+  -v /caminho/app:/var/www/html:ro \
+  production:2.0.0-dev.6-php8.5
+```
+
+Uma aplicação Laravel real continua a precisar de escrita em `storage/` e `bootstrap/cache/`; esses caminhos devem ser volumes/directórios graváveis quando se usa `--read-only`.
 
 ## Variáveis de ambiente
 
@@ -168,24 +200,56 @@ Mostra o tamanho da `dev.4`, da genérica `dev.5`, da Laravel `dev.5` e o custo 
 | `PHP_MEMORY_LIMIT` | `128M` | Limite de memória PHP |
 | `UPLOAD_MAX_SIZE` | `8M` | Limite de upload e POST |
 
-A variável `DOCUMENT_ROOT` pode sempre substituir o default da variante.
+## Queue workers e scheduler Laravel
 
-## Laravel: permissões
-
-A imagem não faz `chown -R` à aplicação durante o arranque. Em produção, `storage/` e `bootstrap/cache/` devem estar graváveis pelo utilizador que corre o contentor.
-
-## Queue workers e scheduler
-
-A mesma imagem Laravel pode ser usada com um comando diferente, sem arrancar Nginx/PHP-FPM:
+A mesma imagem Laravel pode executar comandos sem arrancar Nginx/PHP-FPM:
 
 ```bash
-docker run --rm production:2.0.0-dev.5-laravel-php8.5 \
+docker run --rm production:2.0.0-dev.6-laravel-php8.5 \
   php artisan queue:work
 ```
 
-ou:
-
 ```bash
-docker run --rm production:2.0.0-dev.5-laravel-php8.5 \
+docker run --rm production:2.0.0-dev.6-laravel-php8.5 \
   php artisan schedule:work
 ```
+
+## Estratégia de tags para a release estável
+
+Durante desenvolvimento, apenas tags versionadas `dev` devem ser publicadas. `latest` não deve apontar para uma versão de desenvolvimento.
+
+Para uma futura `2.0.0`, a estratégia prevista é:
+
+```text
+# Genérica PHP específica
+2.0.0-php8.3
+2.0.0-php8.4
+2.0.0-php8.5
+php8.3
+php8.4
+php8.5
+
+# Laravel
+2.0.0-laravel-php8.3
+2.0.0-laravel-php8.4
+2.0.0-laravel-php8.5
+laravel-php8.3
+laravel-php8.4
+laravel-php8.5
+
+# Defaults, quando a release estiver estável
+2.0.0 -> genérica PHP 8.5
+latest -> genérica PHP 8.5
+laravel -> Laravel PHP 8.5
+```
+
+Os aliases só devem ser criados quando a linha `2.0.0` estiver pronta para release.
+
+## CI
+
+`.github/workflows/ci.yml` executa:
+
+- a suite completa de runtime em `amd64`;
+- um build das seis imagens em `linux/amd64` e `linux/arm64` através de Buildx/QEMU.
+
+O workflow não publica imagens. A publicação fica separada para a fase de release, quando o registry e a política de tags forem definitivamente escolhidos.

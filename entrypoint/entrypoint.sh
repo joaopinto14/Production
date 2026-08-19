@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+umask 027
+
 TIMEZONE="${TIMEZONE:-UTC}"
 PRODUCTION_VARIANT="${PRODUCTION_VARIANT:-generic}"
 PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT:-128M}"
@@ -38,6 +40,17 @@ escape_sed() {
     printf '%s' "$1" | sed 's/[&|\\]/\\&/g'
 }
 
+prepare_runtime() {
+    mkdir -p \
+        /run/production/nginx/http.d \
+        /run/production/nginx/client_body \
+        /run/production/nginx/proxy \
+        /run/production/nginx/fastcgi \
+        /run/production/nginx/uwsgi \
+        /run/production/nginx/scgi \
+        /run/production/php/conf.d
+}
+
 configure_timezone() {
     [ -f "/usr/share/zoneinfo/${TIMEZONE}" ] || fail "Invalid timezone: ${TIMEZONE}"
     export TZ="${TIMEZONE}"
@@ -65,6 +78,7 @@ configure_nginx() {
         "${NGINX_TEMPLATE}" > "${NGINX_CONF}"
 }
 
+prepare_runtime
 configure_timezone
 configure_php
 

@@ -1,10 +1,10 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-dev.5}"
-PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-dev.4}"
+VERSION="${VERSION:-2.0.0-dev.6}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-dev.5}"
 
-printf '%-8s %14s %14s %14s %14s\n' "PHP" "dev.4 generic" "dev.5 generic" "dev.5 laravel" "Laravel extra"
+printf '%-8s %14s %14s %14s %14s\n' "PHP" "dev.5 generic" "dev.6 generic" "dev.6 laravel" "Laravel extra"
 printf '%-8s %14s %14s %14s %14s\n' "---" "-------------" "-------------" "-------------" "-------------"
 
 for PHP_VERSION in 8.3 8.4 8.5; do

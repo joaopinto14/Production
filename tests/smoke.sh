@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-dev.5}"
+VERSION="${VERSION:-2.0.0-dev.6}"
 PHP_VERSION="${PHP_VERSION:-8.5}"
 VARIANT="${VARIANT:-generic}"
 
@@ -68,7 +68,7 @@ docker build \
     --build-arg VARIANT="${VARIANT}" \
     -t "${IMAGE}" .
 
-echo "[2/8] Checking PHP ${PHP_VERSION}, variant and non-root runtime"
+echo "[2/8] Checking PHP ${PHP_VERSION}, OCI metadata and non-root runtime"
 actual_php_version="$(docker run --rm "${IMAGE}" php -r 'echo PHP_MAJOR_VERSION, ".", PHP_MINOR_VERSION;')"
 [ "${actual_php_version}" = "${PHP_VERSION}" ] || {
     echo "Smoke test failed: expected PHP ${PHP_VERSION}, got ${actual_php_version}." >&2
@@ -77,6 +77,16 @@ actual_php_version="$(docker run --rm "${IMAGE}" php -r 'echo PHP_MAJOR_VERSION,
 actual_variant="$(docker image inspect "${IMAGE}" --format '{{index .Config.Labels "io.joaopinto.production.variant"}}')"
 [ "${actual_variant}" = "${VARIANT}" ] || {
     echo "Smoke test failed: expected variant ${VARIANT}, got ${actual_variant}." >&2
+    exit 1
+}
+actual_version="$(docker image inspect "${IMAGE}" --format '{{index .Config.Labels "org.opencontainers.image.version"}}')"
+[ "${actual_version}" = "${VERSION}" ] || {
+    echo "Smoke test failed: expected OCI version ${VERSION}, got ${actual_version}." >&2
+    exit 1
+}
+actual_source="$(docker image inspect "${IMAGE}" --format '{{index .Config.Labels "org.opencontainers.image.source"}}')"
+[ "${actual_source}" = "https://github.com/joaopinto14/Production" ] || {
+    echo "Smoke test failed: unexpected OCI source ${actual_source}." >&2
     exit 1
 }
 runtime_uid="$(docker run --rm --entrypoint /usr/bin/id "${IMAGE}" -u)"
@@ -114,6 +124,7 @@ fi
 echo "[5/8] Starting web runtime"
 docker run -d \
     --name "${CONTAINER}" \
+    --security-opt no-new-privileges:true \
     -v "${APP_DIR}:/var/www/html:ro" \
     "${IMAGE}" >/dev/null
 
