@@ -1,106 +1,97 @@
 #!/bin/sh
+set -eu
 
-# Variables
-TIMEZONE=${TIMEZONE:-}
-PHP_EXTENSIONS=${PHP_EXTENSIONS:-}
-MEMORY_LIMIT=${MEMORY_LIMIT:-128M}
-UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-8M}
-INDEX_PATH=${INDEX_PATH:-/var/www/html}
-SUPERVISOR_CONF=${SUPERVISOR_CONF:-}
+umask 027
 
-NGINX_CONF="/etc/nginx/nginx.conf"
-NGINX_VIRTUAL_HOST_CONF="/etc/nginx/http.d/default.conf"
-PHP_SETTINGS="/etc/php83/conf.d/settings.ini"
-PHP_WWW="/etc/php83/php-fpm.d/www.conf"
+TIMEZONE="${TIMEZONE:-UTC}"
+PRODUCTION_VARIANT="${PRODUCTION_VARIANT:-generic}"
+PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT:-128M}"
+UPLOAD_MAX_SIZE="${UPLOAD_MAX_SIZE:-8M}"
 
-# Functions
-
-# Function to verify if the 'index.php' file exists in the path specified in INDEX_PATH
-verify_index_file() {
-    if [ ! -f "${INDEX_PATH}/index.php" ]; then
-        echo "The path specified in INDEX_PATH does not contain the 'index.php' file."
+case "${PRODUCTION_VARIANT}" in
+    generic)
+        DEFAULT_DOCUMENT_ROOT="/var/www/html"
+        NGINX_TEMPLATE="/etc/nginx/default.conf.template"
+        ;;
+    laravel)
+        DEFAULT_DOCUMENT_ROOT="/var/www/html/public"
+        NGINX_TEMPLATE="/etc/nginx/laravel.conf.template"
+        ;;
+    *)
+        printf '[Production] ERROR: Unsupported variant: %s\n' "${PRODUCTION_VARIANT}" >&2
         exit 1
-    fi
+        ;;
+esac
+
+DOCUMENT_ROOT="${DOCUMENT_ROOT:-${DEFAULT_DOCUMENT_ROOT}}"
+NGINX_CONF="/run/production/nginx/http.d/default.conf"
+PHP_RUNTIME_CONF="/run/production/php/conf.d/99-production-runtime.ini"
+
+log() {
+    printf '[Production] %s\n' "$*"
 }
 
-# Function to set the timezone
-set_timezone() {
-    echo "Setting timezone to $TIMEZONE"
-    # Check if the timezone is valid
-    if [ -f "/usr/share/zoneinfo/$TIMEZONE" ]; then
-        cp "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime || { echo "Failed to set timezone"; exit 1;}
-        echo "$TIMEZONE" > /etc/timezone || { echo "Failed to set timezone"; exit 1;}
-    else
-        echo "Timezone '$TIMEZONE' is not valid"
-        exit 1
-    fi
+fail() {
+    printf '[Production] ERROR: %s\n' "$*" >&2
+    exit 1
 }
 
-# Function to install additional PHP extensions
-install_php_extensions() {
-    echo "Installing PHP extensions..."
-    installed_extensions=$(php -m | tr '[:upper:]' '[:lower:]')
-    php_extensions=$(echo "${PHP_EXTENSIONS}" | tr '[:upper:]' '[:lower:]')
-
-    # Install PHP extensions
-    for extension in ${php_extensions}; do
-        if ! echo "${installed_extensions}" | grep -wq "${extension}"; then
-            apk add -q --no-cache php83-"${extension}" > /dev/null 2>&1
-            if ! php -m | tr '[:upper:]' '[:lower:]' | grep -wq "${extension}"; then
-                echo "Failed to install PHP extension: ${extension}."
-                exit 1
-            fi
-        fi
-    done
-
-    # Clean cache
-    rm -rf /var/cache/apk/*
-    echo "PHP extensions installed successfully."
+escape_sed() {
+    printf '%s' "$1" | sed 's/[&|\\]/\\&/g'
 }
 
-# Function to replace placeholders in configuration files
-replace_placeholders() {
-    sed -i "s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${NGINX_CONF} || { echo "Failed to replace placeholders in ${NGINX_CONF}."; exit 1; }
-    sed -i "s|INDEX_PATH|${INDEX_PATH}|;s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${NGINX_VIRTUAL_HOST_CONF} || { echo "Failed to replace placeholders in ${NGINX_VIRTUAL_HOST_CONF}."; exit 1; }
-    sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|;s|UPLOAD_MAX_SIZE|${UPLOAD_MAX_SIZE}|" ${PHP_SETTINGS} || { echo "Failed to replace placeholders in ${PHP_SETTINGS}."; exit 1; }
-    sed -i "s|MEMORY_LIMIT|${MEMORY_LIMIT}|" ${PHP_WWW} || { echo "Failed to replace placeholders in ${PHP_WWW}."; exit 1; }
+prepare_runtime() {
+    mkdir -p \
+        /run/production/nginx/http.d \
+        /run/production/nginx/client_body \
+        /run/production/nginx/proxy \
+        /run/production/nginx/fastcgi \
+        /run/production/nginx/uwsgi \
+        /run/production/nginx/scgi \
+        /run/production/php/conf.d
 }
 
-# Function to set the Supervisor configuration
-set_config_supervisor() {
-    echo "Setting up Supervisor configuration..."
-    if [ -f "${SUPERVISOR_CONF}" ]; then
-        cp -f "${SUPERVISOR_CONF}" /etc/supervisor/conf/"${SUPERVISOR_CONF##*/}" || { echo "Failed to copy the file '${SUPERVISOR_CONF}' to '/etc/supervisor/conf.d/'."; exit 1; }
-    else
-        echo "Supervisor configuration not found at ${SUPERVISOR_CONF}."
-        exit 1
-    fi
+configure_timezone() {
+    [ -f "/usr/share/zoneinfo/${TIMEZONE}" ] || fail "Invalid timezone: ${TIMEZONE}"
+    export TZ="${TIMEZONE}"
 }
 
-# Function to set permissions for the project directory
-set_permissions_directory_project() {
-    chown -R www:www /var/www/html || { echo "Failed to set permissions for '/var/www/html'."; exit 1; }
+configure_php() {
+    cat > "${PHP_RUNTIME_CONF}" <<EOF_PHP
+memory_limit = ${PHP_MEMORY_LIMIT}
+upload_max_filesize = ${UPLOAD_MAX_SIZE}
+post_max_size = ${UPLOAD_MAX_SIZE}
+date.timezone = ${TIMEZONE}
+EOF_PHP
 }
 
+configure_nginx() {
+    [ -f "${NGINX_TEMPLATE}" ] || fail "Nginx template not found: ${NGINX_TEMPLATE}"
+    [ -d "${DOCUMENT_ROOT}" ] || fail "DOCUMENT_ROOT does not exist: ${DOCUMENT_ROOT}"
 
-# Main
+    document_root_escaped="$(escape_sed "${DOCUMENT_ROOT}")"
+    upload_max_size_escaped="$(escape_sed "${UPLOAD_MAX_SIZE}")"
 
-verify_index_file
-replace_placeholders
+    sed \
+        -e "s|__DOCUMENT_ROOT__|${document_root_escaped}|g" \
+        -e "s|__UPLOAD_MAX_SIZE__|${upload_max_size_escaped}|g" \
+        "${NGINX_TEMPLATE}" > "${NGINX_CONF}"
+}
 
-if [ -n "$TIMEZONE" ]; then
-    set_timezone
-fi
+prepare_runtime
+configure_timezone
+configure_php
 
-if [ -n "$PHP_EXTENSIONS" ]; then
-    install_php_extensions
-fi
+case "${1:-}" in
+    /usr/local/bin/production-runtime|production-runtime)
+        configure_nginx
+        log "Version ${PRODUCTION_VERSION:-unknown}"
+        log "Variant ${PRODUCTION_VARIANT}"
+        log "PHP $(php -r 'echo PHP_VERSION;')"
+        log "Runtime user: $(id -u):$(id -g)"
+        log "Document root: ${DOCUMENT_ROOT}"
+        log "Listening on: 8080"
+        ;;
+esac
 
-if [ -n "$SUPERVISOR_CONF" ]; then
-    set_config_supervisor
-fi
-
-set_permissions_directory_project
-
-# Start supervisord
-exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+exec "$@"
