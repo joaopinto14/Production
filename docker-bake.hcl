@@ -1,5 +1,5 @@
 variable "VERSION" {
-  default = "2.0.0-rc.1"
+  default = "2.0.0"
 }
 
 variable "IMAGE_NAME" {
@@ -127,4 +127,64 @@ target "laravel-php84-multiarch" {
 target "laravel-php85-multiarch" {
   inherits  = ["laravel-php85"]
   platforms = PLATFORMS
+}
+
+# Stable Docker Hub release targets. These targets keep the immutable 2.0.0
+# tags and also update the documented stable aliases.
+group "release" {
+  targets = [
+    "php83-release", "php84-release", "php85-release",
+    "laravel-php83-release", "laravel-php84-release", "laravel-php85-release"
+  ]
+}
+
+target "php83-release" {
+  inherits  = ["php83-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-php8.3",
+    "${IMAGE_NAME}:php8.3"
+  ]
+}
+
+target "php84-release" {
+  inherits  = ["php84-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-php8.4",
+    "${IMAGE_NAME}:php8.4"
+  ]
+}
+
+target "php85-release" {
+  inherits  = ["php85-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-php8.5",
+    "${IMAGE_NAME}:php8.5",
+    "${IMAGE_NAME}:${VERSION}",
+    "${IMAGE_NAME}:latest"
+  ]
+}
+
+target "laravel-php83-release" {
+  inherits  = ["laravel-php83-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-laravel-php8.3",
+    "${IMAGE_NAME}:laravel-php8.3"
+  ]
+}
+
+target "laravel-php84-release" {
+  inherits  = ["laravel-php84-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-laravel-php8.4",
+    "${IMAGE_NAME}:laravel-php8.4"
+  ]
+}
+
+target "laravel-php85-release" {
+  inherits  = ["laravel-php85-multiarch"]
+  tags = [
+    "${IMAGE_NAME}:${VERSION}-laravel-php8.5",
+    "${IMAGE_NAME}:laravel-php8.5",
+    "${IMAGE_NAME}:laravel"
+  ]
 }

@@ -3,9 +3,9 @@ set -eu
 
 . ./tests/lib.sh
 
-section "Release-candidate contract"
+section "Stable release contract"
 
-assert_eq '2.0.0-rc.1' "$(cat VERSION)" "RC VERSION file"
+assert_eq '2.0.0' "$(cat VERSION)" "stable VERSION file"
 
 for variant in generic laravel; do
     for php_version in 8.3 8.4 8.5; do
@@ -25,4 +25,28 @@ for variant in generic laravel; do
     done
 done
 
-printf '%s\n' 'Release-candidate contract passed.'
+
+log "Checking stable Docker Hub release tags and platforms"
+release_plan="$(IMAGE_NAME=joaopinto14/production VERSION=2.0.0 docker buildx bake release --print)"
+for tag in \
+    joaopinto14/production:2.0.0-php8.3 \
+    joaopinto14/production:php8.3 \
+    joaopinto14/production:2.0.0-php8.4 \
+    joaopinto14/production:php8.4 \
+    joaopinto14/production:2.0.0-php8.5 \
+    joaopinto14/production:php8.5 \
+    joaopinto14/production:2.0.0 \
+    joaopinto14/production:latest \
+    joaopinto14/production:2.0.0-laravel-php8.3 \
+    joaopinto14/production:laravel-php8.3 \
+    joaopinto14/production:2.0.0-laravel-php8.4 \
+    joaopinto14/production:laravel-php8.4 \
+    joaopinto14/production:2.0.0-laravel-php8.5 \
+    joaopinto14/production:laravel-php8.5 \
+    joaopinto14/production:laravel
+do
+    assert_contains "${release_plan}" "${tag}" "stable release tag plan"
+done
+assert_contains "${release_plan}" 'linux/amd64' "release amd64 platform"
+assert_contains "${release_plan}" 'linux/arm64' "release arm64 platform"
+printf '%s\n' 'Stable release contract passed.'

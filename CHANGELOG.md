@@ -1,42 +1,63 @@
 # Changelog
 
-Todas as alterações relevantes do projeto Production são documentadas neste ficheiro.
+All notable changes to Production are documented in this file.
+
+## 2.0.0 - 2026-08-20
+
+### Stable release
+
+- Promoted the fully validated `2.0.0-rc.1` runtime to stable without introducing new runtime behavior.
+- Added stable Docker Hub release targets for `joaopinto14/production`.
+- Added versioned and stable aliases for Generic and Laravel images.
+- Added an automated Docker Hub release workflow gated by the full release test suite.
+- Finalized the English public README and the 1.1.3 → 2.0.0 migration documentation.
+
+### Runtime highlights
+
+- Alpine Linux 3.24 base.
+- Nginx + PHP-FPM.
+- PHP 8.3, 8.4 and 8.5.
+- Generic and Laravel variants.
+- Lightweight POSIX runtime manager; Supervisor and Python are no longer required.
+- Non-root `www` runtime user.
+- Internal port 8080.
+- `/healthz` health endpoint.
+- stdout/stderr logging.
+- Graceful signal handling and fail-fast child-process monitoring.
+- Read-only-root compatible runtime layout.
+- `linux/amd64` and `linux/arm64` builds.
+- OCI image metadata.
+
+### Validation
+
+- Clean no-cache builds for all six image variants.
+- Static and negative build validation.
+- Image contract tests.
+- Smoke matrix for PHP 8.3/8.4/8.5 and Generic/Laravel.
+- Runtime configuration tests.
+- Deep HTTP/Nginx tests.
+- Concurrent PHP-FPM workload tests.
+- Docker logging contract tests.
+- Crash and signal tests.
+- Hardened runtime tests with read-only root, no-new-privileges and zero effective capabilities.
+- Image size regression budgets.
+- Real PHP application tests.
+- Real Laravel 13 tests on PHP 8.3, 8.4 and 8.5.
+- Restart stability and zombie-process checks.
+- Multi-architecture build validation for amd64 and arm64.
 
 ## 2.0.0-rc.1 - 2026-08-20
 
 ### Fixed
 
-- Multi-architecture validation now uses a dedicated Buildx `docker-container` builder instead of relying on the host `docker:default` builder, preventing ARM64 `exec format error` failures when the default builder lacks emulation.
-- Added an ARM64 execution preflight with a clear QEMU/binfmt remediation command when emulation is unavailable.
-- Laravel test cleanup now removes bind-mounted cache files safely without host UID permission failures, while preserving the original test exit code.
+- Multi-architecture validation uses a dedicated Buildx `docker-container` builder, avoiding ARM64 `exec format error` failures caused by unsuitable host builders.
+- Added ARM64 execution preflight and clear QEMU/binfmt remediation.
+- Laravel test cleanup handles bind-mounted cache files without masking the original test exit code.
 
-### Estado
+### Added
 
-- Funcionalidades da linha 2.0 congeladas para estabilização.
-- Mantidas as seis variantes genérica/Laravel em PHP 8.3, 8.4 e 8.5.
-- Runtime inalterado face à `2.0.0-dev.7`, salvo correções que venham a ser exigidas pelos testes da RC.
-
-### Adicionado
-
-- `tests/clean-build.sh` para construir as seis imagens sem cache.
-- `tests/release-contract.sh` para verificar metadata e ausência de ferramentas/artefactos de desenvolvimento no runtime.
-- `tests/real-generic.sh` com uma aplicação PHP real nas três versões suportadas.
-- `tests/real-laravel.sh` que cria e executa uma aplicação Laravel 13 real nas variantes PHP 8.3, 8.4 e 8.5.
-- Validação real de Artisan, migrations, SQLite, PDO MySQL/PostgreSQL/SQLite, PhpRedis, cache, storage, sessions, optimize e queue worker.
-- Validação explícita de command-mode sem Nginx/PHP-FPM.
-- `tests/restart-stability.sh` com cinco ciclos de restart e deteção de processos zombie.
-- Build multi-arquitetura opcionalmente sem cache através de `NO_CACHE=1`.
-- `RELEASE.md` com critérios de aprovação e política da release candidate.
-- Workflow dedicado à validação de tags RC.
-
-### Melhorado
-
-- `tests/test-release.sh` passa a ser uma verdadeira gate de release: clean build, suite completa, aplicações reais, restart stability e multi-arch.
-- `tests/compare-size.sh` compara por predefinição a `dev.7` com a `rc.1`.
-- Documentação reorganizada para utilização real, command-mode, hardening e processo de release.
-
-### Política
-
-- Durante a RC apenas são aceites correções de bugs, melhorias de testes e documentação necessárias à estabilização.
-- Novas funcionalidades ficam adiadas para uma versão posterior à 2.0.0.
-
+- Clean-build release gate.
+- Real Generic PHP application tests.
+- Real Laravel 13 application tests.
+- Restart stability and zombie-process tests.
+- Multi-architecture release validation.

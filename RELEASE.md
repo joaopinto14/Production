@@ -1,67 +1,97 @@
-# Production 2.0.0-rc.1 — Release Candidate
+# Production 2.0.0 — Stable Release
 
-A `2.0.0-rc.1` congela a arquitetura da linha 2.0 e serve para validação final antes da release estável.
+Production 2.0.0 is the first stable release of the redesigned 2.x runtime.
+It promotes the validated `2.0.0-rc.1` runtime without adding new runtime features.
 
-## Funcionalidades congeladas
-
-A RC mantém seis variantes:
+## Official Docker Hub repository
 
 ```text
-2.0.0-rc.1-php8.3
-2.0.0-rc.1-php8.4
-2.0.0-rc.1-php8.5
-2.0.0-rc.1-laravel-php8.3
-2.0.0-rc.1-laravel-php8.4
-2.0.0-rc.1-laravel-php8.5
+joaopinto14/production
 ```
 
-Não são criados aliases `latest`, `php8.x` ou `laravel` durante a fase RC.
+## Stable images
 
-## Critérios de aprovação
+### Generic
 
-A RC só deve avançar para `2.0.0` se:
+```text
+joaopinto14/production:2.0.0-php8.3
+joaopinto14/production:2.0.0-php8.4
+joaopinto14/production:2.0.0-php8.5
+```
 
-- `./tests/test-release.sh` passar integralmente;
-- as seis imagens forem construídas sem cache;
-- a suite completa da `dev.7` continuar a passar;
-- a aplicação PHP real funcionar em PHP 8.3, 8.4 e 8.5;
-- uma aplicação Laravel 13 real funcionar em PHP 8.3, 8.4 e 8.5;
-- Artisan, migrations, SQLite, cache, storage, session e queue worker forem validados;
-- Nginx/PHP-FPM continuarem ausentes em command-mode;
-- cinco ciclos de restart não deixarem processos zombie;
-- os builds `linux/amd64` e `linux/arm64` passarem;
-- os budgets de tamanho não forem ultrapassados;
-- não forem encontrados bugs bloqueantes em utilização real.
+Stable aliases:
 
-## Teste de release
+```text
+joaopinto14/production:php8.3
+joaopinto14/production:php8.4
+joaopinto14/production:php8.5
+joaopinto14/production:2.0.0
+joaopinto14/production:latest
+```
+
+`2.0.0` and `latest` point to the Generic PHP 8.5 image.
+
+### Laravel
+
+```text
+joaopinto14/production:2.0.0-laravel-php8.3
+joaopinto14/production:2.0.0-laravel-php8.4
+joaopinto14/production:2.0.0-laravel-php8.5
+```
+
+Stable aliases:
+
+```text
+joaopinto14/production:laravel-php8.3
+joaopinto14/production:laravel-php8.4
+joaopinto14/production:laravel-php8.5
+joaopinto14/production:laravel
+```
+
+`laravel` points to the Laravel PHP 8.5 image.
+
+## Architectures
+
+Every published release target contains:
+
+```text
+linux/amd64
+linux/arm64
+```
+
+## Release validation
+
+Before publication, the release workflow runs:
 
 ```bash
 ./tests/test-release.sh
 ```
 
-Este teste é deliberadamente mais lento que a suite normal. Faz build sem cache, testes aprofundados, aplicações reais e multi-arquitetura. O teste multi-arquitetura usa um builder Buildx `docker-container` dedicado e faz um preflight ARM64 antes dos seis builds. Em Linux sem emulação ARM64, o script termina com instruções para registar QEMU/binfmt.
+The stable gate validates clean builds, image contracts, smoke tests, configuration,
+HTTP behavior, concurrency, logs, crash/signal handling, hardened execution, size
+budgets, real PHP applications, a real Laravel 13 application, restart stability,
+and both supported CPU architectures.
 
-## Publicação experimental
+## Publishing
 
-A RC está preparada para um registry, mas o repositório oficial deve ser escolhido antes de ativar `--push` no CI.
+The GitHub Actions release workflow publishes only from the exact Git tag:
 
-Exemplo manual:
-
-```bash
-IMAGE_NAME=registry.example.com/utilizador/production \
-VERSION=2.0.0-rc.1 \
-docker buildx bake multiarch --push
+```text
+v2.0.0
 ```
 
-Isto publica apenas tags explícitas da RC.
+The repository must contain this GitHub Actions secret:
 
-## Política da RC
+```text
+DOCKERHUB_TOKEN
+```
 
-Durante a fase RC:
+The Docker Hub username is fixed in the workflow as `joaopinto14`.
 
-- corrigir bugs;
-- melhorar testes/documentação quando necessário;
-- não adicionar novas funcionalidades;
-- não alterar extensões ou arquitetura sem um problema concreto que o justifique.
+The workflow publishes the six multi-architecture images and their stable aliases
+only after the complete release validation succeeds.
 
-Se não forem encontrados problemas bloqueantes, a próxima versão pode ser `2.0.0`. Caso contrário, as correções seguem para `2.0.0-rc.2`.
+## Upgrade from 1.1.3
+
+Production 2.0.0 contains intentional breaking changes. Read the migration section
+in `README.md` or `MIGRATION.md` before upgrading an existing deployment.

@@ -1,11 +1,11 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0-rc.1}"
-PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-dev.7}"
+VERSION="${VERSION:-2.0.0}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-rc.1}"
 IMAGE_NAME="${IMAGE_NAME:-production}"
 
-printf '%-8s %16s %16s %16s %14s\n' "PHP" "dev.7 generic" "rc.1 generic" "rc.1 laravel" "Laravel extra"
+printf '%-8s %16s %16s %16s %14s\n' "PHP" "rc.1 generic" "2.0.0 generic" "2.0.0 laravel" "Laravel extra"
 printf '%-8s %16s %16s %16s %14s\n' "---" "-------------" "------------" "------------" "-------------"
 
 for PHP_VERSION in 8.3 8.4 8.5; do
