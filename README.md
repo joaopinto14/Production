@@ -1,21 +1,21 @@
 # Production
 
-Imagem Docker PHP leve para produção, com variantes genérica e Laravel, várias versões PHP e suporte multi-arquitetura.
+Imagem Docker PHP leve e orientada a produção, com variantes genérica e Laravel, PHP 8.3/8.4/8.5 e suporte `amd64` + `arm64`.
 
 ## Estado
 
-Versão de desenvolvimento: **2.0.0-dev.7**.
+Release candidate atual: **2.0.0-rc.1**.
 
-A `dev.7` mantém o runtime da `dev.6` e concentra-se numa suite de testes muito mais completa, com maior cobertura e menos rebuilds redundantes.
+A arquitetura e o conjunto de funcionalidades estão congelados. A `rc.1` concentra-se em validação com aplicações reais, builds limpos, estabilidade de restart e multi-arquitetura.
 
 ## Variantes
 
 ### Genérica
 
 ```text
-production:2.0.0-dev.7-php8.3
-production:2.0.0-dev.7-php8.4
-production:2.0.0-dev.7-php8.5
+production:2.0.0-rc.1-php8.3
+production:2.0.0-rc.1-php8.4
+production:2.0.0-rc.1-php8.5
 ```
 
 Document root predefinido:
@@ -27,9 +27,9 @@ Document root predefinido:
 ### Laravel
 
 ```text
-production:2.0.0-dev.7-laravel-php8.3
-production:2.0.0-dev.7-laravel-php8.4
-production:2.0.0-dev.7-laravel-php8.5
+production:2.0.0-rc.1-laravel-php8.3
+production:2.0.0-rc.1-laravel-php8.4
+production:2.0.0-rc.1-laravel-php8.5
 ```
 
 Document root predefinido:
@@ -38,7 +38,7 @@ Document root predefinido:
 /var/www/html/public
 ```
 
-A variante Laravel não contém Laravel, Composer ou Node. É um runtime de produção para uma aplicação já construída.
+A variante Laravel é um **runtime de produção**. Não contém Laravel, Composer, Node, npm ou ferramentas de compilação.
 
 ## Base comum
 
@@ -47,16 +47,17 @@ A variante Laravel não contém Laravel, Composer ou Node. É um runtime de prod
 - PHP-FPM
 - PHP 8.3, 8.4 ou 8.5
 - runtime shell mínimo, sem Supervisor/Python
-- runtime non-root (`www`)
-- porta interna 8080
+- utilizador non-root `www`
+- porta interna `8080`
 - OPcache
 - healthcheck `/healthz`
 - logs em stdout/stderr
 - shutdown gracioso
+- suporte a root filesystem read-only
 - labels OCI
 - `linux/amd64` e `linux/arm64`
 
-## Extensões da imagem genérica
+## Extensões — genérica
 
 - ctype
 - curl
@@ -69,7 +70,7 @@ A variante Laravel não contém Laravel, Composer ou Node. É um runtime de prod
 - XML
 - OPcache
 
-## Extensões adicionais da variante Laravel
+## Extensões adicionais — Laravel
 
 - bcmath
 - DOM
@@ -81,197 +82,208 @@ A variante Laravel não contém Laravel, Composer ou Node. É um runtime de prod
 - PhpRedis
 - zip
 
-## Build local das seis variantes
+## Build local
+
+Construir as seis imagens:
 
 ```bash
 docker buildx bake
 ```
 
-Também existem grupos específicos:
+Apenas genéricas:
 
 ```bash
 docker buildx bake generic
+```
+
+Apenas Laravel:
+
+```bash
 docker buildx bake laravel
 ```
 
-## Multi-arquitetura
-
-O grupo `multiarch` constrói todas as variantes para:
-
-```text
-linux/amd64
-linux/arm64
-```
-
-```bash
-docker buildx bake multiarch
-```
-
-Para publicar num registry, define o nome completo da imagem e usa `--push`:
-
-```bash
-IMAGE_NAME=registry.example.com/user/production \
-VERSION=2.0.0-dev.7 \
-docker buildx bake multiarch --push
-```
-
-Em hosts que não executem ambas as arquiteturas nativamente, é necessário um builder com suporte de emulação/QEMU ou builders nativos para cada plataforma.
-
-## Testes
-
-### Suite completa local
-
-```bash
-./tests/test-all.sh
-```
-
-A suite completa faz um único build local das seis imagens e reutiliza-as nas fases seguintes. Atualmente cobre:
-
-1. validação estática de shell, versões, Bake e Dockerfile;
-2. builds inválidos (PHP/variant não suportados);
-3. build paralelo das seis imagens;
-4. contrato das seis imagens e respetivas extensões;
-5. arranque, healthcheck e shutdown das seis combinações;
-6. overrides de timezone, memória, upload e document root;
-7. contrato HTTP/Nginx aprofundado;
-8. 50 pedidos PHP concorrentes por variante principal;
-9. logs PHP e access logs JSON em stdout/stderr;
-10. crashes de Nginx/PHP-FPM e sinais TERM/INT/QUIT;
-11. hardening (`read-only`, `cap-drop ALL`, `no-new-privileges`, `pids-limit`, `tmpfs`) e budgets de tamanho.
-
-Para repetir a suite sem reconstruir imagens já existentes:
-
-```bash
-SKIP_BUILD=1 ./tests/test-all.sh
-```
-
-### Suite rápida de desenvolvimento
-
-```bash
-./tests/test-fast.sh
-```
-
-Usa apenas PHP 8.5 genérico + Laravel e executa as verificações de maior valor para iterações rápidas.
-
-### Smoke matrix
-
-```bash
-./tests/smoke-all.sh
-```
-
-Testa as seis combinações PHP/variante sem reconstruir as imagens.
-
-### Testes específicos
-
-```bash
-./tests/image-contract.sh
-./tests/configuration.sh
-./tests/http-contract.sh
-./tests/concurrency.sh
-./tests/logging.sh
-./tests/runtime-failure.sh
-./tests/security.sh
-./tests/size-budget.sh
-```
-
-### Build multi-arquitetura
-
-```bash
-./tests/multiarch-build.sh
-```
-
-### Validação de nível release
-
-```bash
-./tests/test-release.sh
-```
-
-Executa primeiro toda a suite local e depois valida as seis imagens para `linux/amd64` e `linux/arm64`.
-
-## Executar com root filesystem read-only
-
-A imagem pode ser usada com root filesystem read-only. Como Nginx/PHP precisam de estado temporário, fornece `tmpfs` para `/run/production` e `/tmp`.
-
-Os UID/GID podem ser obtidos diretamente da imagem:
-
-```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.7-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-dev.7-php8.5 -g)
-```
-
-Exemplo:
+## Utilização genérica
 
 ```bash
 docker run --rm \
-  --read-only \
-  --security-opt no-new-privileges:true \
-  --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${UID_RUNTIME},gid=${GID_RUNTIME}" \
-  --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
-  -v /caminho/app:/var/www/html:ro \
-  production:2.0.0-dev.7-php8.5
+  -p 8080:8080 \
+  -v "$PWD:/var/www/html:ro" \
+  production:2.0.0-rc.1-php8.5
 ```
 
-Uma aplicação Laravel real continua a precisar de escrita em `storage/` e `bootstrap/cache/`; esses caminhos devem ser volumes/directórios graváveis quando se usa `--read-only`.
+## Utilização Laravel
+
+A aplicação deve chegar à imagem já preparada, incluindo `vendor/` e assets compilados quando aplicável.
+
+```bash
+docker run --rm \
+  -p 8080:8080 \
+  -v "$PWD:/var/www/html" \
+  production:2.0.0-rc.1-laravel-php8.5
+```
+
+### Artisan / worker / scheduler
+
+O `ENTRYPOINT` não inicia Nginx/PHP-FPM quando é fornecido outro comando:
+
+```bash
+docker run --rm \
+  -v "$PWD:/var/www/html" \
+  production:2.0.0-rc.1-laravel-php8.5 \
+  php artisan migrate --force
+```
+
+```bash
+docker run --rm \
+  -v "$PWD:/var/www/html" \
+  production:2.0.0-rc.1-laravel-php8.5 \
+  php artisan queue:work
+```
+
+```bash
+docker run --rm \
+  -v "$PWD:/var/www/html" \
+  production:2.0.0-rc.1-laravel-php8.5 \
+  php artisan schedule:work
+```
 
 ## Variáveis de ambiente
 
 | Variável | Predefinição | Descrição |
 |---|---:|---|
 | `TIMEZONE` | `UTC` | Timezone PHP/runtime |
-| `DOCUMENT_ROOT` | depende da variante | Root do Nginx |
+| `DOCUMENT_ROOT` | depende da variante | Root servido por Nginx |
 | `PHP_MEMORY_LIMIT` | `128M` | Limite de memória PHP |
 | `UPLOAD_MAX_SIZE` | `8M` | Limite de upload e POST |
 
-## Queue workers e scheduler Laravel
+## Root filesystem read-only
 
-A mesma imagem Laravel pode executar comandos sem arrancar Nginx/PHP-FPM:
-
-```bash
-docker run --rm production:2.0.0-dev.7-laravel-php8.5 \
-  php artisan queue:work
-```
+O runtime pode funcionar com filesystem root read-only. `/run/production` e `/tmp` precisam de áreas temporárias graváveis.
 
 ```bash
-docker run --rm production:2.0.0-dev.7-laravel-php8.5 \
-  php artisan schedule:work
+UID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-rc.1-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id production:2.0.0-rc.1-php8.5 -g)
+
+docker run --rm \
+  --read-only \
+  --cap-drop ALL \
+  --security-opt no-new-privileges:true \
+  --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${UID_RUNTIME},gid=${GID_RUNTIME}" \
+  --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
+  -v "$PWD:/var/www/html:ro" \
+  production:2.0.0-rc.1-php8.5
 ```
 
-## Estratégia de tags para a release estável
+Numa aplicação Laravel, `storage/` e `bootstrap/cache/` também precisam de volumes ou tmpfs graváveis.
 
-Durante desenvolvimento, apenas tags versionadas `dev` devem ser publicadas. `latest` não deve apontar para uma versão de desenvolvimento.
+## Testes
 
-Para uma futura `2.0.0`, a estratégia prevista é:
+### Desenvolvimento rápido
+
+```bash
+./tests/test-fast.sh
+```
+
+### Suite completa
+
+```bash
+./tests/test-all.sh
+```
+
+Para reutilizar imagens já construídas:
+
+```bash
+SKIP_BUILD=1 ./tests/test-all.sh
+```
+
+### Aplicação PHP real
+
+```bash
+./tests/real-generic.sh
+```
+
+Testa as três versões PHP com front-controller, sessões, POST, escrita temporária, OPcache, logs e shutdown.
+
+### Laravel 13 real
+
+```bash
+./tests/real-laravel.sh
+```
+
+Este teste usa `composer:2` **fora da imagem de runtime** para criar uma aplicação Laravel 13 real e resolver as dependências para a versão mínima suportada, PHP 8.3. A mesma aplicação é depois testada nas variantes PHP 8.3, 8.4 e 8.5.
+
+Valida, entre outros:
+
+- boot real do framework;
+- `/up`;
+- Artisan;
+- migrations;
+- SQLite;
+- drivers MySQL/PostgreSQL/SQLite;
+- PhpRedis;
+- file cache;
+- storage;
+- sessions;
+- `artisan optimize`;
+- queue worker;
+- bloqueio de PHP direto em `public/`;
+- command-mode sem Nginx/PHP-FPM.
+
+### Release candidate completa
+
+```bash
+./tests/test-release.sh
+```
+
+Executa:
+
+1. build das seis imagens com `--no-cache`;
+2. suite completa reutilizando essas imagens;
+3. contrato de limpeza da release;
+4. aplicação PHP real nas três versões;
+5. Laravel 13 real nas três versões;
+6. ciclos repetidos de restart + verificação de zombies;
+7. build sem cache para `linux/amd64` + `linux/arm64`.
+
+### Comparação de tamanho
+
+```bash
+./tests/compare-size.sh
+```
+
+Por predefinição compara `2.0.0-dev.7` com `2.0.0-rc.1`.
+
+## Multi-arquitetura
+
+Para validação local, usa o script dedicado:
+
+```bash
+./tests/multiarch-build.sh
+```
+
+O script cria ou reutiliza um builder Buildx `docker-container` chamado `production-multiarch`, faz bootstrap e valida primeiro que consegue executar passos `RUN` em `linux/arm64`. Isto evita depender do builder `docker:default` do host.
+
+Para uma validação sem cache:
+
+```bash
+NO_CACHE=1 ./tests/multiarch-build.sh
+```
+
+Se o host Linux não tiver emulação ARM64 disponível, o preflight termina antes do build completo e indica o comando oficial para registar QEMU/binfmt. Também podes escolher outro builder com `MULTIARCH_BUILDER=<nome>`.
+
+## Tags da RC
+
+A `rc.1` usa apenas tags explícitas:
 
 ```text
-# Genérica PHP específica
-2.0.0-php8.3
-2.0.0-php8.4
-2.0.0-php8.5
-php8.3
-php8.4
-php8.5
-
-# Laravel
-2.0.0-laravel-php8.3
-2.0.0-laravel-php8.4
-2.0.0-laravel-php8.5
-laravel-php8.3
-laravel-php8.4
-laravel-php8.5
-
-# Defaults, quando a release estiver estável
-2.0.0 -> genérica PHP 8.5
-latest -> genérica PHP 8.5
-laravel -> Laravel PHP 8.5
+2.0.0-rc.1-php8.3
+2.0.0-rc.1-php8.4
+2.0.0-rc.1-php8.5
+2.0.0-rc.1-laravel-php8.3
+2.0.0-rc.1-laravel-php8.4
+2.0.0-rc.1-laravel-php8.5
 ```
 
-Os aliases só devem ser criados quando a linha `2.0.0` estiver pronta para release.
+Não são criados `latest`, `php8.x`, `laravel-php8.x` ou `laravel` até à release estável.
 
-## CI
-
-`.github/workflows/ci.yml` executa:
-
-- a suite completa de runtime em `amd64`;
-- um build das seis imagens em `linux/amd64` e `linux/arm64` através de Buildx/QEMU.
-
-O workflow não publica imagens. A publicação fica separada para a fase de release, quando o registry e a política de tags forem definitivamente escolhidos.
+Consulta [RELEASE.md](RELEASE.md) para os critérios de aprovação da RC.

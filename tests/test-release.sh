@@ -1,7 +1,25 @@
 #!/bin/sh
 set -eu
 
-./tests/test-all.sh
-./tests/multiarch-build.sh
+. ./tests/lib.sh
 
-printf '%s\n' 'Release-level test suite passed, including multi-architecture builds.'
+STARTED="$(date +%s)"
+
+section "Production ${TEST_VERSION} release-candidate validation"
+
+# A release candidate is intentionally stricter and slower than normal CI:
+# 1) rebuild everything without cache;
+# 2) reuse those clean images for the comprehensive suite;
+# 3) boot real PHP and Laravel applications;
+# 4) verify repeated restarts / no zombies;
+# 5) validate both target architectures.
+./tests/clean-build.sh
+SKIP_BUILD=1 ./tests/test-all.sh
+./tests/release-contract.sh
+./tests/real-generic.sh
+./tests/real-laravel.sh
+./tests/restart-stability.sh
+NO_CACHE=1 ./tests/multiarch-build.sh
+
+FINISHED="$(date +%s)"
+printf '\n%s\n' "Release-candidate suite passed in $((FINISHED - STARTED))s, including real applications and amd64/arm64 builds."
