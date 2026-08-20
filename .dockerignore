@@ -1,0 +1,12 @@
+.git
+.github
+.idea
+.gitignore
+*.zip
+README.md
+LICENSE.md
+CHANGELOG.md
+
+tests
+
+RELEASE.md
