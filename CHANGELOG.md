@@ -27,6 +27,7 @@ No changes yet.
 - Added automatic GitHub Release creation after successful Docker Hub publication.
 - GitHub Releases use `RELEASE.md` as their release notes and are idempotent on re-runs.
 - Generalized release contract tests so future stable versions are not hardcoded to 2.0.0.
+- Fixed release attestation contract validation to match Buildx structured JSON output and verify SBOM/provenance on all six release targets.
 
 ## 2.0.0 - 2026-08-20
 
