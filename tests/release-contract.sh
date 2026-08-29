@@ -49,8 +49,27 @@ do
 done
 assert_contains "${release_plan}" 'linux/amd64' "release amd64 platform"
 assert_contains "${release_plan}" 'linux/arm64' "release arm64 platform"
-assert_contains "${release_plan}" 'type=provenance,mode=max' "release SLSA provenance attestation"
-assert_contains "${release_plan}" 'type=sbom' "release SBOM attestation"
+
+log "Checking supply-chain attestations for every release target"
+for target in \
+    php83-release \
+    php84-release \
+    php85-release \
+    laravel-php83-release \
+    laravel-php84-release \
+    laravel-php85-release
+do
+    target_plan="$(IMAGE_NAME=joaopinto14/production VERSION="${TEST_VERSION}" docker buildx bake "${target}" --print)"
+    target_plan_compact="$(printf '%s' "${target_plan}" | tr -d '[:space:]')"
+
+    # Buildx --print renders attestations as structured JSON objects, for example:
+    # {"mode":"max","type":"provenance"} and {"type":"sbom"}.
+    assert_contains "${target_plan_compact}" '"type":"provenance"' "release SLSA provenance attestation (${target})"
+    assert_contains "${target_plan_compact}" '"mode":"max"' "release SLSA provenance mode (${target})"
+    assert_contains "${target_plan_compact}" '"type":"sbom"' "release SBOM attestation (${target})"
+    assert_contains "${target_plan_compact}" '"linux/amd64"' "release amd64 platform (${target})"
+    assert_contains "${target_plan_compact}" '"linux/arm64"' "release arm64 platform (${target})"
+done
 
 log "Checking GitHub release workflow contract"
 workflow="$(cat .github/workflows/release.yml)"
