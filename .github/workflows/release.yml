@@ -3,11 +3,16 @@ name: Release
 on:
   push:
     tags:
-      - 'v2.0.0'
+      - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing stable release tag (for example v2.0.1)'
+        required: true
+        type: string
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: production-release-${{ github.ref }}
@@ -15,14 +20,62 @@ concurrency:
 
 jobs:
   validate-and-publish:
-    name: Validate and publish 2.0.0
-    if: github.ref == 'refs/tags/v2.0.0'
+    name: Validate, publish and create GitHub Release
+    if: github.event_name == 'workflow_dispatch' || !contains(github.ref_name, '-')
     runs-on: ubuntu-latest
     timeout-minutes: 150
 
     steps:
-      - name: Checkout
+      - name: Resolve stable release tag
+        id: release
+        shell: bash
+        env:
+          DISPATCH_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            tag="${DISPATCH_TAG}"
+          else
+            tag="${GITHUB_REF_NAME}"
+          fi
+
+          if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid stable release tag: ${tag}" >&2
+            echo "Expected format: vX.Y.Z" >&2
+            exit 1
+          fi
+
+          version="${tag#v}"
+
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout release tag
         uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.release.outputs.tag }}
+
+      - name: Verify tag matches VERSION
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          file_version="$(tr -d '[:space:]' < VERSION)"
+
+          if [[ "${file_version}" != "${RELEASE_VERSION}" ]]; then
+            echo "Release tag/version mismatch." >&2
+            echo "Tag version: ${RELEASE_VERSION}" >&2
+            echo "VERSION file: ${file_version}" >&2
+            exit 1
+          fi
+
+      - name: Resolve release revision
+        id: revision
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "${GITHUB_OUTPUT}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
@@ -33,6 +86,8 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Run stable release validation
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
         run: ./tests/test-release.sh
 
       - name: Log in to Docker Hub
@@ -44,6 +99,26 @@ jobs:
       - name: Publish multi-architecture images and stable aliases
         env:
           IMAGE_NAME: joaopinto14/production
-          VERSION: 2.0.0
-          VCS_REF: ${{ github.sha }}
+          VERSION: ${{ steps.release.outputs.version }}
+          VCS_REF: ${{ steps.revision.outputs.sha }}
         run: docker buildx bake release --push
+
+      - name: Create GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          if gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "GitHub Release ${RELEASE_TAG} already exists; nothing to create."
+            exit 0
+          fi
+
+          gh release create "${RELEASE_TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --verify-tag \
+            --title "Production ${RELEASE_VERSION}" \
+            --notes-file RELEASE.md

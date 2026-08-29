@@ -1,6 +1,8 @@
-# Production 2.0.0
+# Production 2.0.1
 
 **Production** is a small, production-focused Docker image for running **PHP applications** with **Nginx + PHP-FPM** already configured.
+
+Production 2.0.1 is a security and supply-chain maintenance release. It refreshes Alpine 3.24 packages to current patched revisions at build time and publishes SBOM and SLSA provenance attestations with stable registry releases.
 
 It is designed to keep deployment simple: your application is prepared during the build/deployment stage, mounted or copied into the container, and Production provides the web runtime.
 
@@ -62,7 +64,7 @@ If your application has an `index.php` file in its root directory:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.0-php8.5
+  joaopinto14/production:2.0.1-php8.5
 ```
 
 Open:
@@ -89,7 +91,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.0-laravel-php8.5
+  joaopinto14/production:2.0.1-laravel-php8.5
 ```
 
 Open:
@@ -115,15 +117,15 @@ as its document root.
 Use the Generic variant for PHP applications that do not need Laravel-specific configuration or extensions.
 
 ```text
-joaopinto14/production:2.0.0-php8.3
-joaopinto14/production:2.0.0-php8.4
-joaopinto14/production:2.0.0-php8.5
+joaopinto14/production:2.0.1-php8.3
+joaopinto14/production:2.0.1-php8.4
+joaopinto14/production:2.0.1-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.0-php8.5
+joaopinto14/production:2.0.1-php8.5
 ```
 
 ## Laravel
@@ -131,15 +133,15 @@ joaopinto14/production:2.0.0-php8.5
 Use the Laravel variant for Laravel applications.
 
 ```text
-joaopinto14/production:2.0.0-laravel-php8.3
-joaopinto14/production:2.0.0-laravel-php8.4
-joaopinto14/production:2.0.0-laravel-php8.5
+joaopinto14/production:2.0.1-laravel-php8.3
+joaopinto14/production:2.0.1-laravel-php8.4
+joaopinto14/production:2.0.1-laravel-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.0-laravel-php8.5
+joaopinto14/production:2.0.1-laravel-php8.5
 ```
 
 The Laravel variant adds commonly required extensions for MySQL/MariaDB, PostgreSQL, SQLite, Redis, `intl`, `bcmath`, `pcntl`, and `zip`.
@@ -149,16 +151,16 @@ The Laravel variant adds commonly required extensions for MySQL/MariaDB, Postgre
 
 # Stable tags
 
-Production 2.0.0 publishes immutable version tags and convenient stable aliases.
+Production 2.0.1 publishes immutable version tags and convenient stable aliases.
 
 | Purpose | Tag |
 |---|---|
-| Generic PHP 8.3 | `joaopinto14/production:2.0.0-php8.3` |
-| Generic PHP 8.4 | `joaopinto14/production:2.0.0-php8.4` |
-| Generic PHP 8.5 | `joaopinto14/production:2.0.0-php8.5` |
-| Laravel PHP 8.3 | `joaopinto14/production:2.0.0-laravel-php8.3` |
-| Laravel PHP 8.4 | `joaopinto14/production:2.0.0-laravel-php8.4` |
-| Laravel PHP 8.5 | `joaopinto14/production:2.0.0-laravel-php8.5` |
+| Generic PHP 8.3 | `joaopinto14/production:2.0.1-php8.3` |
+| Generic PHP 8.4 | `joaopinto14/production:2.0.1-php8.4` |
+| Generic PHP 8.5 | `joaopinto14/production:2.0.1-php8.5` |
+| Laravel PHP 8.3 | `joaopinto14/production:2.0.1-laravel-php8.3` |
+| Laravel PHP 8.4 | `joaopinto14/production:2.0.1-laravel-php8.4` |
+| Laravel PHP 8.5 | `joaopinto14/production:2.0.1-laravel-php8.5` |
 
 Stable aliases:
 
@@ -234,7 +236,7 @@ Example:
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.0-laravel-php8.5 \
+  joaopinto14/production:2.0.1-laravel-php8.5 \
   php artisan about
 ```
 
@@ -265,7 +267,7 @@ Run it with:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.0-php8.5
+  joaopinto14/production:2.0.1-php8.5
 ```
 
 ## Custom document root
@@ -277,7 +279,7 @@ docker run --rm \
   -p 8080:8080 \
   -e DOCUMENT_ROOT=/var/www/html/public \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.0-php8.5
+  joaopinto14/production:2.0.1-php8.5
 ```
 
 ---
@@ -337,7 +339,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.0-laravel-php8.5
+  joaopinto14/production:2.0.1-laravel-php8.5
 ```
 
 ## Direct PHP file protection
@@ -371,7 +373,7 @@ The same Laravel image can be used for different application services.
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.0-laravel-php8.5 \
+  joaopinto14/production:2.0.1-laravel-php8.5 \
   php artisan queue:work
 ```
 
@@ -380,7 +382,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.0-laravel-php8.5 \
+  joaopinto14/production:2.0.1-laravel-php8.5 \
   php artisan schedule:work
 ```
 
@@ -389,7 +391,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.0-laravel-php8.5 \
+  joaopinto14/production:2.0.1-laravel-php8.5 \
   php artisan migrate --force
 ```
 
@@ -398,7 +400,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.0-laravel-php8.5 \
+  joaopinto14/production:2.0.1-laravel-php8.5 \
   php artisan about
 ```
 
@@ -426,7 +428,7 @@ docker run --rm \
   -e PHP_MEMORY_LIMIT=512M \
   -e UPLOAD_MAX_SIZE=64M \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.0-php8.5
+  joaopinto14/production:2.0.1-php8.5
 ```
 
 ## Invalid timezone
@@ -512,22 +514,22 @@ docker run --rm \
   --tmpfs /tmp:rw,nosuid,nodev,noexec,size=16m \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.0-php8.5
+  joaopinto14/production:2.0.1-php8.5
 ```
 
 For Laravel, `storage/` and `bootstrap/cache/` still need writable storage.
 
 ## File permissions
 
-Production 2.0.0 **does not run `chown -R` on your application at startup**.
+Production 2.0.1 **does not run `chown -R` on your application at startup**.
 
 Application permissions should be prepared during the image build or deployment process.
 
 To discover the runtime UID and GID:
 
 ```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.0-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.0-php8.5 -g)
+UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.1-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.1-php8.5 -g)
 
 echo "$UID_RUNTIME:$GID_RUNTIME"
 ```
@@ -618,7 +620,7 @@ Production runtime
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.0-php8.5
+    image: joaopinto14/production:2.0.1-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -634,7 +636,7 @@ services:
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.0-laravel-php8.5
+    image: joaopinto14/production:2.0.1-laravel-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -647,14 +649,14 @@ services:
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
 
   queue:
-    image: joaopinto14/production:2.0.0-laravel-php8.5
+    image: joaopinto14/production:2.0.1-laravel-php8.5
     command: php artisan queue:work
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
 
   scheduler:
-    image: joaopinto14/production:2.0.0-laravel-php8.5
+    image: joaopinto14/production:2.0.1-laravel-php8.5
     command: php artisan schedule:work
     restart: unless-stopped
     volumes:
@@ -667,7 +669,7 @@ In production, secrets and application configuration should be supplied using th
 
 # Multi-architecture support
 
-Production 2.0.0 is built and validated for:
+Production 2.0.1 is built and validated for:
 
 ```text
 linux/amd64
@@ -675,6 +677,19 @@ linux/arm64
 ```
 
 When the images are published as multi-platform Docker manifests, Docker automatically selects the correct architecture for the host.
+
+## Supply-chain metadata
+
+The stable release targets are configured to publish BuildKit attestations together with the Docker Hub images:
+
+```text
+SBOM        SPDX software bill of materials
+Provenance  SLSA provenance (mode=max)
+```
+
+These attestations are registry metadata attached to the published image index. They do not add packages or tools to the Production runtime filesystem. Docker Scout can use this metadata alongside its own image analysis for package, vulnerability, and supply-chain visibility.
+
+Attestations are intentionally enabled only for registry release targets. Local and test builds remain compatible with Docker engines using image stores that do not support attestations.
 
 ---
 

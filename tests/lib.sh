@@ -3,7 +3,7 @@
 # Shared helpers for the Production test suite.
 # This file is sourced by the individual test scripts.
 
-TEST_VERSION="${VERSION:-2.0.0}"
+TEST_VERSION="${VERSION:-2.0.1}"
 TEST_IMAGE_NAME="${IMAGE_NAME:-production}"
 
 log() {
