@@ -4,6 +4,22 @@ All notable changes to Production are documented in this file.
 
 ## Unreleased
 
+No changes yet.
+
+## 2.0.1 - 2026-08-29
+
+### Security
+
+- Refreshes installed Alpine 3.24 packages with `apk upgrade --no-cache` before runtime dependencies are installed, ensuring available security fixes are applied at build time.
+- Rebuilds all Generic and Laravel variants from the current Alpine 3.24 repositories, allowing patched OpenSSL libraries and other base packages to replace vulnerable revisions when fixes are available.
+- Keeps the runtime API and application compatibility unchanged from 2.0.0.
+
+### Supply chain
+
+- Added release-only BuildKit SBOM attestations for published Docker Hub images.
+- Added release-only SLSA provenance attestations in `mode=max` for published Docker Hub images.
+- Extended the release contract to verify both supply-chain attestations are present in the Bake release plan.
+
 ### Release tooling
 
 - Generalized the stable release workflow from a hardcoded `v2.0.0` trigger to stable `vX.Y.Z` tags.

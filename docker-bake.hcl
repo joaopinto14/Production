@@ -1,5 +1,5 @@
 variable "VERSION" {
-  default = "2.0.0"
+  default = "2.0.1"
 }
 
 variable "IMAGE_NAME" {
@@ -131,6 +131,16 @@ target "laravel-php85-multiarch" {
 
 # Stable Docker Hub release targets. These targets keep immutable versioned
 # tags and also update the documented stable aliases.
+#
+# Supply-chain attestations are release-only so local/test builds remain
+# compatible with Docker engines that still use the classic image store.
+target "release-attestations" {
+  attest = [
+    "type=provenance,mode=max",
+    "type=sbom"
+  ]
+}
+
 group "release" {
   targets = [
     "php83-release", "php84-release", "php85-release",
@@ -139,7 +149,7 @@ group "release" {
 }
 
 target "php83-release" {
-  inherits  = ["php83-multiarch"]
+  inherits  = ["php83-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-php8.3",
     "${IMAGE_NAME}:php8.3"
@@ -147,7 +157,7 @@ target "php83-release" {
 }
 
 target "php84-release" {
-  inherits  = ["php84-multiarch"]
+  inherits  = ["php84-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-php8.4",
     "${IMAGE_NAME}:php8.4"
@@ -155,7 +165,7 @@ target "php84-release" {
 }
 
 target "php85-release" {
-  inherits  = ["php85-multiarch"]
+  inherits  = ["php85-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-php8.5",
     "${IMAGE_NAME}:php8.5",
@@ -165,7 +175,7 @@ target "php85-release" {
 }
 
 target "laravel-php83-release" {
-  inherits  = ["laravel-php83-multiarch"]
+  inherits  = ["laravel-php83-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-laravel-php8.3",
     "${IMAGE_NAME}:laravel-php8.3"
@@ -173,7 +183,7 @@ target "laravel-php83-release" {
 }
 
 target "laravel-php84-release" {
-  inherits  = ["laravel-php84-multiarch"]
+  inherits  = ["laravel-php84-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-laravel-php8.4",
     "${IMAGE_NAME}:laravel-php8.4"
@@ -181,7 +191,7 @@ target "laravel-php84-release" {
 }
 
 target "laravel-php85-release" {
-  inherits  = ["laravel-php85-multiarch"]
+  inherits  = ["laravel-php85-multiarch", "release-attestations"]
   tags = [
     "${IMAGE_NAME}:${VERSION}-laravel-php8.5",
     "${IMAGE_NAME}:laravel-php8.5",

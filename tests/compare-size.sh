@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.0}"
-PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0-rc.1}"
+VERSION="${VERSION:-2.0.1}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0}"
 IMAGE_NAME="${IMAGE_NAME:-production}"
 
 compressed_size() {
@@ -20,7 +20,7 @@ compressed_size() {
 }
 
 printf '%-8s %16s %16s %16s %14s\n' \
-    "PHP" "rc.1 generic" "2.0.0 generic" "2.0.0 laravel" "Laravel extra"
+    "PHP" "${PREVIOUS_VERSION} generic" "${VERSION} generic" "${VERSION} laravel" "Laravel extra"
 
 printf '%-8s %16s %16s %16s %14s\n' \
     "---" "-------------" "------------" "------------" "-------------"

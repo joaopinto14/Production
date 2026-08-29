@@ -49,6 +49,8 @@ do
 done
 assert_contains "${release_plan}" 'linux/amd64' "release amd64 platform"
 assert_contains "${release_plan}" 'linux/arm64' "release arm64 platform"
+assert_contains "${release_plan}" 'type=provenance,mode=max' "release SLSA provenance attestation"
+assert_contains "${release_plan}" 'type=sbom' "release SBOM attestation"
 
 log "Checking GitHub release workflow contract"
 workflow="$(cat .github/workflows/release.yml)"

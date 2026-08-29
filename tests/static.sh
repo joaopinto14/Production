@@ -10,6 +10,7 @@ assert_eq "${TEST_VERSION}" "${version_file}" "VERSION file mismatch"
 
 grep -F "ARG VERSION=${TEST_VERSION}" Dockerfile >/dev/null || fail "Dockerfile VERSION default is not ${TEST_VERSION}."
 grep -F "default = \"${TEST_VERSION}\"" docker-bake.hcl >/dev/null || fail "docker-bake.hcl VERSION default is not ${TEST_VERSION}."
+grep -F "apk upgrade --no-cache" Dockerfile >/dev/null || fail "Dockerfile must refresh Alpine security packages with apk upgrade --no-cache."
 
 log "Checking shell syntax"
 for script in entrypoint/*.sh tests/*.sh; do

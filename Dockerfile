@@ -4,7 +4,7 @@ ARG ALPINE_VERSION=3.24
 FROM alpine:${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
-ARG VERSION=2.0.0
+ARG VERSION=2.0.1
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
 ARG VCS_REF=unknown
@@ -75,6 +75,7 @@ RUN set -eux; \
             php${PHP_SLOT}-zip \
         "; \
     fi; \
+    apk upgrade --no-cache; \
     apk add --no-cache \
         ca-certificates \
         nginx \
