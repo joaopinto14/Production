@@ -129,7 +129,7 @@ target "laravel-php85-multiarch" {
   platforms = PLATFORMS
 }
 
-# Stable Docker Hub release targets. These targets keep the immutable 2.0.0
+# Stable Docker Hub release targets. These targets keep immutable versioned
 # tags and also update the documented stable aliases.
 group "release" {
   targets = [

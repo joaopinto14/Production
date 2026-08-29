@@ -2,6 +2,16 @@
 
 All notable changes to Production are documented in this file.
 
+## Unreleased
+
+### Release tooling
+
+- Generalized the stable release workflow from a hardcoded `v2.0.0` trigger to stable `vX.Y.Z` tags.
+- Added validation that the Git tag matches the repository `VERSION` file.
+- Added automatic GitHub Release creation after successful Docker Hub publication.
+- GitHub Releases use `RELEASE.md` as their release notes and are idempotent on re-runs.
+- Generalized release contract tests so future stable versions are not hardcoded to 2.0.0.
+
 ## 2.0.0 - 2026-08-20
 
 ### Stable release

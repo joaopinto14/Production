@@ -74,7 +74,14 @@ and both supported CPU architectures.
 
 ## Publishing
 
-The GitHub Actions release workflow publishes only from the exact Git tag:
+Stable releases are automated by the GitHub Actions release workflow. A stable tag
+must use semantic version format and match the version stored in `VERSION`:
+
+```text
+vX.Y.Z
+```
+
+For this release:
 
 ```text
 v2.0.0
@@ -88,8 +95,19 @@ DOCKERHUB_TOKEN
 
 The Docker Hub username is fixed in the workflow as `joaopinto14`.
 
-The workflow publishes the six multi-architecture images and their stable aliases
-only after the complete release validation succeeds.
+For every stable release, the workflow performs these steps in order:
+
+1. resolves and validates the Git tag;
+2. verifies that the tag version matches the `VERSION` file;
+3. runs the complete stable release validation;
+4. publishes all six multi-architecture images and stable aliases to Docker Hub;
+5. creates the corresponding GitHub Release using `RELEASE.md` as the release notes.
+
+The GitHub Release is created only after Docker Hub publication succeeds. If the
+GitHub Release already exists, the workflow treats it as complete instead of failing.
+
+The workflow can also be started manually for an existing stable tag through
+`workflow_dispatch`.
 
 ## Upgrade from 1.1.3
 

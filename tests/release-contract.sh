@@ -5,7 +5,8 @@ set -eu
 
 section "Stable release contract"
 
-assert_eq '2.0.0' "$(cat VERSION)" "stable VERSION file"
+stable_version="$(tr -d '[:space:]' < VERSION)"
+assert_eq "${TEST_VERSION}" "${stable_version}" "stable VERSION file"
 
 for variant in generic laravel; do
     for php_version in 8.3 8.4 8.5; do
@@ -25,23 +26,22 @@ for variant in generic laravel; do
     done
 done
 
-
 log "Checking stable Docker Hub release tags and platforms"
-release_plan="$(IMAGE_NAME=joaopinto14/production VERSION=2.0.0 docker buildx bake release --print)"
+release_plan="$(IMAGE_NAME=joaopinto14/production VERSION="${TEST_VERSION}" docker buildx bake release --print)"
 for tag in \
-    joaopinto14/production:2.0.0-php8.3 \
+    "joaopinto14/production:${TEST_VERSION}-php8.3" \
     joaopinto14/production:php8.3 \
-    joaopinto14/production:2.0.0-php8.4 \
+    "joaopinto14/production:${TEST_VERSION}-php8.4" \
     joaopinto14/production:php8.4 \
-    joaopinto14/production:2.0.0-php8.5 \
+    "joaopinto14/production:${TEST_VERSION}-php8.5" \
     joaopinto14/production:php8.5 \
-    joaopinto14/production:2.0.0 \
+    "joaopinto14/production:${TEST_VERSION}" \
     joaopinto14/production:latest \
-    joaopinto14/production:2.0.0-laravel-php8.3 \
+    "joaopinto14/production:${TEST_VERSION}-laravel-php8.3" \
     joaopinto14/production:laravel-php8.3 \
-    joaopinto14/production:2.0.0-laravel-php8.4 \
+    "joaopinto14/production:${TEST_VERSION}-laravel-php8.4" \
     joaopinto14/production:laravel-php8.4 \
-    joaopinto14/production:2.0.0-laravel-php8.5 \
+    "joaopinto14/production:${TEST_VERSION}-laravel-php8.5" \
     joaopinto14/production:laravel-php8.5 \
     joaopinto14/production:laravel
 do
@@ -49,4 +49,18 @@ do
 done
 assert_contains "${release_plan}" 'linux/amd64' "release amd64 platform"
 assert_contains "${release_plan}" 'linux/arm64' "release arm64 platform"
+
+log "Checking GitHub release workflow contract"
+workflow="$(cat .github/workflows/release.yml)"
+assert_contains "${workflow}" "- 'v*.*.*'" "stable tag trigger"
+assert_contains "${workflow}" 'contents: write' "GitHub Release write permission"
+assert_contains "${workflow}" 'Verify tag matches VERSION' "tag/VERSION validation"
+assert_contains "${workflow}" 'git rev-parse HEAD' "release revision resolution"
+assert_contains "${workflow}" 'VCS_REF: ${{ steps.revision.outputs.sha }}' "release image revision label"
+assert_contains "${workflow}" 'docker buildx bake release --push' "Docker Hub release publication"
+assert_contains "${workflow}" 'gh release create' "GitHub Release creation"
+assert_contains "${workflow}" '--verify-tag' "GitHub Release tag verification"
+assert_contains "${workflow}" '--notes-file RELEASE.md' "GitHub Release notes source"
+assert_contains "${workflow}" 'GitHub Release ${RELEASE_TAG} already exists' "idempotent GitHub Release handling"
+
 printf '%s\n' 'Stable release contract passed.'
