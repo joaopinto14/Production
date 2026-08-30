@@ -1,10 +1,12 @@
 server {
     listen 8080 default_server;
     listen [::]:8080 default_server;
+
     server_name _;
 
     root __DOCUMENT_ROOT__;
     index index.php;
+
     charset utf-8;
 
     client_max_body_size __UPLOAD_MAX_SIZE__;
@@ -37,16 +39,23 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param DOCUMENT_ROOT $document_root;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+
         fastcgi_hide_header X-Powered-By;
 
         fastcgi_pass unix:/run/production/php/php-fpm.sock;
+
+        fastcgi_buffer_size 32k;
+        fastcgi_buffers 8 32k;
+        fastcgi_busy_buffers_size 64k;
+
         fastcgi_read_timeout 300s;
     }
 
-    # Laravel is a front-controller application. No other PHP file under
-    # public/ should be directly executable through Nginx.
+    # Laravel uses a single front controller.
+    # Never expose or execute another PHP file from public/.
     location ~ \.php$ {
         return 404;
     }
