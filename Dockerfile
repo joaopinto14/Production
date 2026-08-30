@@ -4,10 +4,12 @@ ARG ALPINE_VERSION=3.24
 FROM alpine:${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
-ARG VERSION=2.0.1
+ARG VERSION=2.0.2
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
 ARG VCS_REF=unknown
+ARG WWW_UID=10001
+ARG WWW_GID=10001
 
 LABEL org.opencontainers.image.title="Production" \
       org.opencontainers.image.description="Lightweight PHP production runtime with optional Laravel variant" \
@@ -23,6 +25,8 @@ LABEL org.opencontainers.image.title="Production" \
       io.joaopinto.production.php-version="${PHP_VERSION}" \
       io.joaopinto.production.variant="${VARIANT}" \
       io.joaopinto.production.runtime-user="www" \
+      io.joaopinto.production.runtime-uid="${WWW_UID}" \
+      io.joaopinto.production.runtime-gid="${WWW_GID}" \
       io.joaopinto.production.runtime-port="8080"
 
 ENV PRODUCTION_VERSION="${VERSION}" \
@@ -81,8 +85,8 @@ RUN set -eux; \
         nginx \
         tzdata \
         ${PHP_PACKAGES}; \
-    addgroup -S www; \
-    adduser -S -D -H -G www www; \
+    addgroup -S -g "${WWW_GID}" www; \
+    adduser -S -D -H -u "${WWW_UID}" -G www www; \
     mkdir -p \
         /usr/local/bin \
         /usr/local/sbin \

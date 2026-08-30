@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.1}"
-PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.0}"
+VERSION="${VERSION:-2.0.2}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.1}"
 IMAGE_NAME="${IMAGE_NAME:-production}"
 
 compressed_size() {

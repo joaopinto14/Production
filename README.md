@@ -1,8 +1,8 @@
-# Production 2.0.1
+# Production 2.0.2
 
 **Production** is a small, production-focused Docker image for running **PHP applications** with **Nginx + PHP-FPM** already configured.
 
-Production 2.0.1 is a security and supply-chain maintenance release. It refreshes Alpine 3.24 packages to current patched revisions at build time and publishes SBOM and SLSA provenance attestations with stable registry releases.
+Production 2.0.2 is a maintenance release focused on Laravel FastCGI reliability and predictable non-root file permissions. It keeps the Alpine 3.24 security refresh and SBOM/SLSA provenance publication introduced in 2.0.1.
 
 It is designed to keep deployment simple: your application is prepared during the build/deployment stage, mounted or copied into the container, and Production provides the web runtime.
 
@@ -64,7 +64,7 @@ If your application has an `index.php` file in its root directory:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.1-php8.5
+  joaopinto14/production:2.0.2-php8.5
 ```
 
 Open:
@@ -85,13 +85,19 @@ The default document root is:
 
 For a Laravel project with `vendor/` already installed:
 
+Prepare Laravel's writable directories on the host once:
+
+```bash
+sudo chown -R 10001:10001 storage bootstrap/cache
+```
+
 ```bash
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.1-laravel-php8.5
+  joaopinto14/production:2.0.2-laravel-php8.5
 ```
 
 Open:
@@ -117,15 +123,15 @@ as its document root.
 Use the Generic variant for PHP applications that do not need Laravel-specific configuration or extensions.
 
 ```text
-joaopinto14/production:2.0.1-php8.3
-joaopinto14/production:2.0.1-php8.4
-joaopinto14/production:2.0.1-php8.5
+joaopinto14/production:2.0.2-php8.3
+joaopinto14/production:2.0.2-php8.4
+joaopinto14/production:2.0.2-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.1-php8.5
+joaopinto14/production:2.0.2-php8.5
 ```
 
 ## Laravel
@@ -133,15 +139,15 @@ joaopinto14/production:2.0.1-php8.5
 Use the Laravel variant for Laravel applications.
 
 ```text
-joaopinto14/production:2.0.1-laravel-php8.3
-joaopinto14/production:2.0.1-laravel-php8.4
-joaopinto14/production:2.0.1-laravel-php8.5
+joaopinto14/production:2.0.2-laravel-php8.3
+joaopinto14/production:2.0.2-laravel-php8.4
+joaopinto14/production:2.0.2-laravel-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.1-laravel-php8.5
+joaopinto14/production:2.0.2-laravel-php8.5
 ```
 
 The Laravel variant adds commonly required extensions for MySQL/MariaDB, PostgreSQL, SQLite, Redis, `intl`, `bcmath`, `pcntl`, and `zip`.
@@ -151,16 +157,16 @@ The Laravel variant adds commonly required extensions for MySQL/MariaDB, Postgre
 
 # Stable tags
 
-Production 2.0.1 publishes immutable version tags and convenient stable aliases.
+Production 2.0.2 publishes immutable version tags and convenient stable aliases.
 
 | Purpose | Tag |
 |---|---|
-| Generic PHP 8.3 | `joaopinto14/production:2.0.1-php8.3` |
-| Generic PHP 8.4 | `joaopinto14/production:2.0.1-php8.4` |
-| Generic PHP 8.5 | `joaopinto14/production:2.0.1-php8.5` |
-| Laravel PHP 8.3 | `joaopinto14/production:2.0.1-laravel-php8.3` |
-| Laravel PHP 8.4 | `joaopinto14/production:2.0.1-laravel-php8.4` |
-| Laravel PHP 8.5 | `joaopinto14/production:2.0.1-laravel-php8.5` |
+| Generic PHP 8.3 | `joaopinto14/production:2.0.2-php8.3` |
+| Generic PHP 8.4 | `joaopinto14/production:2.0.2-php8.4` |
+| Generic PHP 8.5 | `joaopinto14/production:2.0.2-php8.5` |
+| Laravel PHP 8.3 | `joaopinto14/production:2.0.2-laravel-php8.3` |
+| Laravel PHP 8.4 | `joaopinto14/production:2.0.2-laravel-php8.4` |
+| Laravel PHP 8.5 | `joaopinto14/production:2.0.2-laravel-php8.5` |
 
 Stable aliases:
 
@@ -236,7 +242,7 @@ Example:
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.1-laravel-php8.5 \
+  joaopinto14/production:2.0.2-laravel-php8.5 \
   php artisan about
 ```
 
@@ -267,7 +273,7 @@ Run it with:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.1-php8.5
+  joaopinto14/production:2.0.2-php8.5
 ```
 
 ## Custom document root
@@ -279,7 +285,7 @@ docker run --rm \
   -p 8080:8080 \
   -e DOCUMENT_ROOT=/var/www/html/public \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.1-php8.5
+  joaopinto14/production:2.0.2-php8.5
 ```
 
 ---
@@ -339,7 +345,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.1-laravel-php8.5
+  joaopinto14/production:2.0.2-laravel-php8.5
 ```
 
 ## Direct PHP file protection
@@ -373,7 +379,7 @@ The same Laravel image can be used for different application services.
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.1-laravel-php8.5 \
+  joaopinto14/production:2.0.2-laravel-php8.5 \
   php artisan queue:work
 ```
 
@@ -382,7 +388,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.1-laravel-php8.5 \
+  joaopinto14/production:2.0.2-laravel-php8.5 \
   php artisan schedule:work
 ```
 
@@ -391,7 +397,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.1-laravel-php8.5 \
+  joaopinto14/production:2.0.2-laravel-php8.5 \
   php artisan migrate --force
 ```
 
@@ -400,7 +406,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.1-laravel-php8.5 \
+  joaopinto14/production:2.0.2-laravel-php8.5 \
   php artisan about
 ```
 
@@ -428,7 +434,7 @@ docker run --rm \
   -e PHP_MEMORY_LIMIT=512M \
   -e UPLOAD_MAX_SIZE=64M \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.1-php8.5
+  joaopinto14/production:2.0.2-php8.5
 ```
 
 ## Invalid timezone
@@ -514,24 +520,52 @@ docker run --rm \
   --tmpfs /tmp:rw,nosuid,nodev,noexec,size=16m \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.1-php8.5
+  joaopinto14/production:2.0.2-php8.5
 ```
 
 For Laravel, `storage/` and `bootstrap/cache/` still need writable storage.
 
 ## File permissions
 
-Production 2.0.1 **does not run `chown -R` on your application at startup**.
+Production 2.0.2 **does not run `chown -R` or `chmod -R` on your application at startup**. The container starts directly as the non-root `www` user and never needs a privileged permission-fixing phase.
 
-Application permissions should be prepared during the image build or deployment process.
+The official images use a stable runtime identity:
 
-To discover the runtime UID and GID:
+```text
+www UID = 10001
+www GID = 10001
+```
+
+This makes bind-mount permissions predictable across Production releases. When a Laravel project is mounted from the host, the host remains responsible for the mounted files and directories.
+
+Laravel normally needs write access only to:
+
+```text
+storage/
+bootstrap/cache/
+```
+
+Prepare those directories on the host before starting the container:
 
 ```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.1-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.1-php8.5 -g)
+sudo chown -R 10001:10001 storage bootstrap/cache
+```
+
+The rest of the application can remain read-only to the runtime user.
+
+You can verify the runtime identity directly from the image:
+
+```bash
+UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.2-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.2-php8.5 -g)
 
 echo "$UID_RUNTIME:$GID_RUNTIME"
+```
+
+Expected output:
+
+```text
+10001:10001
 ```
 
 ---
@@ -620,7 +654,7 @@ Production runtime
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.1-php8.5
+    image: joaopinto14/production:2.0.2-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -636,7 +670,7 @@ services:
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.1-laravel-php8.5
+    image: joaopinto14/production:2.0.2-laravel-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -649,14 +683,14 @@ services:
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
 
   queue:
-    image: joaopinto14/production:2.0.1-laravel-php8.5
+    image: joaopinto14/production:2.0.2-laravel-php8.5
     command: php artisan queue:work
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
 
   scheduler:
-    image: joaopinto14/production:2.0.1-laravel-php8.5
+    image: joaopinto14/production:2.0.2-laravel-php8.5
     command: php artisan schedule:work
     restart: unless-stopped
     volumes:
@@ -669,7 +703,7 @@ In production, secrets and application configuration should be supplied using th
 
 # Multi-architecture support
 
-Production 2.0.1 is built and validated for:
+Production 2.0.2 is built and validated for:
 
 ```text
 linux/amd64
@@ -909,6 +943,14 @@ www
 Applications should no longer depend on root privileges during startup.
 
 This improves runtime security but means mounted volume permissions must be correct before the container starts.
+
+Starting with Production 2.0.2, the official images use a stable runtime identity:
+
+```text
+www = 10001:10001
+```
+
+For Laravel bind mounts, prepare `storage/` and `bootstrap/cache/` for that UID/GID on the host.
 
 ---
 

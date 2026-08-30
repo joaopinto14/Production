@@ -6,6 +6,25 @@ All notable changes to Production are documented in this file.
 
 No changes yet.
 
+## 2.0.2 - 2026-08-30
+
+### Fixed
+
+- Added explicit Laravel FastCGI response buffers (`32k`, `8 x 32k`, busy buffer `64k`) to avoid `upstream sent too big header while reading response header from upstream` failures caused by Nginx defaults.
+- Laravel FastCGI now passes resolved real paths to PHP-FPM through `$realpath_root` for `SCRIPT_FILENAME` and `DOCUMENT_ROOT`.
+
+### Permissions
+
+- Assigned the non-root `www` runtime user a stable UID/GID of `10001:10001` in official images.
+- Added OCI labels for the runtime UID and GID.
+- Kept the secure non-root startup model: Production does not perform recursive `chown`/`chmod` on mounted applications.
+- Documented the host-side Laravel permission contract for `storage/` and `bootstrap/cache/`.
+
+### Validation
+
+- Added static regression checks for Laravel FastCGI buffers and real-path forwarding.
+- Added image-contract checks for the stable `www` UID/GID and runtime identity labels.
+
 ## 2.0.1 - 2026-08-29
 
 ### Security

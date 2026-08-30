@@ -18,6 +18,8 @@ for variant in ${VARIANTS}; do
         assert_eq "${TEST_VERSION}" "$(docker image inspect "${image}" --format '{{index .Config.Labels "org.opencontainers.image.version"}}')" "OCI version"
         assert_eq "${php_version}" "$(docker image inspect "${image}" --format '{{index .Config.Labels "io.joaopinto.production.php-version"}}')" "PHP label"
         assert_eq "${variant}" "$(docker image inspect "${image}" --format '{{index .Config.Labels "io.joaopinto.production.variant"}}')" "variant label"
+        assert_eq "10001" "$(docker image inspect "${image}" --format '{{index .Config.Labels "io.joaopinto.production.runtime-uid"}}')" "runtime UID label"
+        assert_eq "10001" "$(docker image inspect "${image}" --format '{{index .Config.Labels "io.joaopinto.production.runtime-gid"}}')" "runtime GID label"
         assert_eq "8080" "$(docker image inspect "${image}" --format '{{index .Config.Labels "io.joaopinto.production.runtime-port"}}')" "runtime port label"
 
         entrypoint="$(docker image inspect "${image}" --format '{{json .Config.Entrypoint}}')"
@@ -38,6 +40,9 @@ for variant in ${VARIANTS}; do
         assert_eq "${php_version}" "${actual_php}" "PHP runtime version"
 
         runtime_uid="$(docker run --rm --entrypoint /usr/bin/id "${image}" -u)"
+        runtime_gid="$(docker run --rm --entrypoint /usr/bin/id "${image}" -g)"
+        assert_eq "10001" "${runtime_uid}" "stable runtime UID"
+        assert_eq "10001" "${runtime_gid}" "stable runtime GID"
         assert_ne "0" "${runtime_uid}" "image must not run as root"
 
         slot="$(printf '%s' "${php_version}" | tr -d '.')"
