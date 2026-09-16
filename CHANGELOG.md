@@ -4,7 +4,10 @@ All notable changes to Production are documented in this file.
 
 ## Unreleased
 
-No changes yet.
+### Fixed
+
+- Resolve each registry image index to its architecture-specific manifest digest before collecting package inventories. This avoids `cannot overwrite digest` when a classic Docker image store pulls amd64 and arm64 through the same index digest.
+- Record both the requested image reference and the resolved platform reference in package reports; add regression tests for platform selection, attestations, registry ports and missing/ambiguous manifests.
 
 ## 2.0.3 - 2026-09-16
 
