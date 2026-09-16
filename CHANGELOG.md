@@ -4,7 +4,30 @@ All notable changes to Production are documented in this file.
 
 ## Unreleased
 
-No changes yet.
+### Fixed
+
+- Resolve each registry image index to its architecture-specific manifest digest before collecting package inventories. This avoids `cannot overwrite digest` when a classic Docker image store pulls amd64 and arm64 through the same index digest.
+- Record both the requested image reference and the resolved platform reference in package reports; add regression tests for platform selection, attestations, registry ports and missing/ambiguous manifests.
+
+## 2.0.3 - 2026-09-16
+
+### Security and reliability
+
+- Evaluate hidden-path denial before PHP handlers in both Nginx templates, including hidden PHP files, directories and PATH_INFO. Restrict the ACME exception to the exact `.well-known` path segment.
+- Validate memory/upload sizes, web document roots and timezones before writing runtime configuration; reject line breaks and unsafe directives.
+- Preserve CLI commands without a web document root and document disabling the inherited HTTP health check for workers and schedulers.
+- Serialize releases and prevent historical versions from promoting stable aliases when a newer stable tag exists.
+
+### Package transparency
+
+- Generate package comparisons from the previous stable registry images and the digests of newly published images, covering all six variants on amd64 and arm64.
+- Include package names, old/new versions, additions/removals and image identities in Markdown/JSON release attachments and GitHub Release notes.
+- Record local amd64 updates in `reports/2.0.3-local-packages.md`: apk-tools/libapk 3.0.7-r0 → 3.0.8-r0, libcurl 8.21.0-r0 → 8.22.0-r0, pcre2 10.47-r1 → 10.48-r0, tzdata 2026c-r0 → 2026d-r0, xz-libs 5.8.3-r0 → 5.8.4-r0, PHP 8.4.24-r0 → 8.4.25-r0 and PHP 8.5.9-r0 → 8.5.10-r0 with bundled extensions. Published inventories are generated separately; no CVE remediation is inferred from package changes alone.
+
+### Validation
+
+- Add HTTP regression coverage for hidden paths and a real 16 KiB FastCGI response header.
+- Add negative configuration tests, numeric release-policy tests and package inventory comparison tests.
 
 ## 2.0.3 - 2026-09-16
 

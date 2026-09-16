@@ -33,15 +33,49 @@ def changes(before, after):
             for name in sorted(before.keys() | after.keys()) if before.get(name) != after.get(name)]
 
 
+def platform_reference(reference, platform):
+    """Pull a child manifest, not one shared index under multiple platforms.
+
+    Classic Docker image stores cannot bind the same index digest to both
+    architecture-specific images. Resolving in the registry also avoids pulling
+    BuildKit attestation manifests (normally marked unknown/unknown).
+    """
+    manifest = json.loads(run("docker", "buildx", "imagetools", "inspect", "--raw", reference))
+    if "manifests" not in manifest:
+        return reference  # Single-platform manifest; inventory verifies its OS/arch.
+    parts = platform.split("/")
+    if len(parts) not in (2, 3):
+        raise ValueError(f"Expected os/architecture[/variant], got {platform}")
+    matches = []
+    for descriptor in manifest["manifests"]:
+        candidate = descriptor.get("platform", {})
+        if (candidate.get("os"), candidate.get("architecture")) != tuple(parts[:2]):
+            continue
+        if len(parts) == 3 and candidate.get("variant") != parts[2]:
+            continue
+        if descriptor.get("annotations", {}).get("vnd.docker.reference.type") == "attestation-manifest":
+            continue
+        matches.append(descriptor["digest"])
+    if len(matches) != 1:
+        raise ValueError(f"Expected exactly one image manifest for {platform} in {reference}; found {len(matches)}")
+    # Strip a tag/digest without stripping a registry port.
+    name = reference.split("@", 1)[0]
+    parent, separator, leaf = name.rpartition("/")
+    repository = parent + separator + leaf.split(":", 1)[0]
+    return f"{repository}@{matches[0]}"
+
+
 def inventory(reference, platform, local):
+    resolved_reference = reference if local else platform_reference(reference, platform)
     if not local:
-        subprocess.run(["docker", "pull", "--platform", platform, reference], check=True, stdout=subprocess.DEVNULL)
-    container = run("docker", "create", "--platform", platform, "--entrypoint", "/bin/true", reference)
+        subprocess.run(["docker", "pull", "--platform", platform, resolved_reference], check=True, stdout=subprocess.DEVNULL)
+    container = run("docker", "create", "--platform", platform, "--entrypoint", "/bin/true", resolved_reference)
     try:
         image_id = run("docker", "inspect", "--format", "{{.Image}}", container)
         info = json.loads(run("docker", "image", "inspect", image_id))[0]
         actual = f'{info["Os"]}/{info["Architecture"]}'
-        if actual != platform:
+        expected = "/".join(platform.split("/")[:2])
+        if actual != expected:
             raise ValueError(f"Platform mismatch for {reference}: expected {platform}, got {actual}")
         archive = subprocess.check_output(["docker", "cp", f"{container}:/lib/apk/db/installed", "-"])
         with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
@@ -49,7 +83,8 @@ def inventory(reference, platform, local):
             if len(members) != 1:
                 raise ValueError("Unexpected APK inventory archive")
             packages = parse_inventory(tar.extractfile(members[0]).read().decode())
-        return dict(reference=reference, image_id=image_id, registry_digests=info.get("RepoDigests", []), packages=packages)
+        return dict(reference=reference, resolved_reference=resolved_reference, image_id=image_id,
+                    registry_digests=info.get("RepoDigests", []), packages=packages)
     finally:
         subprocess.run(["docker", "rm", container], check=True, stdout=subprocess.DEVNULL)
 
