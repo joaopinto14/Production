@@ -38,7 +38,7 @@ See [the detailed local package comparison](reports/2.0.3-local-packages.md) and
 
 No specific CVE correction is claimed from a version comparison alone. The reported Docker Scout high-severity finding must be checked against its CVE and a scan of the published digest. Docker Scout was not available during local preparation.
 
-## Compatibility
+Application code can remain read-only to the runtime user.
 
 Alpine 3.24, PHP 8.3/8.4/8.5, Generic/Laravel variants, port 8080, UID/GID 10001:10001, CLI mode, non-root execution and the existing `/healthz` response are retained.
 
