@@ -1,3 +1,11 @@
 # Folders
 
 .idea
+
+# Host-side release tooling
+__pycache__/
+*.pyc
+/release-metadata.json
+/release-packages.json
+/release-packages.md
+/release-notes.md

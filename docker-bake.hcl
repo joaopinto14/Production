@@ -1,5 +1,5 @@
 variable "VERSION" {
-  default = "2.0.2"
+  default = "2.0.3"
 }
 
 variable "IMAGE_NAME" {
@@ -8,6 +8,11 @@ variable "IMAGE_NAME" {
 
 variable "VCS_REF" {
   default = "unknown"
+}
+
+# Historical releases may publish version tags, but must not roll back aliases.
+variable "PUBLISH_ALIASES" {
+  default = true
 }
 
 variable "PLATFORMS" {
@@ -150,51 +155,30 @@ group "release" {
 
 target "php83-release" {
   inherits  = ["php83-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-php8.3",
-    "${IMAGE_NAME}:php8.3"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-php8.3"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:php8.3"] : [])
 }
 
 target "php84-release" {
   inherits  = ["php84-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-php8.4",
-    "${IMAGE_NAME}:php8.4"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-php8.4"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:php8.4"] : [])
 }
 
 target "php85-release" {
   inherits  = ["php85-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-php8.5",
-    "${IMAGE_NAME}:php8.5",
-    "${IMAGE_NAME}:${VERSION}",
-    "${IMAGE_NAME}:latest"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-php8.5", "${IMAGE_NAME}:${VERSION}"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:php8.5", "${IMAGE_NAME}:latest"] : [])
 }
 
 target "laravel-php83-release" {
   inherits  = ["laravel-php83-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-laravel-php8.3",
-    "${IMAGE_NAME}:laravel-php8.3"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-laravel-php8.3"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:laravel-php8.3"] : [])
 }
 
 target "laravel-php84-release" {
   inherits  = ["laravel-php84-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-laravel-php8.4",
-    "${IMAGE_NAME}:laravel-php8.4"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-laravel-php8.4"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:laravel-php8.4"] : [])
 }
 
 target "laravel-php85-release" {
   inherits  = ["laravel-php85-multiarch", "release-attestations"]
-  tags = [
-    "${IMAGE_NAME}:${VERSION}-laravel-php8.5",
-    "${IMAGE_NAME}:laravel-php8.5",
-    "${IMAGE_NAME}:laravel"
-  ]
+  tags = concat(["${IMAGE_NAME}:${VERSION}-laravel-php8.5"], PUBLISH_ALIASES ? ["${IMAGE_NAME}:laravel-php8.5", "${IMAGE_NAME}:laravel"] : [])
 }

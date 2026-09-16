@@ -32,6 +32,11 @@ server {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+    # Regex locations are evaluated in order: protect hidden paths before PHP.
+    location ~ /\.(?!well-known(?:/|$)) {
+        deny all;
+    }
+
     location ~ \.php$ {
         try_files $uri =404;
 
@@ -44,7 +49,4 @@ server {
         fastcgi_read_timeout 300s;
     }
 
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
 }

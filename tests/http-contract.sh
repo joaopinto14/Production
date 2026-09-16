@@ -20,12 +20,23 @@ trap cleanup EXIT INT TERM
 
 make_common_files() {
     root="$1"
-    mkdir -p "${root}/.well-known"
+    mkdir -p "${root}/.well-known/.hidden" "${root}/.private" "${root}/.well-known-secret"
     printf '%s' 'static-ok' > "${root}/static.txt"
     printf '%s' 'secret' > "${root}/.env"
     printf '%s' 'acme-ok' > "${root}/.well-known/acme.txt"
     chmod 0644 "${root}/static.txt" "${root}/.env" "${root}/.well-known/acme.txt"
     chmod 0755 "${root}/.well-known"
+    for file in .hidden.php .private/secret.php .well-known/.hidden/secret.php .well-known-secret/secret.php; do
+        printf '%s' '<?php echo "hidden-php-must-not-run";' > "${root}/${file}"
+        chmod 0644 "${root}/${file}"
+    done
+    chmod 0755 "${root}/.private" "${root}/.well-known-secret" "${root}/.well-known/.hidden"
+}
+
+assert_hidden_paths() {
+    for path in /.hidden.php /.private/secret.php /.well-known/.hidden/secret.php /.well-known-secret/secret.php /index.php/.private/secret; do
+        assert_eq '403' "$(http_status "$1" "${path}")" "hidden path protection: ${path}"
+    done
 }
 
 GENERIC_DIR="$(mktemp -d)"; DIRS="${DIRS} ${GENERIC_DIR}"; chmod 0755 "${GENERIC_DIR}"
@@ -49,6 +60,7 @@ assert_eq 'front|/route?x=1|GET' "$(http_body "${GENERIC}" '/route?x=1')" "gener
 assert_eq 'direct-ok' "$(http_body "${GENERIC}" /direct.php)" "generic direct PHP execution"
 assert_eq 'static-ok' "$(http_body "${GENERIC}" /static.txt)" "generic static file"
 assert_eq '403' "$(http_status "${GENERIC}" /.env)" "generic dotfile protection"
+assert_hidden_paths "${GENERIC}"
 assert_eq 'acme-ok' "$(http_body "${GENERIC}" /.well-known/acme.txt)" "ACME well-known access"
 assert_eq 'ok' "$(http_body "${GENERIC}" /healthz)" "generic health endpoint"
 
@@ -74,6 +86,11 @@ make_common_files "${LARAVEL_DIR}/public"
 cat > "${LARAVEL_DIR}/public/index.php" <<'EOF_PHP'
 <?php
 header('Content-Type: text/plain');
+if (isset($_GET['large_header'])) {
+    header('X-Production-Large: ' . str_repeat('x', 16384));
+    echo 'large-header-ok';
+    exit;
+}
 echo 'laravel-front|' . ($_SERVER['REQUEST_URI'] ?? '') . '|' . ($_SERVER['REQUEST_METHOD'] ?? '');
 EOF_PHP
 cat > "${LARAVEL_DIR}/public/direct.php" <<'EOF_PHP'
@@ -90,6 +107,8 @@ assert_eq 'laravel-front|/users/42?active=1|GET' "$(http_body "${LARAVEL}" '/use
 assert_eq '404' "$(http_status "${LARAVEL}" /direct.php)" "Laravel direct PHP protection"
 assert_eq 'static-ok' "$(http_body "${LARAVEL}" /static.txt)" "Laravel static file"
 assert_eq '403' "$(http_status "${LARAVEL}" /.env)" "Laravel dotfile protection"
+assert_hidden_paths "${LARAVEL}"
+assert_eq 'large-header-ok' "$(http_body "${LARAVEL}" '/?large_header=1')" "Laravel 16 KiB FastCGI response header"
 assert_eq 'acme-ok' "$(http_body "${LARAVEL}" /.well-known/acme.txt)" "Laravel ACME well-known access"
 assert_eq 'ok' "$(http_body "${LARAVEL}" /healthz)" "Laravel health endpoint"
 

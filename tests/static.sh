@@ -25,6 +25,8 @@ grep -F 'fastcgi_read_timeout 300s;' nginx/laravel.conf.template >/dev/null || f
 grep -F 'location ~ \.php$ {' nginx/laravel.conf.template >/dev/null || fail "Laravel must block direct execution/exposure of non-front-controller PHP files."
 
 log "Checking shell syntax"
+python3 tests/release-policy.py
+python3 tests/package-report.py
 for script in entrypoint/*.sh tests/*.sh; do
     sh -n "${script}" || fail "Shell syntax error in ${script}."
 done

@@ -74,4 +74,26 @@ rm -f "${TMP_LOG}"
 log "Allowing CLI commands without a web document root"
 docker run --rm -e DOCUMENT_ROOT=/does/not/exist "${IMAGE}" php -r 'echo "cli-ok";' | grep -qx 'cli-ok' || fail "CLI command incorrectly depends on DOCUMENT_ROOT."
 
+log "Rejecting unsafe or malformed configuration before starting services"
+check_invalid() {
+    key="$1"
+    value="$2"
+    message="$3"
+    output="$(docker run --rm -e "${key}=${value}" "${IMAGE}" 2>&1)" && fail "${key} unexpectedly accepted an invalid value"
+    assert_contains "${output}" "${message}" "invalid ${key} error"
+}
+check_invalid PHP_MEMORY_LIMIT 128MB 'Invalid PHP_MEMORY_LIMIT'
+check_invalid PHP_MEMORY_LIMIT '128M;display_errors=On' 'Invalid PHP_MEMORY_LIMIT'
+check_invalid UPLOAD_MAX_SIZE -1 'Invalid UPLOAD_MAX_SIZE'
+check_invalid UPLOAD_MAX_SIZE '8M; client_max_body_size 0;' 'Invalid UPLOAD_MAX_SIZE'
+check_invalid PHP_MEMORY_LIMIT "$(printf '128M\ndisplay_errors=On')" 'line breaks'
+check_invalid UPLOAD_MAX_SIZE "$(printf '8M\n8M')" 'line breaks'
+check_invalid DOCUMENT_ROOT '/var/www/html;include /tmp/evil.conf;' 'Invalid DOCUMENT_ROOT'
+check_invalid DOCUMENT_ROOT relative/path 'Invalid DOCUMENT_ROOT'
+check_invalid TIMEZONE '../UTC' 'Invalid timezone'
+
+log "Preserving unlimited PHP memory and case-insensitive size units"
+docker run --rm -e PHP_MEMORY_LIMIT=-1 -e UPLOAD_MAX_SIZE=2m "${IMAGE}" php -r \
+    'exit(ini_get("memory_limit") === "-1" && ini_get("upload_max_filesize") === "2m" ? 0 : 1);'
+
 printf '%s\n' 'Runtime configuration tests passed.'

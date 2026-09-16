@@ -10,3 +10,8 @@ CHANGELOG.md
 tests
 
 RELEASE.md
+scripts
+reports
+__pycache__
+release-*.json
+release-*.md

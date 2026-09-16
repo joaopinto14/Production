@@ -1,164 +1,63 @@
-# Production 2.0.2 — Laravel Runtime Reliability Release
+# Production 2.0.3 — Runtime Hardening and Package Transparency
 
-Production 2.0.2 is a maintenance release focused on Laravel FastCGI reliability and predictable non-root permissions while preserving the Production 2.x runtime architecture.
+Production 2.0.3 is a maintenance release for the Generic and Laravel PHP runtime.
 
-## What changed
+## Runtime fixes
 
-### Laravel FastCGI buffering
+- Hidden-file and hidden-directory protection now takes precedence over PHP execution in both Nginx templates. The ACME exception matches the exact `.well-known` path segment, and hidden descendants remain blocked.
+- Runtime configuration rejects invalid memory/upload syntax, unsafe web document roots, timezone traversal and line breaks before writing PHP or Nginx configuration.
+- Memory limits accept bytes, K/M/G (case-insensitive), or `-1`. Upload limits accept bytes or K/M/G. Web document roots must be absolute and contain only letters, digits, slash, dot, underscore or hyphen.
+- CLI commands still do not require an existing web document root.
+- CLI/queue/scheduler examples disable the inherited HTTP health check, which requires Nginx. Applications may supply their own worker-specific checks.
 
-The Laravel Nginx template now defines explicit response buffers instead of relying on Nginx defaults:
+## Release reliability
 
-```nginx
-fastcgi_buffer_size 32k;
-fastcgi_buffers 8 32k;
-fastcgi_busy_buffers_size 64k;
-fastcgi_read_timeout 300s;
-```
+Stable publication is serialized. Immediately before publishing, the workflow fetches tags and compares numeric stable versions. A historical release can publish its version-specific tags but cannot promote the shared stable aliases when a newer stable tag exists. Prerelease tags do not control this decision.
 
-This prevents common Laravel failures such as:
+This safeguard applies to workflows containing this change; it does not retroactively modify workflows stored in older Git tags. Only the latest stable release should promote aliases through a manual publishing process.
 
-```text
-upstream sent too big header while reading response header from upstream
-```
+Image signing and promotion of the exact tested build artifacts remain separate follow-up work. This release does not claim that mutable package repositories make independent rebuilds byte-for-byte reproducible.
 
-The Laravel front-controller FastCGI parameters also use `$realpath_root`, making resolved paths explicit when deployments use symlinks.
+## Package updates
 
-### Predictable non-root permissions
+Every successful release now appends a package-by-package comparison with the previous stable release to its GitHub Release notes and attaches Markdown and JSON inventories. The report covers Generic/Laravel, PHP 8.3/8.4/8.5 and amd64/arm64. Current-image references come from the digests returned by the actual publication.
 
-Official Production images now use a stable runtime identity:
+The local amd64 preparation for 2.0.3 confirmed these changes against the existing local 2.0.2 images:
 
-```text
-www UID = 10001
-www GID = 10001
-```
+| Packages | Previous | New | Affected variants |
+|---|---|---|---|
+| apk-tools, libapk | 3.0.7-r0 | 3.0.8-r0 | All six |
+| libcurl | 8.21.0-r0 | 8.22.0-r0 | All six |
+| pcre2 | 10.47-r1 | 10.48-r0 | All six |
+| tzdata | 2026c-r0 | 2026d-r0 | All six |
+| xz-libs | 5.8.3-r0 | 5.8.4-r0 | All six |
+| PHP 8.4 core and bundled extensions | 8.4.24-r0 | 8.4.25-r0 | Generic and Laravel PHP 8.4 |
+| PHP 8.5 core and bundled extensions | 8.5.9-r0 | 8.5.10-r0 | Generic and Laravel PHP 8.5 |
 
-Production still starts directly as `www`. It does not start as root and does not recursively change ownership or permissions on mounted applications.
+See [the detailed local package comparison](reports/2.0.3-local-packages.md) and [machine-readable evidence](reports/2.0.3-local-packages.json). These are local build observations, not a claim about the eventual published images; the automatically attached registry report is authoritative for publication.
 
-For Laravel bind mounts, the host should grant the runtime identity write access to only the directories Laravel needs to modify:
-
-```bash
-sudo chown -R 10001:10001 storage bootstrap/cache
-```
+No specific CVE correction is claimed from a version comparison alone. The reported Docker Scout high-severity finding must be checked against its CVE and a scan of the published digest. Docker Scout was not available during local preparation.
 
 Application code can remain read-only to the runtime user.
 
-## Security and supply chain
+Alpine 3.24, PHP 8.3/8.4/8.5, Generic/Laravel variants, port 8080, UID/GID 10001:10001, CLI mode, non-root execution and the existing `/healthz` response are retained.
 
-Production 2.0.2 retains the 2.0.1 security and supply-chain behavior:
+The `/healthz` endpoint checks Nginx only; it does not execute PHP or verify application dependencies. Configuration values outside the documented syntax now fail early.
 
-- Alpine 3.24 package refresh with `apk upgrade --no-cache` during builds;
-- non-root runtime;
-- support for read-only root filesystems;
-- SBOM attestations on stable registry releases;
-- SLSA provenance attestations in `mode=max`;
-- stable release contract validation before Docker Hub publication.
+## Validation
 
-## Compatibility
+The release gate remains `./tests/test-release.sh`: clean builds, six-image contracts, smoke tests, configuration, HTTP behavior, concurrency, logging, crash/signal handling, hardened execution, size budgets, real PHP/Laravel applications, restart stability and amd64/arm64 builds.
 
-The following remain unchanged:
-
-- Alpine Linux 3.24 base branch;
-- PHP 8.3, 8.4 and 8.5 variants;
-- Generic and Laravel variants;
-- Nginx + PHP-FPM runtime;
-- internal port 8080;
-- `/healthz` health endpoint;
-- environment-variable configuration;
-- CLI mode;
-- `linux/amd64` and `linux/arm64`.
-
-The stable UID/GID is an intentional permission-contract improvement. Hosts using bind mounts should prepare Laravel writable directories for `10001:10001` before starting the container.
-
-## Official Docker Hub repository
-
-```text
-joaopinto14/production
-```
-
-## Stable images
-
-### Generic
-
-```text
-joaopinto14/production:2.0.2-php8.3
-joaopinto14/production:2.0.2-php8.4
-joaopinto14/production:2.0.2-php8.5
-```
-
-Stable aliases:
-
-```text
-joaopinto14/production:php8.3
-joaopinto14/production:php8.4
-joaopinto14/production:php8.5
-joaopinto14/production:2.0.2
-joaopinto14/production:latest
-```
-
-`2.0.2` and `latest` point to the Generic PHP 8.5 image.
-
-### Laravel
-
-```text
-joaopinto14/production:2.0.2-laravel-php8.3
-joaopinto14/production:2.0.2-laravel-php8.4
-joaopinto14/production:2.0.2-laravel-php8.5
-```
-
-Stable aliases:
-
-```text
-joaopinto14/production:laravel-php8.3
-joaopinto14/production:laravel-php8.4
-joaopinto14/production:laravel-php8.5
-joaopinto14/production:laravel
-```
-
-`laravel` points to the Laravel PHP 8.5 image.
-
-## Architectures
-
-Every published release target contains:
-
-```text
-linux/amd64
-linux/arm64
-```
-
-## Release validation
-
-Before publication, the workflow runs:
-
-```bash
-./tests/test-release.sh
-```
-
-The stable gate validates clean builds, image contracts, smoke tests, configuration, HTTP behavior, concurrency, logs, crash/signal handling, hardened execution, size budgets, real PHP applications, a real Laravel application, restart stability, supported CPU architectures, stable runtime UID/GID, Laravel FastCGI configuration, release tags, and supply-chain attestations.
+New regression coverage includes hidden PHP files and directories, hidden PATH_INFO, exact ACME exceptions, invalid configuration, a real 16 KiB FastCGI response header, stable alias selection and package inventory comparisons.
 
 ## Publishing
 
-The stable release tag for this version is:
+The release tag is `v2.0.3` and must match `VERSION`. The official repository is `joaopinto14/production`.
 
-```text
-v2.0.2
-```
+Version tags follow `2.0.3-php8.x` and `2.0.3-laravel-php8.x`. When eligible for alias promotion, Generic PHP 8.5 also receives `latest` and Laravel PHP 8.5 receives `laravel`; the PHP-specific stable aliases are updated as well.
 
-The tag must match the repository `VERSION` file. The release workflow then:
+The GitHub Actions workflow requires `DOCKERHUB_TOKEN`, builds with SBOM and provenance attestations, publishes images, generates the package report and creates or updates the GitHub Release with the report attached. A missing baseline or incomplete inventory fails the release-note step instead of silently claiming a complete package comparison.
 
-1. resolves and validates the stable Git tag;
-2. verifies that the tag version matches `VERSION`;
-3. runs the complete stable release validation;
-4. publishes all six multi-architecture images, stable aliases, SBOM and provenance to Docker Hub;
-5. creates the corresponding GitHub Release using `RELEASE.md`.
+## Upgrade
 
-The repository requires the GitHub Actions secret:
-
-```text
-DOCKERHUB_TOKEN
-```
-
-## Upgrade notes
-
-Users already running Production 2.0.1 can move to the equivalent 2.0.2 tag. Laravel deployments that bind-mount the project from the host should ensure `storage/` and `bootstrap/cache/` are writable by UID/GID `10001:10001`.
-
-Users migrating from Production 1.1.3 should still read `MIGRATION.md`, which documents the major 1.1.3 → 2.0.0 runtime changes that also apply to 2.0.2.
+Use the matching 2.0.3 image and recreate the application containers. Existing images and running containers do not update themselves. Preserve writable Laravel `storage/` and `bootstrap/cache/` mounts for UID/GID 10001:10001.
