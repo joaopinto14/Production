@@ -1,8 +1,8 @@
-# Production 2.0.2
+# Production 2.0.3
 
 **Production** is a small, production-focused Docker image for running **PHP applications** with **Nginx + PHP-FPM** already configured.
 
-Production 2.0.2 is a maintenance release focused on Laravel FastCGI reliability and predictable non-root file permissions. It keeps the Alpine 3.24 security refresh and SBOM/SLSA provenance publication introduced in 2.0.1.
+Production 2.0.3 hardens hidden-path protection and runtime configuration validation, protects stable release aliases, and adds verified package-change reports to releases.
 
 It is designed to keep deployment simple: your application is prepared during the build/deployment stage, mounted or copied into the container, and Production provides the web runtime.
 
@@ -29,6 +29,8 @@ joaopinto14/production
 ```
 
 Images are published by the release workflow after the complete stable release validation succeeds.
+
+Every release includes a package-change report with previous/new versions for each image variant and architecture, plus JSON inventories identifying the compared images. Package changes alone are not proof that a particular CVE is fixed.
 
 ---
 
@@ -64,7 +66,7 @@ If your application has an `index.php` file in its root directory:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.2-php8.5
+  joaopinto14/production:2.0.3-php8.5
 ```
 
 Open:
@@ -97,7 +99,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.2-laravel-php8.5
+  joaopinto14/production:2.0.3-laravel-php8.5
 ```
 
 Open:
@@ -123,15 +125,15 @@ as its document root.
 Use the Generic variant for PHP applications that do not need Laravel-specific configuration or extensions.
 
 ```text
-joaopinto14/production:2.0.2-php8.3
-joaopinto14/production:2.0.2-php8.4
-joaopinto14/production:2.0.2-php8.5
+joaopinto14/production:2.0.3-php8.3
+joaopinto14/production:2.0.3-php8.4
+joaopinto14/production:2.0.3-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.2-php8.5
+joaopinto14/production:2.0.3-php8.5
 ```
 
 ## Laravel
@@ -139,15 +141,15 @@ joaopinto14/production:2.0.2-php8.5
 Use the Laravel variant for Laravel applications.
 
 ```text
-joaopinto14/production:2.0.2-laravel-php8.3
-joaopinto14/production:2.0.2-laravel-php8.4
-joaopinto14/production:2.0.2-laravel-php8.5
+joaopinto14/production:2.0.3-laravel-php8.3
+joaopinto14/production:2.0.3-laravel-php8.4
+joaopinto14/production:2.0.3-laravel-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.2-laravel-php8.5
+joaopinto14/production:2.0.3-laravel-php8.5
 ```
 
 The Laravel variant adds commonly required extensions for MySQL/MariaDB, PostgreSQL, SQLite, Redis, `intl`, `bcmath`, `pcntl`, and `zip`.
@@ -157,16 +159,16 @@ The Laravel variant adds commonly required extensions for MySQL/MariaDB, Postgre
 
 # Stable tags
 
-Production 2.0.2 publishes immutable version tags and convenient stable aliases.
+Production 2.0.3 publishes immutable version tags and convenient stable aliases.
 
 | Purpose | Tag |
 |---|---|
-| Generic PHP 8.3 | `joaopinto14/production:2.0.2-php8.3` |
-| Generic PHP 8.4 | `joaopinto14/production:2.0.2-php8.4` |
-| Generic PHP 8.5 | `joaopinto14/production:2.0.2-php8.5` |
-| Laravel PHP 8.3 | `joaopinto14/production:2.0.2-laravel-php8.3` |
-| Laravel PHP 8.4 | `joaopinto14/production:2.0.2-laravel-php8.4` |
-| Laravel PHP 8.5 | `joaopinto14/production:2.0.2-laravel-php8.5` |
+| Generic PHP 8.3 | `joaopinto14/production:2.0.3-php8.3` |
+| Generic PHP 8.4 | `joaopinto14/production:2.0.3-php8.4` |
+| Generic PHP 8.5 | `joaopinto14/production:2.0.3-php8.5` |
+| Laravel PHP 8.3 | `joaopinto14/production:2.0.3-laravel-php8.3` |
+| Laravel PHP 8.4 | `joaopinto14/production:2.0.3-laravel-php8.4` |
+| Laravel PHP 8.5 | `joaopinto14/production:2.0.3-laravel-php8.5` |
 
 Stable aliases:
 
@@ -240,9 +242,9 @@ If you provide another command, Production runs that command directly without st
 Example:
 
 ```bash
-docker run --rm \
+docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.2-laravel-php8.5 \
+  joaopinto14/production:2.0.3-laravel-php8.5 \
   php artisan about
 ```
 
@@ -273,7 +275,7 @@ Run it with:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.2-php8.5
+  joaopinto14/production:2.0.3-php8.5
 ```
 
 ## Custom document root
@@ -285,7 +287,7 @@ docker run --rm \
   -p 8080:8080 \
   -e DOCUMENT_ROOT=/var/www/html/public \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.2-php8.5
+  joaopinto14/production:2.0.3-php8.5
 ```
 
 ---
@@ -345,7 +347,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.2-laravel-php8.5
+  joaopinto14/production:2.0.3-laravel-php8.5
 ```
 
 ## Direct PHP file protection
@@ -377,40 +379,40 @@ The same Laravel image can be used for different application services.
 ## Queue worker
 
 ```bash
-docker run --rm \
+docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.2-laravel-php8.5 \
+  joaopinto14/production:2.0.3-laravel-php8.5 \
   php artisan queue:work
 ```
 
 ## Scheduler
 
 ```bash
-docker run --rm \
+docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.2-laravel-php8.5 \
+  joaopinto14/production:2.0.3-laravel-php8.5 \
   php artisan schedule:work
 ```
 
 ## Migrations
 
 ```bash
-docker run --rm \
+docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.2-laravel-php8.5 \
+  joaopinto14/production:2.0.3-laravel-php8.5 \
   php artisan migrate --force
 ```
 
 ## Other Artisan commands
 
 ```bash
-docker run --rm \
+docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.2-laravel-php8.5 \
+  joaopinto14/production:2.0.3-laravel-php8.5 \
   php artisan about
 ```
 
-In CLI mode, **Nginx and PHP-FPM are not started**.
+In CLI mode, **Nginx and PHP-FPM are not started**. Disable the inherited HTTP health check with `--no-healthcheck` (or Compose `healthcheck: { disable: true }`), or replace it with a check appropriate to the worker. Disabling it does not monitor queue progress.
 
 ---
 
@@ -434,8 +436,10 @@ docker run --rm \
   -e PHP_MEMORY_LIMIT=512M \
   -e UPLOAD_MAX_SIZE=64M \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.2-php8.5
+  joaopinto14/production:2.0.3-php8.5
 ```
+
+Values are validated before configuration files are written. Memory accepts bytes, K/M/G suffixes, or `-1`; upload size accepts bytes or K/M/G suffixes (case-insensitive). Web document roots must be absolute paths containing letters, digits, `/`, `.`, `_`, or `-`. Line breaks and configuration directives are rejected.
 
 ## Invalid timezone
 
@@ -520,14 +524,14 @@ docker run --rm \
   --tmpfs /tmp:rw,nosuid,nodev,noexec,size=16m \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.2-php8.5
+  joaopinto14/production:2.0.3-php8.5
 ```
 
 For Laravel, `storage/` and `bootstrap/cache/` still need writable storage.
 
 ## File permissions
 
-Production 2.0.2 **does not run `chown -R` or `chmod -R` on your application at startup**. The container starts directly as the non-root `www` user and never needs a privileged permission-fixing phase.
+Production 2.0.3 **does not run `chown -R` or `chmod -R` on your application at startup**. The container starts directly as the non-root `www` user and never needs a privileged permission-fixing phase.
 
 The official images use a stable runtime identity:
 
@@ -556,8 +560,8 @@ The rest of the application can remain read-only to the runtime user.
 You can verify the runtime identity directly from the image:
 
 ```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.2-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.2-php8.5 -g)
+UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.3-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.3-php8.5 -g)
 
 echo "$UID_RUNTIME:$GID_RUNTIME"
 ```
@@ -654,7 +658,7 @@ Production runtime
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.2-php8.5
+    image: joaopinto14/production:2.0.3-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -670,7 +674,7 @@ services:
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.2-laravel-php8.5
+    image: joaopinto14/production:2.0.3-laravel-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -683,15 +687,19 @@ services:
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
 
   queue:
-    image: joaopinto14/production:2.0.2-laravel-php8.5
+    image: joaopinto14/production:2.0.3-laravel-php8.5
     command: php artisan queue:work
+    healthcheck:
+      disable: true
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
 
   scheduler:
-    image: joaopinto14/production:2.0.2-laravel-php8.5
+    image: joaopinto14/production:2.0.3-laravel-php8.5
     command: php artisan schedule:work
+    healthcheck:
+      disable: true
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
@@ -703,7 +711,7 @@ In production, secrets and application configuration should be supplied using th
 
 # Multi-architecture support
 
-Production 2.0.2 is built and validated for:
+Production 2.0.3 is built and validated for:
 
 ```text
 linux/amd64
@@ -730,6 +738,17 @@ Attestations are intentionally enabled only for registry release targets. Local 
 # Testing
 
 Production 2.0 includes an extensive automated test suite.
+
+Host prerequisites are Docker with Buildx, a POSIX shell and Python 3. Python is used only for release tooling/tests and is not installed in the runtime images.
+
+To compare existing local amd64 images during release preparation:
+
+```bash
+python3 scripts/package-report.py --previous-version 2.0.2 --version 2.0.3 \
+  --repository production --platforms linux/amd64 --local --output reports/package-changes
+```
+
+Without `--local`, the tool pulls registry images and compares both supported architectures by default. It reads package inventories without starting the images. The release workflow uses publication metadata to select the exact new image digests.
 
 ## Fast tests
 
@@ -924,10 +943,14 @@ services:
   queue:
     image: joaopinto14/production:2.0.0-laravel-php8.5
     command: php artisan queue:work
+    healthcheck:
+      disable: true
 
   scheduler:
     image: joaopinto14/production:2.0.0-laravel-php8.5
     command: php artisan schedule:work
+    healthcheck:
+      disable: true
 ```
 
 ---
@@ -944,7 +967,7 @@ Applications should no longer depend on root privileges during startup.
 
 This improves runtime security but means mounted volume permissions must be correct before the container starts.
 
-Starting with Production 2.0.2, the official images use a stable runtime identity:
+Starting with Production 2.0.3, the official images use a stable runtime identity:
 
 ```text
 www = 10001:10001

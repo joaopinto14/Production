@@ -4,7 +4,7 @@ ARG ALPINE_VERSION=3.24
 FROM alpine:${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
-ARG VERSION=2.0.2
+ARG VERSION=2.0.3
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
 ARG VCS_REF=unknown
@@ -14,7 +14,7 @@ ARG WWW_GID=10001
 LABEL org.opencontainers.image.title="Production" \
       org.opencontainers.image.description="Lightweight PHP production runtime with optional Laravel variant" \
       org.opencontainers.image.version="${VERSION}" \
-      org.opencontainers.image.authors="João Pinto <suport@joaopinto.pt>" \
+      org.opencontainers.image.authors="João Pinto <geral@joaopinto.pt>" \
       org.opencontainers.image.vendor="João Pinto" \
       org.opencontainers.image.url="https://github.com/joaopinto14/Production" \
       org.opencontainers.image.documentation="https://github.com/joaopinto14/Production#readme" \

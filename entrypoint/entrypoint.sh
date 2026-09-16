@@ -40,6 +40,33 @@ escape_sed() {
     printf '%s' "$1" | sed 's/[&|\\]/\\&/g'
 }
 
+validate_configuration() {
+    # Values become INI/Nginx directives. Accept only their documented syntax.
+    printf '%s\n' "${PHP_MEMORY_LIMIT}" | LC_ALL=C grep -Eq '^(-1|[0-9]+[kKmMgG]?)$' \
+        || fail "Invalid PHP_MEMORY_LIMIT: expected bytes, K/M/G, or -1"
+    printf '%s\n' "${UPLOAD_MAX_SIZE}" | LC_ALL=C grep -Eq '^[0-9]+[kKmMgG]?$' \
+        || fail "Invalid UPLOAD_MAX_SIZE: expected bytes or K/M/G"
+    case "${PHP_MEMORY_LIMIT}${UPLOAD_MAX_SIZE}${TIMEZONE}${DOCUMENT_ROOT}" in
+        *"$(printf '\r')"*|*'
+'*) fail "Configuration values must not contain line breaks" ;;
+    esac
+    case "${TIMEZONE}" in
+        ''|/*|*..*|*[!a-zA-Z0-9_+/-]*) fail "Invalid timezone: ${TIMEZONE}" ;;
+    esac
+    # DOCUMENT_ROOT is only used by Nginx in web mode; preserve CLI behavior.
+    case "${1:-}" in
+        /usr/local/bin/production-runtime|production-runtime)
+            case "${DOCUMENT_ROOT}" in
+                /*) ;;
+                *) fail "Invalid DOCUMENT_ROOT: expected an absolute path" ;;
+            esac
+            case "${DOCUMENT_ROOT}" in
+                *[!a-zA-Z0-9_./-]*) fail "Invalid DOCUMENT_ROOT: use letters, digits, /, ., _, or -" ;;
+            esac
+            ;;
+    esac
+}
+
 prepare_runtime() {
     mkdir -p \
         /run/production/nginx/http.d \
@@ -78,6 +105,7 @@ configure_nginx() {
         "${NGINX_TEMPLATE}" > "${NGINX_CONF}"
 }
 
+validate_configuration "${1:-}"
 prepare_runtime
 configure_timezone
 configure_php

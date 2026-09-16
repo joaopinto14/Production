@@ -50,6 +50,13 @@ done
 assert_contains "${release_plan}" 'linux/amd64' "release amd64 platform"
 assert_contains "${release_plan}" 'linux/arm64' "release arm64 platform"
 
+log "Checking historical releases cannot overwrite stable aliases"
+historical_plan="$(PUBLISH_ALIASES=false IMAGE_NAME=joaopinto14/production VERSION="${TEST_VERSION}" docker buildx bake release --print)"
+for alias in latest laravel php8.3 php8.4 php8.5 laravel-php8.3 laravel-php8.4 laravel-php8.5; do
+    assert_not_contains "${historical_plan}" "\"joaopinto14/production:${alias}\"" "historical release alias protection"
+done
+assert_contains "${historical_plan}" "joaopinto14/production:${TEST_VERSION}-php8.5" "historical version tag preserved"
+
 log "Checking supply-chain attestations for every release target"
 for target in \
     php83-release \
@@ -76,12 +83,17 @@ workflow="$(cat .github/workflows/release.yml)"
 assert_contains "${workflow}" "- 'v*.*.*'" "stable tag trigger"
 assert_contains "${workflow}" 'contents: write' "GitHub Release write permission"
 assert_contains "${workflow}" 'Verify tag matches VERSION' "tag/VERSION validation"
+assert_contains "${workflow}" 'group: production-release' "serialized releases"
+assert_contains "${workflow}" 'scripts/release-policy.py' "stable alias policy"
 assert_contains "${workflow}" 'git rev-parse HEAD' "release revision resolution"
 assert_contains "${workflow}" 'VCS_REF: ${{ steps.revision.outputs.sha }}' "release image revision label"
 assert_contains "${workflow}" 'docker buildx bake release --push' "Docker Hub release publication"
 assert_contains "${workflow}" 'gh release create' "GitHub Release creation"
 assert_contains "${workflow}" '--verify-tag' "GitHub Release tag verification"
-assert_contains "${workflow}" '--notes-file RELEASE.md' "GitHub Release notes source"
+assert_contains "${workflow}" 'cp RELEASE.md release-notes.md' "GitHub Release notes source"
+assert_contains "${workflow}" '--notes-file release-notes.md' "GitHub Release package notes"
+assert_contains "${workflow}" '--metadata release-metadata.json' "exact published package inventory"
+assert_contains "${workflow}" 'gh release upload' "package evidence assets"
 assert_contains "${workflow}" 'GitHub Release ${RELEASE_TAG} already exists' "idempotent GitHub Release handling"
 
 printf '%s\n' 'Stable release contract passed.'
