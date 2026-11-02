@@ -1,0 +1,107 @@
+{
+  "created_at": "2026-10-21T22:25:34.492743+00:00",
+  "version": "2.0.4",
+  "scope": "uncommitted working-tree corrections; local amd64 and emulated ARM64 candidates; no public image publication",
+  "git_head": "5bc91e1f69c3133ce8cbcdb3bae63e2d82c35a65",
+  "python_tests": 35,
+  "full_suites": {
+    "amd64": {
+      "status": "passed",
+      "seconds": 701
+    },
+    "arm64": {
+      "status": "passed",
+      "seconds": 325,
+      "emulated": true,
+      "initial_concurrent_run": "startup health deadline exceeded; final isolated rerun passed"
+    }
+  },
+  "real_laravel": "13.38.0 passed on all three PHP branches on both architectures",
+  "restart": "five cycles per variant; final ARM64 detector also rejects a deliberately unreaped child",
+  "multiarch_build": "passed with isolated host-network builder; builder removed afterward",
+  "vulnerability_scans": 12,
+  "reported_vulnerabilities": 0,
+  "size_budgets": [
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-php8.3",
+      "compressed_bytes": 17450074,
+      "budget": 20000000
+    },
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-php8.4",
+      "compressed_bytes": 17828659,
+      "budget": 20000000
+    },
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-php8.5",
+      "compressed_bytes": 20322835,
+      "budget": 23000000
+    },
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-laravel-php8.3",
+      "compressed_bytes": 23472238,
+      "budget": 28000000
+    },
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-laravel-php8.4",
+      "compressed_bytes": 24560605,
+      "budget": 29000000
+    },
+    {
+      "architecture": "amd64",
+      "image": "production-candidate:2.0.4-laravel-php8.5",
+      "compressed_bytes": 26569225,
+      "budget": 32000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-php8.3",
+      "compressed_bytes": 18050581,
+      "budget": 20000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-php8.4",
+      "compressed_bytes": 18192835,
+      "budget": 20000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-php8.5",
+      "compressed_bytes": 20625755,
+      "budget": 23000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-laravel-php8.3",
+      "compressed_bytes": 24093102,
+      "budget": 28000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-laravel-php8.4",
+      "compressed_bytes": 24922493,
+      "budget": 29000000
+    },
+    {
+      "architecture": "arm64",
+      "image": "production-candidate-arm64:2.0.4-laravel-php8.5",
+      "compressed_bytes": 26803310,
+      "budget": 32000000
+    }
+  ],
+  "actionlint": "passed",
+  "registry_promotion": "same index digest, attestations retained, identical rerun passed; localhost registry removed",
+  "github_protections": "applied and read-back verified; existing admin/review rules preserved",
+  "pending_release_gates": [
+    "merge/review and first execution of new workflows",
+    "native ARM64 CI validation",
+    "GitHub OIDC Cosign signing/verification",
+    "public image promotion and final digest/evidence verification"
+  ]
+}

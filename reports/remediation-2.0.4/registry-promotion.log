@@ -1,0 +1,295 @@
+Unable to find image 'registry@sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8' locally
+docker.io/library/registry@sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8: Pulling from library/registry
+8dc2188d2a74: Pulling fs layer
+e2de96513ba9: Pulling fs layer
+90764beeca7f: Pulling fs layer
+2aef3a8beb68: Pulling fs layer
+783ed5b12fca: Pulling fs layer
+e2de96513ba9: Already exists
+783ed5b12fca: Download complete
+8dc2188d2a74: Download complete
+90764beeca7f: Download complete
+d561fdf230c8: Download complete
+6c18a739ea63: Download complete
+90764beeca7f: Pull complete
+2aef3a8beb68: Download complete
+2aef3a8beb68: Pull complete
+783ed5b12fca: Pull complete
+8dc2188d2a74: Pull complete
+Digest: sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8
+Status: Downloaded newer image for registry@sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.97kB done
+#1 DONE 0.3s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.6s done
+#3 CACHED
+
+#4 resolve image config for docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#4 DONE 2.5s
+
+#5 [linux/amd64 internal] load metadata for docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#5 ...
+
+#6 [linux/arm64 internal] load metadata for docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#6 DONE 2.1s
+
+#5 [linux/amd64 internal] load metadata for docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#5 DONE 2.1s
+
+#7 [internal] load .dockerignore
+#7 transferring context: 310B done
+#7 DONE 0.2s
+
+#8 [internal] load build context
+#8 DONE 0.0s
+
+#9 [linux/amd64  1/12] FROM docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#9 resolve docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#9 ...
+
+#10 [linux/arm64  1/12] FROM docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#10 resolve docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 0.7s done
+#10 DONE 0.8s
+
+#9 [linux/amd64  1/12] FROM docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#9 resolve docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 0.8s done
+#9 CACHED
+
+#11 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#11 resolve docker.io/docker/buildkit-syft-scanner:stable-1 1.0s done
+#11 DONE 1.0s
+
+#8 [internal] load build context
+#8 transferring context: 399B done
+#8 DONE 0.2s
+
+#11 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#11 ...
+
+#12 [linux/arm64 10/12] COPY entrypoint/runtime.sh /usr/local/bin/production-runtime
+#12 CACHED
+
+#13 [linux/arm64 11/12] RUN chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime
+#13 CACHED
+
+#14 [linux/arm64  7/12] COPY nginx/default.conf.template /etc/nginx/default.conf.template
+#14 CACHED
+
+#15 [linux/arm64  2/12] RUN set -eux;     case "8.5" in         8.3) PHP_SLOT=83 ;;         8.4) PHP_SLOT=84 ;;         8.5) PHP_SLOT=85 ;;         *) echo "Unsupported PHP version: 8.5. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;;     esac;     case "generic" in         generic|laravel) ;;         *) echo "Unsupported variant: generic. Supported: generic, laravel." >&2; exit 1 ;;     esac;     PHP_PACKAGES="         php${PHP_SLOT}         php${PHP_SLOT}-fpm         php${PHP_SLOT}-ctype         php${PHP_SLOT}-curl         php${PHP_SLOT}-fileinfo         php${PHP_SLOT}-mbstring         php${PHP_SLOT}-openssl         php${PHP_SLOT}-pdo         php${PHP_SLOT}-session         php${PHP_SLOT}-tokenizer         php${PHP_SLOT}-xml     ";     if [ "${PHP_SLOT}" != "85" ]; then         PHP_PACKAGES="${PHP_PACKAGES} php${PHP_SLOT}-opcache";     fi;     if [ "generic" = "laravel" ]; then         PHP_PACKAGES="${PHP_PACKAGES}             php${PHP_SLOT}-bcmath             php${PHP_SLOT}-dom             php${PHP_SLOT}-intl             php${PHP_SLOT}-pcntl             php${PHP_SLOT}-pdo_mysql             php${PHP_SLOT}-pdo_pgsql             php${PHP_SLOT}-pdo_sqlite             php${PHP_SLOT}-pecl-redis             php${PHP_SLOT}-zip         ";     fi;     apk upgrade --no-cache;     apk add --no-cache         ca-certificates         nginx         tzdata         ${PHP_PACKAGES};     addgroup -S -g "10001" www;     adduser -S -D -H -u "10001" -G www www;     mkdir -p         /usr/local/bin         /usr/local/sbin         /var/www/html         /etc/production/php/conf.d         /etc/production/php/php-fpm.d         /run/production/nginx/http.d         /run/production/nginx/client_body         /run/production/nginx/proxy         /run/production/nginx/fastcgi         /run/production/nginx/uwsgi         /run/production/nginx/scgi         /run/production/php/conf.d;     ln -s "/etc/php${PHP_SLOT}" /etc/php-active;     ln -s "/usr/bin/php${PHP_SLOT}" /usr/local/bin/php;     ln -s "/usr/sbin/php-fpm${PHP_SLOT}" /usr/local/sbin/php-fpm;     chown -R www:www /var/www/html /run/production;     rm -f /etc/nginx/http.d/default.conf
+#15 CACHED
+
+#16 [linux/arm64  4/12] COPY php/php-fpm.conf /etc/production/php/php-fpm.conf
+#16 CACHED
+
+#17 [linux/arm64  9/12] COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
+#17 CACHED
+
+#18 [linux/arm64  3/12] COPY php/settings.ini /etc/production/php/conf.d/50-production.ini
+#18 CACHED
+
+#19 [linux/arm64  5/12] COPY php/www.conf /etc/production/php/php-fpm.d/www.conf
+#19 CACHED
+
+#20 [linux/arm64  8/12] COPY nginx/laravel.conf.template /etc/nginx/laravel.conf.template
+#20 CACHED
+
+#21 [linux/arm64  6/12] COPY nginx/nginx.conf /etc/nginx/nginx.conf
+#21 CACHED
+
+#22 [linux/arm64 12/12] WORKDIR /var/www/html
+#22 CACHED
+
+#23 [linux/amd64  2/12] RUN set -eux;     case "8.5" in         8.3) PHP_SLOT=83 ;;         8.4) PHP_SLOT=84 ;;         8.5) PHP_SLOT=85 ;;         *) echo "Unsupported PHP version: 8.5. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;;     esac;     case "generic" in         generic|laravel) ;;         *) echo "Unsupported variant: generic. Supported: generic, laravel." >&2; exit 1 ;;     esac;     PHP_PACKAGES="         php${PHP_SLOT}         php${PHP_SLOT}-fpm         php${PHP_SLOT}-ctype         php${PHP_SLOT}-curl         php${PHP_SLOT}-fileinfo         php${PHP_SLOT}-mbstring         php${PHP_SLOT}-openssl         php${PHP_SLOT}-pdo         php${PHP_SLOT}-session         php${PHP_SLOT}-tokenizer         php${PHP_SLOT}-xml     ";     if [ "${PHP_SLOT}" != "85" ]; then         PHP_PACKAGES="${PHP_PACKAGES} php${PHP_SLOT}-opcache";     fi;     if [ "generic" = "laravel" ]; then         PHP_PACKAGES="${PHP_PACKAGES}             php${PHP_SLOT}-bcmath             php${PHP_SLOT}-dom             php${PHP_SLOT}-intl             php${PHP_SLOT}-pcntl             php${PHP_SLOT}-pdo_mysql             php${PHP_SLOT}-pdo_pgsql             php${PHP_SLOT}-pdo_sqlite             php${PHP_SLOT}-pecl-redis             php${PHP_SLOT}-zip         ";     fi;     apk upgrade --no-cache;     apk add --no-cache         ca-certificates         nginx         tzdata         ${PHP_PACKAGES};     addgroup -S -g "10001" www;     adduser -S -D -H -u "10001" -G www www;     mkdir -p         /usr/local/bin         /usr/local/sbin         /var/www/html         /etc/production/php/conf.d         /etc/production/php/php-fpm.d         /run/production/nginx/http.d         /run/production/nginx/client_body         /run/production/nginx/proxy         /run/production/nginx/fastcgi         /run/production/nginx/uwsgi         /run/production/nginx/scgi         /run/production/php/conf.d;     ln -s "/etc/php${PHP_SLOT}" /etc/php-active;     ln -s "/usr/bin/php${PHP_SLOT}" /usr/local/bin/php;     ln -s "/usr/sbin/php-fpm${PHP_SLOT}" /usr/local/sbin/php-fpm;     chown -R www:www /var/www/html /run/production;     rm -f /etc/nginx/http.d/default.conf
+#23 ...
+
+#11 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#11 DONE 2.4s
+
+#11 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 0B / 49.55MB 0.2s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 3.15MB / 49.55MB 0.6s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 6.29MB / 49.55MB 0.9s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 9.44MB / 49.55MB 1.2s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 13.63MB / 49.55MB 1.7s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 16.78MB / 49.55MB 2.1s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 19.92MB / 49.55MB 2.6s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 23.07MB / 49.55MB 3.0s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 26.21MB / 49.55MB 3.5s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 29.36MB / 49.55MB 3.9s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 32.51MB / 49.55MB 4.4s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 36.70MB / 49.55MB 4.8s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 39.85MB / 49.55MB 5.3s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 42.99MB / 49.55MB 5.6s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 46.14MB / 49.55MB 6.0s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 49.55MB / 49.55MB 6.5s
+#11 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 49.55MB / 49.55MB 9.1s done
+#11 DONE 11.8s
+
+#23 [linux/amd64  2/12] RUN set -eux;     case "8.5" in         8.3) PHP_SLOT=83 ;;         8.4) PHP_SLOT=84 ;;         8.5) PHP_SLOT=85 ;;         *) echo "Unsupported PHP version: 8.5. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;;     esac;     case "generic" in         generic|laravel) ;;         *) echo "Unsupported variant: generic. Supported: generic, laravel." >&2; exit 1 ;;     esac;     PHP_PACKAGES="         php${PHP_SLOT}         php${PHP_SLOT}-fpm         php${PHP_SLOT}-ctype         php${PHP_SLOT}-curl         php${PHP_SLOT}-fileinfo         php${PHP_SLOT}-mbstring         php${PHP_SLOT}-openssl         php${PHP_SLOT}-pdo         php${PHP_SLOT}-session         php${PHP_SLOT}-tokenizer         php${PHP_SLOT}-xml     ";     if [ "${PHP_SLOT}" != "85" ]; then         PHP_PACKAGES="${PHP_PACKAGES} php${PHP_SLOT}-opcache";     fi;     if [ "generic" = "laravel" ]; then         PHP_PACKAGES="${PHP_PACKAGES}             php${PHP_SLOT}-bcmath             php${PHP_SLOT}-dom             php${PHP_SLOT}-intl             php${PHP_SLOT}-pcntl             php${PHP_SLOT}-pdo_mysql             php${PHP_SLOT}-pdo_pgsql             php${PHP_SLOT}-pdo_sqlite             php${PHP_SLOT}-pecl-redis             php${PHP_SLOT}-zip         ";     fi;     apk upgrade --no-cache;     apk add --no-cache         ca-certificates         nginx         tzdata         ${PHP_PACKAGES};     addgroup -S -g "10001" www;     adduser -S -D -H -u "10001" -G www www;     mkdir -p         /usr/local/bin         /usr/local/sbin         /var/www/html         /etc/production/php/conf.d         /etc/production/php/php-fpm.d         /run/production/nginx/http.d         /run/production/nginx/client_body         /run/production/nginx/proxy         /run/production/nginx/fastcgi         /run/production/nginx/uwsgi         /run/production/nginx/scgi         /run/production/php/conf.d;     ln -s "/etc/php${PHP_SLOT}" /etc/php-active;     ln -s "/usr/bin/php${PHP_SLOT}" /usr/local/bin/php;     ln -s "/usr/sbin/php-fpm${PHP_SLOT}" /usr/local/sbin/php-fpm;     chown -R www:www /var/www/html /run/production;     rm -f /etc/nginx/http.d/default.conf
+#23 1.818 + PHP_SLOT=85
+#23 1.818 + PHP_PACKAGES='         php85         php85-fpm         php85-ctype         php85-curl         php85-fileinfo         php85-mbstring         php85-openssl         php85-pdo         php85-session         php85-tokenizer         php85-xml     '
+#23 1.818 + '[' 85 '!=' 85 ]
+#23 1.818 + '[' generic '=' laravel ]
+#23 1.818 + apk upgrade --no-cache
+#23 5.105 (1/6) Upgrading musl (1.2.6-r2 -> 1.2.6-r3)
+#23 5.283 (2/6) Upgrading libcrypto3 (3.5.8-r0 -> 3.5.9-r0)
+#23 6.021 (3/6) Upgrading libssl3 (3.5.8-r0 -> 3.5.9-r0)
+#23 6.204 (4/6) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+#23 6.273 (5/6) Upgrading ca-certificates-bundle (20260909-r0 -> 20261020-r0)
+#23 6.351 (6/6) Upgrading musl-utils (1.2.6-r2 -> 1.2.6-r3)
+#23 6.410 Executing busybox-1.37.0-r31.trigger
+#23 6.421 OK: 8208 KiB in 16 packages
+#23 6.478 + apk add --no-cache ca-certificates nginx tzdata php85 php85-fpm php85-ctype php85-curl php85-fileinfo php85-mbstring php85-openssl php85-pdo php85-session php85-tokenizer php85-xml
+#23 8.607 ( 1/32) Installing ca-certificates (20261020-r0)
+#23 10.06 ( 2/32) Installing pcre2 (10.49-r0)
+#23 10.13 ( 3/32) Installing nginx (1.30.4-r1)
+#23 10.17   Executing nginx-1.30.4-r1.pre-install
+#23 ...
+
+#11 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+#11 extracting sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f
+#11 extracting sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 3.1s done
+#11 DONE 14.9s
+
+#24 [linux/arm64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#24 ...
+
+#23 [linux/amd64  2/12] RUN set -eux;     case "8.5" in         8.3) PHP_SLOT=83 ;;         8.4) PHP_SLOT=84 ;;         8.5) PHP_SLOT=85 ;;         *) echo "Unsupported PHP version: 8.5. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;;     esac;     case "generic" in         generic|laravel) ;;         *) echo "Unsupported variant: generic. Supported: generic, laravel." >&2; exit 1 ;;     esac;     PHP_PACKAGES="         php${PHP_SLOT}         php${PHP_SLOT}-fpm         php${PHP_SLOT}-ctype         php${PHP_SLOT}-curl         php${PHP_SLOT}-fileinfo         php${PHP_SLOT}-mbstring         php${PHP_SLOT}-openssl         php${PHP_SLOT}-pdo         php${PHP_SLOT}-session         php${PHP_SLOT}-tokenizer         php${PHP_SLOT}-xml     ";     if [ "${PHP_SLOT}" != "85" ]; then         PHP_PACKAGES="${PHP_PACKAGES} php${PHP_SLOT}-opcache";     fi;     if [ "generic" = "laravel" ]; then         PHP_PACKAGES="${PHP_PACKAGES}             php${PHP_SLOT}-bcmath             php${PHP_SLOT}-dom             php${PHP_SLOT}-intl             php${PHP_SLOT}-pcntl             php${PHP_SLOT}-pdo_mysql             php${PHP_SLOT}-pdo_pgsql             php${PHP_SLOT}-pdo_sqlite             php${PHP_SLOT}-pecl-redis             php${PHP_SLOT}-zip         ";     fi;     apk upgrade --no-cache;     apk add --no-cache         ca-certificates         nginx         tzdata         ${PHP_PACKAGES};     addgroup -S -g "10001" www;     adduser -S -D -H -u "10001" -G www www;     mkdir -p         /usr/local/bin         /usr/local/sbin         /var/www/html         /etc/production/php/conf.d         /etc/production/php/php-fpm.d         /run/production/nginx/http.d         /run/production/nginx/client_body         /run/production/nginx/proxy         /run/production/nginx/fastcgi         /run/production/nginx/uwsgi         /run/production/nginx/scgi         /run/production/php/conf.d;     ln -s "/etc/php${PHP_SLOT}" /etc/php-active;     ln -s "/usr/bin/php${PHP_SLOT}" /usr/local/bin/php;     ln -s "/usr/sbin/php-fpm${PHP_SLOT}" /usr/local/sbin/php-fpm;     chown -R www:www /var/www/html /run/production;     rm -f /etc/nginx/http.d/default.conf
+#23 11.37   Executing nginx-1.30.4-r1.post-install
+#23 11.38 ( 4/32) Installing php85-common (8.5.12-r0)
+#23 11.41 ( 5/32) Installing argon2-libs (20190702-r5)
+#23 11.44 ( 6/32) Installing ncurses-terminfo-base (6.6_p20260516-r0)
+#23 11.48 ( 7/32) Installing libncursesw (6.6_p20260516-r0)
+#23 11.52 ( 8/32) Installing libedit (20260508.3.1-r1)
+#23 11.56 ( 9/32) Installing xz-libs (5.8.4-r0)
+#23 11.61 (10/32) Installing libxml2 (2.13.9-r2)
+#23 11.70 (11/32) Installing php85 (8.5.12-r0)
+#23 12.10 (12/32) Installing php85-ctype (8.5.12-r0)
+#23 12.14 (13/32) Installing brotli-libs (1.2.0-r1)
+#23 12.20 (14/32) Installing c-ares (1.34.9-r0)
+#23 12.24 (15/32) Installing libunistring (1.4.2-r0)
+#23 12.34 (16/32) Installing libidn2 (2.3.8-r0)
+#23 12.38 (17/32) Installing nghttp2-libs (1.70.0-r0)
+#23 12.42 (18/32) Installing libpsl (0.21.5-r3)
+#23 12.45 (19/32) Installing zstd-libs (1.5.7-r2)
+#23 12.51 (20/32) Installing libcurl (8.22.0-r0)
+#23 12.57 (21/32) Installing php85-curl (8.5.12-r0)
+#23 12.60 (22/32) Installing php85-fileinfo (8.5.12-r0)
+#23 12.69 (23/32) Installing acl-libs (2.3.2-r1)
+#23 12.72 (24/32) Installing php85-fpm (8.5.12-r0)
+#23 13.53 (25/32) Installing oniguruma (6.9.10-r0)
+#23 13.57 (26/32) Installing php85-mbstring (8.5.12-r0)
+#23 13.65 (27/32) Installing php85-openssl (8.5.12-r0)
+#23 13.69 (28/32) Installing php85-pdo (8.5.12-r0)
+#23 13.72 (29/32) Installing php85-session (8.5.12-r0)
+#23 13.75 (30/32) Installing php85-tokenizer (8.5.12-r0)
+#23 13.78 (31/32) Installing php85-xml (8.5.12-r0)
+#23 13.82 (32/32) Installing tzdata (2026e-r0)
+#23 13.90 Executing busybox-1.37.0-r31.trigger
+#23 13.91 Executing ca-certificates-20261020-r0.trigger
+#23 13.96 OK: 59.2 MiB in 48 packages
+#23 14.01 + addgroup -S -g 10001 www
+#23 14.25 + adduser -S -D -H -u 10001 -G www www
+#23 19.22 + mkdir -p /usr/local/bin /usr/local/sbin /var/www/html /etc/production/php/conf.d /etc/production/php/php-fpm.d /run/production/nginx/http.d /run/production/nginx/client_body /run/production/nginx/proxy /run/production/nginx/fastcgi /run/production/nginx/uwsgi /run/production/nginx/scgi /run/production/php/conf.d
+#23 19.23 + ln -s /etc/php85 /etc/php-active
+#23 19.23 + ln -s /usr/bin/php85 /usr/local/bin/php
+#23 19.23 + ln -s /usr/sbin/php-fpm85 /usr/local/sbin/php-fpm
+#23 19.23 + chown -R www:www /var/www/html /run/production
+#23 19.38 + rm -f /etc/nginx/http.d/default.conf
+#23 DONE 20.1s
+
+#24 [linux/arm64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#24 ...
+
+#25 [linux/amd64  3/12] COPY php/settings.ini /etc/production/php/conf.d/50-production.ini
+#25 DONE 1.3s
+
+#24 [linux/arm64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#24 ...
+
+#26 [linux/amd64  4/12] COPY php/php-fpm.conf /etc/production/php/php-fpm.conf
+#26 DONE 0.8s
+
+#24 [linux/arm64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#24 7.404 time="2026-10-21T21:43:47Z" level=info msg="starting syft scanner for buildkit v1.12.0"
+#24 ...
+
+#27 [linux/amd64  5/12] COPY php/www.conf /etc/production/php/php-fpm.d/www.conf
+#27 DONE 0.9s
+
+#28 [linux/amd64  6/12] COPY nginx/nginx.conf /etc/nginx/nginx.conf
+#28 DONE 1.2s
+
+#24 [linux/arm64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#24 DONE 10.5s
+
+#29 [linux/amd64  7/12] COPY nginx/default.conf.template /etc/nginx/default.conf.template
+#29 DONE 2.2s
+
+#30 [linux/amd64  8/12] COPY nginx/laravel.conf.template /etc/nginx/laravel.conf.template
+#30 DONE 1.3s
+
+#31 [linux/amd64  9/12] COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
+#31 DONE 0.8s
+
+#32 [linux/amd64 10/12] COPY entrypoint/runtime.sh /usr/local/bin/production-runtime
+#32 DONE 1.2s
+
+#33 [linux/amd64 11/12] RUN chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime
+#33 DONE 2.9s
+
+#34 [linux/amd64 12/12] WORKDIR /var/www/html
+#34 DONE 2.2s
+
+#35 [linux/amd64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+#35 2.706 time="2026-10-21T21:44:06Z" level=info msg="starting syft scanner for buildkit v1.12.0"
+#35 DONE 7.2s
+
+#36 exporting to image
+#36 exporting layers
+#36 exporting layers 14.7s done
+#36 exporting manifest sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95
+#36 exporting manifest sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95 0.5s done
+#36 exporting config sha256:cbe61d87eead0f345ff793cfbd1248399b742e266311e9ef6a44d86dffde2826
+#36 exporting config sha256:cbe61d87eead0f345ff793cfbd1248399b742e266311e9ef6a44d86dffde2826 0.3s done
+#36 exporting attestation manifest sha256:22fac53b12d0beede914f59f4a5462d3066e7988c5030736b31501b6381286bb
+#36 exporting attestation manifest sha256:22fac53b12d0beede914f59f4a5462d3066e7988c5030736b31501b6381286bb 0.5s done
+#36 exporting manifest sha256:2f38f3e2b2df1677b45b1a1440a330b87a94b46bcbb10a3763584abe4c8ddda9 0.1s done
+#36 exporting config sha256:a61d29ebd7bcf9719e64393f2f3fce486116bf14a6946c9cfb961eeaea77c4a3 0.1s done
+#36 exporting attestation manifest sha256:7273b83380ab14ce4070ff5a5ca5fd580f0619de039a088dc4343a0eafc9bb55
+#36 exporting attestation manifest sha256:7273b83380ab14ce4070ff5a5ca5fd580f0619de039a088dc4343a0eafc9bb55 0.4s done
+#36 exporting manifest list sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d
+#36 exporting manifest list sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d 0.3s done
+#36 naming to localhost:32776/production-proof:candidate
+#36 naming to localhost:32776/production-proof:candidate 0.1s done
+#36 DONE 24.7s
+
+#36 exporting to image
+#36 pushing layers
+#36 pushing layers 8.2s done
+#36 pushing manifest for localhost:32776/production-proof:candidate@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d
+#36 pushing manifest for localhost:32776/production-proof:candidate@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d 2.1s done
+#36 DONE 35.1s
+#1 [internal] pushing localhost:32776/production-proof
+#1 0.000 copying sha256:7273b83380ab14ce4070ff5a5ca5fd580f0619de039a088dc4343a0eafc9bb55 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.000 copying sha256:2f38f3e2b2df1677b45b1a1440a330b87a94b46bcbb10a3763584abe4c8ddda9 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.000 copying sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.001 copying sha256:22fac53b12d0beede914f59f4a5462d3066e7988c5030736b31501b6381286bb from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.082 pushing sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof:2.0.4
+#1 DONE 0.5s
+#1 [internal] pushing localhost:32776/production-proof
+#1 0.000 copying sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.000 copying sha256:7273b83380ab14ce4070ff5a5ca5fd580f0619de039a088dc4343a0eafc9bb55 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.000 copying sha256:2f38f3e2b2df1677b45b1a1440a330b87a94b46bcbb10a3763584abe4c8ddda9 from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.000 copying sha256:22fac53b12d0beede914f59f4a5462d3066e7988c5030736b31501b6381286bb from localhost:32776/production-proof@sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof
+#1 0.033 pushing sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d to localhost:32776/production-proof:latest
+#1 DONE 0.6s
+Exact-index local promotion and idempotent rerun passed; attestations retained.

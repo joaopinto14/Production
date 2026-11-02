@@ -1,0 +1,98 @@
+{
+  "branch": {
+    "url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "Multi-architecture build",
+        "Runtime tests"
+      ],
+      "contexts_url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "Multi-architecture build",
+          "app_id": 15368
+        },
+        {
+          "context": "Runtime tests",
+          "app_id": 15368
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": false,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/joaopinto14/Production/branches/main/protection/enforce_admins",
+      "enabled": true
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": false
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "environment": {
+    "id": 24964963805,
+    "node_id": "EN_kwDOLoWm_88AAAAF0Acd3Q",
+    "name": "release",
+    "url": "https://api.github.com/repos/joaopinto14/Production/environments/release",
+    "html_url": "https://github.com/joaopinto14/Production/deployments/activity_log?environments_filter=release",
+    "created_at": "2026-10-21T21:34:50Z",
+    "updated_at": "2026-10-21T21:34:50Z",
+    "can_admins_bypass": true,
+    "protection_rules": [
+      {
+        "id": 69645195,
+        "node_id": "GA_kwDOLoWm_84EJrOL",
+        "type": "branch_policy"
+      }
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "deployment_refs": {
+    "total_count": 2,
+    "branch_policies": [
+      {
+        "id": 63891854,
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2Mzg5MTg1NA==",
+        "name": "main",
+        "type": "branch"
+      },
+      {
+        "id": 63891857,
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2Mzg5MTg1Nw==",
+        "name": "v*",
+        "type": "tag"
+      }
+    ]
+  }
+}

@@ -41,17 +41,30 @@ run_restart_test() {
     while [ "${i}" -le 5 ]; do
         log "${variant}: restart cycle ${i}/5"
         docker restart -t 10 "${container}" >/dev/null
-        wait_healthy "${container}" 30
+        wait_healthy "${container}"
         assert_eq 'restart-ok' "$(http_body "${container}" /)" "response after restart ${i} (${variant})"
-        docker exec "${container}" sh -ec '
-            for stat in /proc/[0-9]*/stat; do
-                [ -r "$stat" ] || continue
-                state=$(cut -d" " -f3 "$stat")
-                [ "$state" != "Z" ] || { echo "zombie process found: $stat" >&2; exit 1; }
-            done
-        ' || fail "Zombie process detected after restart ${i} (${variant})."
+        docker exec -i "${container}" sh -s < tests/zombie-check.sh \
+            || fail "Persistent zombie detected after restart ${i} (${variant})."
         i=$((i + 1))
     done
+
+    if [ "${variant}" = laravel ]; then
+        log "Checking the detector against a deliberately unreaped child"
+        docker exec "${container}" php -r '
+            $pid = pcntl_fork();
+            if ($pid === 0) { exit(0); }
+            if ($pid < 0) { exit(1); }
+            sleep(6);
+            pcntl_waitpid($pid, $status);
+        ' >/dev/null 2>&1 &
+        fixture_pid=$!
+        sleep 1
+        if docker exec -i "${container}" sh -s < tests/zombie-check.sh; then
+            wait "${fixture_pid}" || true
+            fail "Zombie detector accepted a persistent unreaped child."
+        fi
+        wait "${fixture_pid}"
+    fi
 
     docker stop -t 10 "${container}" >/dev/null
     assert_eq '0' "$(docker inspect --format '{{.State.ExitCode}}' "${container}")" "restart stability shutdown (${variant})"

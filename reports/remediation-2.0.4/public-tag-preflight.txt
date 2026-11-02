@@ -1,0 +1,7 @@
+Available version tag: joaopinto14/production:2.0.4
+Available version tag: joaopinto14/production:2.0.4-php8.3
+Available version tag: joaopinto14/production:2.0.4-php8.4
+Available version tag: joaopinto14/production:2.0.4-php8.5
+Available version tag: joaopinto14/production:2.0.4-laravel-php8.3
+Available version tag: joaopinto14/production:2.0.4-laravel-php8.4
+Available version tag: joaopinto14/production:2.0.4-laravel-php8.5

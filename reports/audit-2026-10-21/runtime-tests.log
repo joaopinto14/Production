@@ -1,0 +1,201 @@
+
+============================================================
+1/11 Static validation
+============================================================
+
+============================================================
+Static validation
+============================================================
+[test] Checking shell syntax
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.003s
+
+OK
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.019s
+
+OK
+[test] Checking executable bits
+[test] Checking Docker Bake definition
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Running Dockerfile build checks
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 4.96kB 0.0s done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 3.3s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.1s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#4 DONE 0.9s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 225B done
+#5 DONE 0.0s
+[test] Checking for CRLF line endings in runtime/test scripts
+Static validation passed.
+[test] 1/11 Static validation completed in 6s
+
+============================================================
+2/11 Negative build validation
+============================================================
+
+============================================================
+Negative build validation
+============================================================
+[test] Rejecting unsupported PHP versions
+[test] Rejecting unsupported variants
+Negative build validation passed.
+[test] 2/11 Negative build validation completed in 3s
+[test] SKIP_BUILD=1: reusing existing images
+
+============================================================
+4/11 Image contracts
+============================================================
+
+============================================================
+Image contract validation
+============================================================
+[test] Checking production-candidate:2.0.3-php8.3
+[test] Checking production-candidate:2.0.3-php8.4
+[test] Checking production-candidate:2.0.3-php8.5
+[test] Checking production-candidate:2.0.3-laravel-php8.3
+[test] Checking production-candidate:2.0.3-laravel-php8.4
+[test] Checking production-candidate:2.0.3-laravel-php8.5
+Image contract validation passed.
+[test] 4/11 Image contracts completed in 67s
+
+============================================================
+5/11 Smoke matrix
+============================================================
+
+============================================================
+Smoke tests for all image variants
+============================================================
+[test] Starting production-candidate:2.0.3-php8.3
+[test] Checking graceful shutdown
+Smoke test passed: generic / PHP 8.3
+[test] Starting production-candidate:2.0.3-php8.4
+[test] Checking graceful shutdown
+Smoke test passed: generic / PHP 8.4
+[test] Starting production-candidate:2.0.3-php8.5
+[test] Checking graceful shutdown
+Smoke test passed: generic / PHP 8.5
+[test] Starting production-candidate:2.0.3-laravel-php8.3
+[test] Checking graceful shutdown
+Smoke test passed: laravel / PHP 8.3
+[test] Starting production-candidate:2.0.3-laravel-php8.4
+[test] Checking graceful shutdown
+Smoke test passed: laravel / PHP 8.4
+[test] Starting production-candidate:2.0.3-laravel-php8.5
+[test] Checking graceful shutdown
+Smoke test passed: laravel / PHP 8.5
+All smoke tests passed.
+[test] 5/11 Smoke matrix completed in 46s
+
+============================================================
+6/11 Runtime configuration
+============================================================
+
+============================================================
+Runtime configuration matrix
+============================================================
+[test] Checking environment overrides
+[test] Rejecting invalid timezones
+[test] Rejecting missing document roots for web runtime
+[test] Allowing CLI commands without a web document root
+[test] Rejecting unsafe or malformed configuration before starting services
+[test] Preserving unlimited PHP memory and case-insensitive size units
+Runtime configuration tests passed.
+[test] 6/11 Runtime configuration completed in 18s
+
+============================================================
+7/11 Deep HTTP contract
+============================================================
+
+============================================================
+Deep HTTP/Nginx contract tests
+============================================================
+[test] Checking client_max_body_size at the HTTP layer
+Deep HTTP/Nginx contract tests passed.
+[test] 7/11 Deep HTTP contract completed in 17s
+
+============================================================
+8/11 Concurrent workload
+============================================================
+
+============================================================
+Concurrent PHP-FPM workload tests
+============================================================
+[test] generic: 50 concurrent dynamic requests
+[test] laravel: 50 concurrent dynamic requests
+Concurrent workload tests passed.
+[test] 8/11 Concurrent workload completed in 15s
+
+============================================================
+9/11 Logging contract
+============================================================
+
+============================================================
+Docker stdout/stderr logging contract
+============================================================
+Logging contract tests passed.
+[test] 9/11 Logging contract completed in 9s
+
+============================================================
+10/11 Crash + signal handling
+============================================================
+
+============================================================
+Runtime crash and signal handling
+============================================================
+[test] Killing Nginx: PID 1 must fail the container and terminate PHP-FPM
+[test] Killing PHP-FPM: PID 1 must fail the container and terminate Nginx
+[test] Sending TERM to PID 1: graceful exit must return 0
+[test] Sending INT to PID 1: graceful exit must return 0
+[test] Sending QUIT to PID 1: graceful exit must return 0
+Runtime crash and signal tests passed.
+[test] 10/11 Crash + signal handling completed in 35s
+
+============================================================
+11/11 Hardened security + size budgets
+============================================================
+
+============================================================
+Hardened runtime security tests
+============================================================
+[test] Checking no-new-privileges and zero effective capabilities (generic)
+[test] Checking read-only root with explicitly writable tmpfs surfaces (generic)
+[test] Checking no-new-privileges and zero effective capabilities (laravel)
+[test] Checking read-only root with explicitly writable tmpfs surfaces (laravel)
+Hardened runtime security tests passed.
+
+============================================================
+Compressed image size regression budgets
+============================================================
+[test] production-candidate:2.0.3-php8.3: 16983389 compressed bytes (budget 20000000)
+[test] production-candidate:2.0.3-php8.4: 17360063 compressed bytes (budget 20000000)
+[test] production-candidate:2.0.3-php8.5: 19846834 compressed bytes (budget 23000000)
+[test] production-candidate:2.0.3-laravel-php8.3: 23004424 compressed bytes (budget 28000000)
+[test] production-candidate:2.0.3-laravel-php8.4: 24089230 compressed bytes (budget 29000000)
+[test] production-candidate:2.0.3-laravel-php8.5: 26094031 compressed bytes (budget 32000000)
+Compressed image size budgets passed.
+[test] 11/11 Hardened security + size budgets completed in 27s
+
+All Production tests passed in 243s.

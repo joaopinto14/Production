@@ -31,6 +31,7 @@ run_suite "7/11 Deep HTTP contract" ./tests/http-contract.sh
 run_suite "8/11 Concurrent workload" ./tests/concurrency.sh
 run_suite "9/11 Logging contract" ./tests/logging.sh
 run_suite "10/11 Crash + signal handling" ./tests/runtime-failure.sh
+run_suite "Orphan reaping in all web/CLI variants" python3 tests/orphan-reaping.py
 run_suite "11/11 Hardened security + size budgets" sh -c './tests/security.sh && ./tests/size-budget.sh'
 
 FINISHED="$(date +%s)"

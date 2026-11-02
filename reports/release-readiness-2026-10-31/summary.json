@@ -1,0 +1,166 @@
+{
+  "created_at": "2026-10-31T17:06:59.633900+00:00",
+  "version": "2.0.4",
+  "scope": "Local preparation from uncommitted tree; no public publication or native ARM64 execution",
+  "source_head": "5bc91e1f69c3133ce8cbcdb3bae63e2d82c35a65",
+  "repository": "production-release-check",
+  "runtime": {
+    "version": "2.0.4",
+    "revision": "5bc91e1f69c3133ce8cbcdb3bae63e2d82c35a65",
+    "platform": "linux/amd64",
+    "started_at": "2026-10-31T16:56:14.394983+00:00",
+    "images": {
+      "php8.3": "sha256:151e42607190fec5c28b3d4ceac6cce933ecfedfd0c9bf64e5b29afb4464980d",
+      "php8.4": "sha256:417c36ff2e39988d9b29ff005bb77e41e7f3f71347beffbc5ba9f525fad309f9",
+      "php8.5": "sha256:f1abe071b3afcdb9445a901fe1b9084b8e0b302c51ccb2cb3f1bbd0311f39ebb",
+      "laravel-php8.3": "sha256:3cdc90ee5e950956a33e87138cc311517183ff7e5db0013bbd98c642217e79d8",
+      "laravel-php8.4": "sha256:cf5551b7d9bea4a4837081663be5fe63051290212c6879892049906e9e21051e",
+      "laravel-php8.5": "sha256:f8ef40160c3f98cb33babb428c43fbac0b2ba8f24d8c4c6b9873552a93bf5af1"
+    },
+    "status": "passed",
+    "suites": [
+      {
+        "name": "test-all",
+        "exit_code": 0,
+        "seconds": 344.2,
+        "log": "test-all.log",
+        "sha256": "3a3e399890d9a357efd47651895433b49b1482f961a34952394bb6a26aec6ad6"
+      },
+      {
+        "name": "release-contract",
+        "exit_code": 0,
+        "seconds": 9.15,
+        "log": "release-contract.log",
+        "sha256": "f7caed348652a975cdbcfb51600967fbeff0edddc9078818085ce077524d4974"
+      },
+      {
+        "name": "real-generic",
+        "exit_code": 0,
+        "seconds": 31.22,
+        "log": "real-generic.log",
+        "sha256": "8d90e67418d66d7acc4c9c1ea1d0565b2644fbdfc97517afd2e0ed12b3bdf377"
+      },
+      {
+        "name": "real-laravel",
+        "exit_code": 0,
+        "seconds": 91.48,
+        "log": "real-laravel.log",
+        "sha256": "4135387c99ed2c8c73e78157118d96a47991431a05a404a8881f00bf1f5c713b"
+      },
+      {
+        "name": "restart-stability",
+        "exit_code": 0,
+        "seconds": 108.17,
+        "log": "restart-stability.log",
+        "sha256": "1b0c676fca1701f2f75e16fdf8fc18c028b0351826ada964091d19fba6936aaa"
+      }
+    ],
+    "completed_at": "2026-10-31T17:06:00.723239+00:00"
+  },
+  "scans": [
+    {
+      "report": "trivy-laravel-php8.3.json",
+      "sha256": "3271e9920176d95f3ce37820fbefffc546f46a55dadee685e763c618edb62fd8",
+      "image_config": "sha256:9fdbe87601959cb4b81990c35135828c5f38ab07efbf446a6bd927fc36e7d356",
+      "created_at": "2026-10-31T17:05:36.128897335Z",
+      "findings": {}
+    },
+    {
+      "report": "trivy-laravel-php8.4.json",
+      "sha256": "1f2bf61a36df88a783c615a58a6003846385d2b0e8a702b21337e80a9a19cf5c",
+      "image_config": "sha256:872a81207db68b620d92e4fc555dea42aa0d64210bfe13b6be89cdee0944353b",
+      "created_at": "2026-10-31T17:05:39.664815864Z",
+      "findings": {}
+    },
+    {
+      "report": "trivy-laravel-php8.5.json",
+      "sha256": "5f7a1f15a64ad9f409c872a5cf0519529ba69a38eb797f19ee1f70d7e96c9adb",
+      "image_config": "sha256:8c51a1786df3d16afa6e6c977b8af9f08cf971b27e771357645f1f87db6e685c",
+      "created_at": "2026-10-31T17:05:42.734257597Z",
+      "findings": {}
+    },
+    {
+      "report": "trivy-php8.3.json",
+      "sha256": "5fa4e364d7082180e3e6cdbaf82168cdad773bc06b4e8bcca21b33ecf9b497e8",
+      "image_config": "sha256:e56bb53d1dd961164dbe5e92bbb868ffb8783b25b0333a6ccda67817170e7e89",
+      "created_at": "2026-10-31T17:05:24.821569553Z",
+      "findings": {}
+    },
+    {
+      "report": "trivy-php8.4.json",
+      "sha256": "17a0040d5a91d1eab2186b0a586d0c7541c9e1e6ecd847c8979986b7d3fabb42",
+      "image_config": "sha256:38a08aab8ee49554995b05c96389221b1ec5d2496505409755253cab85be50ee",
+      "created_at": "2026-10-31T17:05:28.373468113Z",
+      "findings": {}
+    },
+    {
+      "report": "trivy-php8.5.json",
+      "sha256": "bbce26c16c9abad795e7fdeb73641a1b197a8b404bbd26274c71fe25081dee15",
+      "image_config": "sha256:216f04296e5947b4e298686cc75855bce505c15a87936d49c35af77c63739dcd",
+      "created_at": "2026-10-31T17:05:32.811612386Z",
+      "findings": {}
+    }
+  ],
+  "runtime_scan_binding_gate": "passed",
+  "actionlint": "passed",
+  "python_tests": 44,
+  "registry_proof": {
+    "scope": "Synthetic Alpine fixtures in an isolated loopback registry; does not validate PHP/ARM64 execution or public signatures",
+    "indexes": 6,
+    "platforms": 2,
+    "verified_tags": 15,
+    "alias_drift_rejected": true
+  },
+  "public_tag_preflight": [
+    "Available version tag: joaopinto14/production:2.0.4",
+    "Available version tag: joaopinto14/production:2.0.4-php8.3",
+    "Available version tag: joaopinto14/production:2.0.4-php8.4",
+    "Available version tag: joaopinto14/production:2.0.4-php8.5",
+    "Available version tag: joaopinto14/production:2.0.4-laravel-php8.3",
+    "Available version tag: joaopinto14/production:2.0.4-laravel-php8.4",
+    "Available version tag: joaopinto14/production:2.0.4-laravel-php8.5"
+  ],
+  "database": {
+    "8.3-generic": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    },
+    "8.4-generic": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    },
+    "8.5-generic": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    },
+    "8.3-laravel": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    },
+    "8.4-laravel": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    },
+    "8.5-laravel": {
+      "Version": 2,
+      "NextUpdate": "2026-11-01T13:09:00.833221529Z",
+      "UpdatedAt": "2026-10-31T13:09:00.83322165Z",
+      "DownloadedAt": "2026-10-31T17:05:23.855685986Z"
+    }
+  },
+  "pending": [
+    "Reviewed commit/merge",
+    "Native amd64/arm64 staging validation",
+    "Public OIDC signatures and final registry promotion verification"
+  ]
+}

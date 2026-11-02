@@ -1,0 +1,5 @@
+production-orphans-e4370132e44a (sha256:927706a3cde6f74842d0aa231cfb5c5b09799cf20ef17d148f16701a4786e172): 0 zombie(s); container PID 1 = host PID 96281
+buildx_buildkit_production-multiarch0 (moby/buildkit:buildx-stable-1): 0 zombie(s); container PID 1 = host PID 2367
+gest-energy-postgres-1 (postgres:17-alpine): 0 zombie(s); container PID 1 = host PID 2370
+Total inside running Docker containers: 0
+A snapshot does not prove persistence; repeat and compare parents. Zombies outside Docker are not included.

@@ -18,6 +18,17 @@ server {
         return 200 "ok\n";
     }
 
+    # FPM's built-in ping needs no application file or application dependencies.
+    location = /readyz {
+        access_log off;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME /readyz;
+        fastcgi_pass unix:/run/production/php/php-fpm.sock;
+        fastcgi_connect_timeout 1s;
+        fastcgi_read_timeout 2s;
+        fastcgi_hide_header X-Powered-By;
+    }
+
     location = /favicon.ico {
         access_log off;
         log_not_found off;
@@ -47,6 +58,11 @@ server {
 
         fastcgi_pass unix:/run/production/php/php-fpm.sock;
         fastcgi_read_timeout 300s;
+    }
+
+    # PHP-like names and backup suffixes must never fall through to static files.
+    location ~* \.(?:php|phtml|phar|phps)(?:[^a-z0-9]|$) {
+        return 404;
     }
 
 }

@@ -2,32 +2,39 @@
 
 All notable changes to Production are documented in this file.
 
-## Unreleased
+## 2.0.4 - Unreleased
+
+### Added
+
+- Include the Phar extension in Generic and Laravel for PHP 8.3/8.4/8.5, with archive reading/execution coverage and the default phar.readonly setting retained.
+
+### Maintenance
+
+- Retain runtime suite logs/results and scanned image identities; reject incomplete, stale or failed runtime evidence before promotion.
+- Verify registry platforms, release identity, populated SPDX SBOMs and SLSA provenance before signing and after promotion; verify final version/alias digests before publishing the GitHub Release.
+- Add release verification/recovery/rollback instructions and a private vulnerability reporting policy.
+- Pin Alpine 3.24 to its official multi-architecture image index and add weekly Dependabot proposals for base digest/patch updates.
+- Add daily/manual/pull-request maintenance candidates on native amd64 and arm64, with clean builds, runtime tests, APK inventories and digest-pinned Trivy scans outside the runtime image.
+- Reject fixable HIGH/CRITICAL candidate findings and incomplete scans; preserve evidence as workflow artifacts without publishing candidates.
+- Document PHP/Alpine support, community-repository limits, updates and end-of-support handling in `SUPPORT.md`.
+- Preserve immutable version tags; resume partial promotions only when existing tags match the exact validated digests. Registry failures fail closed.
+
+### Security and reliability
+
+- Run Alpine-packaged Tini as PID 1 in web and CLI modes to reap adopted orphan PHP processes. Cover repeated orphan bursts in all six variants, preserve staged web shutdown and CLI exit/signal behavior, and document the limits for children of living parents.
+
+- Block mixed-case PHP names, alternate PHP source extensions and backup suffixes in both Nginx variants.
+- Drain Nginx before stopping FPM, with a bounded configurable deadline, forced-shutdown error status and active-request/stuck-master regressions.
+- Add `/readyz` using FPM ping and make it the default Docker health probe; retain `/healthz` liveness.
+- Allowlist runtime build-context files, reject malformed PHP build versions and correct hardened mount ownership/capacity examples.
+- Check each save/compression stage in size measurements and reject partial/stale vulnerability evidence.
+- Build staging artifacts once; scan/test exact digests on native amd64/arm64, prepare package reports before promotion, sign/verify with Cosign, and recover matching partial promotions without rebuilding. Add independent release-note repair.
+- Pin all GitHub Actions by full commit SHA, update them through Dependabot and scope publishing permissions to their jobs.
 
 ### Fixed
 
 - Resolve each registry image index to its architecture-specific manifest digest before collecting package inventories. This avoids `cannot overwrite digest` when a classic Docker image store pulls amd64 and arm64 through the same index digest.
 - Record both the requested image reference and the resolved platform reference in package reports; add regression tests for platform selection, attestations, registry ports and missing/ambiguous manifests.
-
-## 2.0.3 - 2026-09-16
-
-### Security and reliability
-
-- Evaluate hidden-path denial before PHP handlers in both Nginx templates, including hidden PHP files, directories and PATH_INFO. Restrict the ACME exception to the exact `.well-known` path segment.
-- Validate memory/upload sizes, web document roots and timezones before writing runtime configuration; reject line breaks and unsafe directives.
-- Preserve CLI commands without a web document root and document disabling the inherited HTTP health check for workers and schedulers.
-- Serialize releases and prevent historical versions from promoting stable aliases when a newer stable tag exists.
-
-### Package transparency
-
-- Generate package comparisons from the previous stable registry images and the digests of newly published images, covering all six variants on amd64 and arm64.
-- Include package names, old/new versions, additions/removals and image identities in Markdown/JSON release attachments and GitHub Release notes.
-- Record local amd64 updates in `reports/2.0.3-local-packages.md`: apk-tools/libapk 3.0.7-r0 → 3.0.8-r0, libcurl 8.21.0-r0 → 8.22.0-r0, pcre2 10.47-r1 → 10.48-r0, tzdata 2026c-r0 → 2026d-r0, xz-libs 5.8.3-r0 → 5.8.4-r0, PHP 8.4.24-r0 → 8.4.25-r0 and PHP 8.5.9-r0 → 8.5.10-r0 with bundled extensions. Published inventories are generated separately; no CVE remediation is inferred from package changes alone.
-
-### Validation
-
-- Add HTTP regression coverage for hidden paths and a real 16 KiB FastCGI response header.
-- Add negative configuration tests, numeric release-policy tests and package inventory comparison tests.
 
 ## 2.0.3 - 2026-09-16
 

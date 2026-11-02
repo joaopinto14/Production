@@ -2,6 +2,7 @@
 set -eu
 
 . ./tests/lib.sh
+. ./tests/compressed-size.sh
 
 section "Compressed image size regression budgets"
 
@@ -10,15 +11,6 @@ section "Compressed image size regression budgets"
 #
 # Measure a compressed docker archive instead. This gives us a portable
 # approximation of the size transferred/stored by a registry.
-compressed_size() {
-    image="$1"
-
-    docker image save "${image}" \
-        | gzip -c \
-        | wc -c \
-        | tr -d '[:space:]'
-}
-
 check_budget() {
     variant="$1"
     php_version="$2"

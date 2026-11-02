@@ -1,10 +1,9 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION=3.24
-FROM alpine:${ALPINE_VERSION}
+# Keep this literal reference so Dependabot can propose digest updates.
+FROM alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
 
-ARG ALPINE_VERSION
-ARG VERSION=2.0.3
+ARG VERSION=2.0.4
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
 ARG VCS_REF=unknown
@@ -21,7 +20,7 @@ LABEL org.opencontainers.image.title="Production" \
       org.opencontainers.image.source="https://github.com/joaopinto14/Production" \
       org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:${ALPINE_VERSION}" \
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24" \
       io.joaopinto.production.php-version="${PHP_VERSION}" \
       io.joaopinto.production.variant="${VARIANT}" \
       io.joaopinto.production.runtime-user="www" \
@@ -41,9 +40,10 @@ ENV PRODUCTION_VERSION="${VERSION}" \
     HOME="/tmp"
 
 RUN set -eux; \
-    PHP_SLOT="$(printf '%s' "${PHP_VERSION}" | tr -d '.')"; \
-    case "${PHP_SLOT}" in \
-        83|84|85) ;; \
+    case "${PHP_VERSION}" in \
+        8.3) PHP_SLOT=83 ;; \
+        8.4) PHP_SLOT=84 ;; \
+        8.5) PHP_SLOT=85 ;; \
         *) echo "Unsupported PHP version: ${PHP_VERSION}. Supported: 8.3, 8.4, 8.5." >&2; exit 1 ;; \
     esac; \
     case "${VARIANT}" in \
@@ -59,6 +59,7 @@ RUN set -eux; \
         php${PHP_SLOT}-mbstring \
         php${PHP_SLOT}-openssl \
         php${PHP_SLOT}-pdo \
+        php${PHP_SLOT}-phar \
         php${PHP_SLOT}-session \
         php${PHP_SLOT}-tokenizer \
         php${PHP_SLOT}-xml \
@@ -83,6 +84,7 @@ RUN set -eux; \
     apk add --no-cache \
         ca-certificates \
         nginx \
+        tini \
         tzdata \
         ${PHP_PACKAGES}; \
     addgroup -S -g "${WWW_GID}" www; \
@@ -126,9 +128,12 @@ USER www
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1
+    CMD wget -q -T 2 -O /dev/null http://127.0.0.1:8080/readyz || exit 1
 
 STOPSIGNAL SIGTERM
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Keep an actual init in front of web AND CLI commands. Subreaper mode also
+# handles an outer Docker --init without losing adopted grandchildren.
+# Forward to the direct child only: group forwarding would bypass web draining.
+ENTRYPOINT ["/sbin/tini", "-s", "--", "/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/production-runtime"]

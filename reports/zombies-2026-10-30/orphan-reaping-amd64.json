@@ -1,0 +1,494 @@
+[
+  {
+    "image": "production-zombie-fix:2.0.4-php8.3",
+    "image_id": "sha256:4347e6f7b12aa43403a1001fb0d21f2ddb6b44654e696f68e0286e17fd52a2cd",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 8,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-php8.3",
+    "image_id": "sha256:4347e6f7b12aa43403a1001fb0d21f2ddb6b44654e696f68e0286e17fd52a2cd",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 35,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-php8.4",
+    "image_id": "sha256:dfde32ca93e6bbcc1150b67fd6bb6603e7481cdde4de83c30fcbb258ded663a7",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 7,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-php8.4",
+    "image_id": "sha256:dfde32ca93e6bbcc1150b67fd6bb6603e7481cdde4de83c30fcbb258ded663a7",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 35,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-php8.5",
+    "image_id": "sha256:88b159db558ea3519e61189b27810bcb24261f04c64bfb38b8bd5d5bafbf330d",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 7,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-php8.5",
+    "image_id": "sha256:88b159db558ea3519e61189b27810bcb24261f04c64bfb38b8bd5d5bafbf330d",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 30,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.3",
+    "image_id": "sha256:927706a3cde6f74842d0aa231cfb5c5b09799cf20ef17d148f16701a4786e172",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 6,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.3",
+    "image_id": "sha256:927706a3cde6f74842d0aa231cfb5c5b09799cf20ef17d148f16701a4786e172",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 30,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.4",
+    "image_id": "sha256:2c64e9b0e7ae46441cf3dded1499b864f0a0f67195f1938139c0f5cbdb82a958",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 7,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.4",
+    "image_id": "sha256:2c64e9b0e7ae46441cf3dded1499b864f0a0f67195f1938139c0f5cbdb82a958",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 30,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.5",
+    "image_id": "sha256:eb46e23f9b805f5f2a0b2581a3f11de3ee83c90690a95542d2522ab21f0d3b7c",
+    "platform": "linux/amd64",
+    "mode": "cli",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 7,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  },
+  {
+    "image": "production-zombie-fix:2.0.4-laravel-php8.5",
+    "image_id": "sha256:eb46e23f9b805f5f2a0b2581a3f11de3ee83c90690a95542d2522ab21f0d3b7c",
+    "platform": "linux/amd64",
+    "mode": "web",
+    "init": "tini",
+    "docker_init": false,
+    "expected_leak": false,
+    "report": {
+      "controller_pid": 28,
+      "created": 200,
+      "snapshots": [
+        {
+          "batch": 1,
+          "created": 40,
+          "zombies": []
+        },
+        {
+          "batch": 2,
+          "created": 80,
+          "zombies": []
+        },
+        {
+          "batch": 3,
+          "created": 120,
+          "zombies": []
+        },
+        {
+          "batch": 4,
+          "created": 160,
+          "zombies": []
+        },
+        {
+          "batch": 5,
+          "created": 200,
+          "zombies": []
+        }
+      ]
+    },
+    "persistent_zombies": false
+  }
+]

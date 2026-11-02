@@ -52,10 +52,11 @@ EOF_PHP
             --cap-drop ALL \
             --security-opt no-new-privileges:true \
             --pids-limit 64 \
-            --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${uid},gid=${gid}" \
-            --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
+            --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=128m,mode=0755,uid=${uid},gid=${gid}" \
+            --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=128m,mode=1777" \
             --tmpfs "/var/www/html/storage:rw,nosuid,nodev,noexec,size=16m,mode=0770,uid=${uid},gid=${gid}" \
             --tmpfs "/var/www/html/bootstrap/cache:rw,nosuid,nodev,noexec,size=8m,mode=0770,uid=${uid},gid=${gid}" \
+            -e UPLOAD_MAX_SIZE=32M \
             -v "${app_dir}:/var/www/html:ro" \
             "${image}" >/dev/null
     else
@@ -65,14 +66,31 @@ EOF_PHP
             --cap-drop ALL \
             --security-opt no-new-privileges:true \
             --pids-limit 64 \
-            --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=16m,mode=0755,uid=${uid},gid=${gid}" \
-            --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777" \
+            --tmpfs "/run/production:rw,nosuid,nodev,noexec,size=128m,mode=0755,uid=${uid},gid=${gid}" \
+            --tmpfs "/tmp:rw,nosuid,nodev,noexec,size=128m,mode=1777" \
+            -e UPLOAD_MAX_SIZE=32M \
             -v "${app_dir}:/var/www/html:ro" \
             "${image}" >/dev/null
     fi
 
     wait_healthy "${container}"
     assert_eq "${expected}" "$(http_body "${container}" /)" "${variant} hardened response"
+    log "Checking a 17 MiB multipart upload on read-only root (${variant})"
+    # Reuse the application's front controller, including Laravel's single-PHP rule.
+    cat > "${target}" <<'EOF_UPLOAD'
+<?php echo isset($_FILES['upload']) ? $_FILES['upload']['error'] . '|' . $_FILES['upload']['size'] : 'missing-upload';
+EOF_UPLOAD
+    # OPcache's two-second revalidation must expire after changing the fixture.
+    sleep 3
+    uploaded="$(docker exec "${container}" php -r '
+        $boundary="production-upload";
+        $body="--$boundary\r\nContent-Disposition: form-data; name=\"upload\"; filename=\"probe.bin\"\r\nContent-Type: application/octet-stream\r\n\r\n";
+        $body.=str_repeat("x", 17*1024*1024)."\r\n--$boundary--\r\n";
+        $ctx=stream_context_create(["http"=>["method"=>"POST", "timeout"=>30,
+            "header"=>"Content-Type: multipart/form-data; boundary=$boundary\r\n", "content"=>$body]]);
+        echo file_get_contents("http://127.0.0.1:8080/", false, $ctx);
+    ')"
+    assert_eq '0|17825792' "${uploaded}" "17 MiB upload must complete without ENOSPC"
     if [ "${variant}" = "laravel" ]; then
         assert_eq 'storage-ok' "$(docker exec "${container}" cat /var/www/html/storage/security-probe)" "Laravel storage writable mount"
         assert_eq 'cache-ok' "$(docker exec "${container}" cat /var/www/html/bootstrap/cache/security-probe)" "Laravel bootstrap/cache writable mount"

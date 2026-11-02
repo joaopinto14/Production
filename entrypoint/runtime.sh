@@ -4,6 +4,11 @@ set -u
 PHP_FPM_PID=""
 NGINX_PID=""
 SHUTTING_DOWN=0
+SHUTDOWN_TIMEOUT="${SHUTDOWN_TIMEOUT:-30}"
+case "${SHUTDOWN_TIMEOUT}" in
+    [1-9]|[1-9][0-9]|[12][0-9][0-9]|300) ;;
+    *) printf '%s\n' 'SHUTDOWN_TIMEOUT must be an integer from 1 to 300' >&2; exit 1 ;;
+esac
 
 log() {
     printf '[Production] %s\n' "$*"
@@ -18,9 +23,18 @@ stop_child() {
     kill -"${signal}" "${pid}" 2>/dev/null || true
 }
 
-wait_child() {
+drain_child() {
     pid="$1"
     [ -n "${pid}" ] || return 0
+    while kill -0 "${pid}" 2>/dev/null; do
+        if [ "$(date +%s)" -ge "${SHUTDOWN_DEADLINE}" ]; then
+            log "Shutdown deadline reached; killing PID ${pid}"
+            stop_child KILL "${pid}"
+            SHUTDOWN_FORCED=1
+            break
+        fi
+        sleep 1
+    done
     wait "${pid}" 2>/dev/null || true
 }
 
@@ -28,18 +42,20 @@ shutdown() {
     [ "${SHUTTING_DOWN}" -eq 0 ] || return 0
     SHUTTING_DOWN=1
 
-    trap - TERM INT QUIT
-    log "Stopping Nginx and PHP-FPM"
+    trap '' TERM INT QUIT
+    SHUTDOWN_DEADLINE="$(expr "$(date +%s)" + "${SHUTDOWN_TIMEOUT}")"
+    SHUTDOWN_FORCED=0
+    log "Draining Nginx before stopping PHP-FPM (deadline ${SHUTDOWN_TIMEOUT}s)"
 
-    # QUIT requests a graceful shutdown from both Nginx and PHP-FPM.
+    # FPM must remain available until Nginx has completed active requests.
     stop_child QUIT "${NGINX_PID}"
+    drain_child "${NGINX_PID}"
     stop_child QUIT "${PHP_FPM_PID}"
-
-    wait_child "${NGINX_PID}"
-    wait_child "${PHP_FPM_PID}"
+    drain_child "${PHP_FPM_PID}"
+    return "${SHUTDOWN_FORCED}"
 }
 
-trap 'shutdown; exit 0' TERM INT QUIT
+trap 'shutdown; exit $?' TERM INT QUIT
 
 /usr/local/sbin/php-fpm \
     --nodaemonize \
@@ -54,15 +70,15 @@ NGINX_PID=$!
 log "PHP-FPM PID: ${PHP_FPM_PID}"
 log "Nginx PID: ${NGINX_PID}"
 
-# BusyBox ash is deliberately used instead of adding a process supervisor.
+# Tini owns PID 1 and reaps adopted orphans in both web and CLI mode.
+# This BusyBox shell only supervises the two web services beneath it.
 # If either service exits unexpectedly, stop the other and fail the container.
 while :; do
     if ! kill -0 "${PHP_FPM_PID}" 2>/dev/null; then
         wait "${PHP_FPM_PID}" 2>/dev/null
         status=$?
         log "PHP-FPM exited unexpectedly (status ${status})"
-        stop_child QUIT "${NGINX_PID}"
-        wait_child "${NGINX_PID}"
+        shutdown
         exit 1
     fi
 
@@ -70,8 +86,7 @@ while :; do
         wait "${NGINX_PID}" 2>/dev/null
         status=$?
         log "Nginx exited unexpectedly (status ${status})"
-        stop_child QUIT "${PHP_FPM_PID}"
-        wait_child "${PHP_FPM_PID}"
+        shutdown
         exit 1
     fi
 

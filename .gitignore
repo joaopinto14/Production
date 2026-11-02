@@ -9,3 +9,10 @@ __pycache__/
 /release-packages.json
 /release-packages.md
 /release-notes.md
+/candidate-reports/
+/release-evidence/
+/release-evidence.tar.gz
+/release-digests.txt
+/release-promotion.json
+/release-artifacts.json
+/release-verification.json

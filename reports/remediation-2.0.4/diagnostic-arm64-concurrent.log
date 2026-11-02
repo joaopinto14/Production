@@ -1,0 +1,158 @@
+
+============================================================
+1/11 Static validation
+============================================================
+
+============================================================
+Static validation
+============================================================
+[test] Checking shell syntax
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.010s
+
+OK
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.005s
+
+OK
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 0.080s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.018s
+
+OK
+[test] Checking executable bits
+[test] Checking Docker Bake definition
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Running Dockerfile build checks
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.97kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 310B done
+#5 DONE 0.0s
+[test] Checking for CRLF line endings in runtime/test scripts
+Static validation passed.
+[test] 1/11 Static validation completed in 3s
+
+============================================================
+2/11 Negative build validation
+============================================================
+
+============================================================
+Negative build validation
+============================================================
+[test] Rejecting unsupported PHP versions
+[test] Checking that credentials and development files never enter the context
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 59B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 310B done
+#2 DONE 0.0s
+
+#3 [internal] load build context
+#3 transferring context: 326B done
+#3 DONE 0.0s
+
+#4 [1/1] COPY . /
+#4 CACHED
+
+#5 exporting to client directory
+#5 copying files 310B done
+#5 DONE 0.0s
+WARNING: current commit information was not captured by the build: failed to read current commit information with git rev-parse --is-inside-work-tree
+Synthetic build-context exclusion passed.
+[test] Rejecting unsupported variants
+Negative build validation passed.
+[test] 2/11 Negative build validation completed in 6s
+[test] SKIP_BUILD=1: reusing existing images
+
+============================================================
+4/11 Image contracts
+============================================================
+
+============================================================
+Image contract validation
+============================================================
+[test] Checking production-candidate-arm64:2.0.4-php8.3
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[test] Checking production-candidate-arm64:2.0.4-php8.4
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[test] Checking production-candidate-arm64:2.0.4-php8.5
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[test] Checking production-candidate-arm64:2.0.4-laravel-php8.3
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[test] Checking production-candidate-arm64:2.0.4-laravel-php8.4
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[test] Checking production-candidate-arm64:2.0.4-laravel-php8.5
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+Image contract validation passed.
+[test] 4/11 Image contracts completed in 401s
+
+============================================================
+5/11 Smoke matrix
+============================================================
+
+============================================================
+Smoke tests for all image variants
+============================================================
+[test] Starting production-candidate-arm64:2.0.4-php8.3
+WARNING: The requested image's platform (linux/arm64) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested
+[Production] Version 2.0.4
+[Production] Variant generic
+[Production] PHP 8.3.36
+[Production] Runtime user: 10001:10001
+[Production] Document root: /var/www/html
+[Production] Listening on: 8080
+[Production] PHP-FPM PID: 62
+[Production] Nginx PID: 64
+[test] ERROR: Container production-smoke-generic-8.3-246581 did not become healthy (state=running, health=starting).

@@ -3,7 +3,7 @@
 # Shared helpers for the Production test suite.
 # This file is sourced by the individual test scripts.
 
-TEST_VERSION="${VERSION:-2.0.3}"
+TEST_VERSION="${VERSION:-2.0.4}"
 TEST_IMAGE_NAME="${IMAGE_NAME:-production}"
 
 log() {
@@ -68,7 +68,8 @@ ensure_image() {
 
 wait_healthy() {
     container="$1"
-    max_attempts="${2:-30}"
+    # Permit a second 30-second health interval after a slow initial probe.
+    max_attempts="${2:-60}"
     attempt=0
 
     while [ "${attempt}" -lt "${max_attempts}" ]; do
@@ -83,6 +84,7 @@ wait_healthy() {
     done
 
     docker logs "${container}" >&2 2>/dev/null || true
+    docker inspect --format '{{json .State.Health}}' "${container}" >&2 2>/dev/null || true
     fail "Container ${container} did not become healthy (state=${state:-unknown}, health=${health:-unknown})."
 }
 

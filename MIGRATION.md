@@ -319,3 +319,11 @@ PHP_MEMORY_LIMIT
 ```
 
 ---
+
+## Changes in 2.0.4
+
+Docker health checks now use `/readyz` (Nginx plus PHP-FPM); `/healthz` remains Nginx liveness. Disable the inherited HTTP check with `--no-healthcheck` for CLI workers/schedulers and supply an application-specific probe. The runtime reserves both endpoint paths.
+
+Set Docker `--stop-timeout 40` or Compose `stop_grace_period: 40s` for the default 30-second `SHUTDOWN_TIMEOUT`. Nginx drains before FPM stops; a forced deadline exits with error. See the README for read-only mount ownership and upload capacity sizing.
+
+Starting with the final 2.0.4 preparation, `/sbin/tini -s --` wraps the entrypoint in web and CLI modes. PHP CLI is no longer PID 1. Keep the entrypoint when overriding commands; if you override it, retain an init explicitly. Existing older containers can use Docker `--init` or Compose `init: true` after recreation. This reaps adopted orphans; children belonging to a living parent still require that parent's wait/proc_close handling.

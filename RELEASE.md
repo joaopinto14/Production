@@ -1,63 +1,39 @@
-# Production 2.0.3 — Runtime Hardening and Package Transparency
+# Production 2.0.4 — Security and release integrity
 
-Production 2.0.3 is a maintenance release for the Generic and Laravel PHP runtime.
+Maintenance correction for Generic/Laravel, PHP 8.3/8.4/8.5, amd64/arm64.
 
-## Runtime fixes
+## Runtime corrections
 
-- Hidden-file and hidden-directory protection now takes precedence over PHP execution in both Nginx templates. The ACME exception matches the exact `.well-known` path segment, and hidden descendants remain blocked.
-- Runtime configuration rejects invalid memory/upload syntax, unsafe web document roots, timezone traversal and line breaks before writing PHP or Nginx configuration.
-- Memory limits accept bytes, K/M/G (case-insensitive), or `-1`. Upload limits accept bytes or K/M/G. Web document roots must be absolute and contain only letters, digits, slash, dot, underscore or hyphen.
-- CLI commands still do not require an existing web document root.
-- CLI/queue/scheduler examples disable the inherited HTTP health check, which requires Nginx. Applications may supply their own worker-specific checks.
+- Include Phar in Generic and Laravel for all three PHP branches; validate archive reading/execution while retaining the default phar.readonly setting.
 
-## Release reliability
+- Add Alpine-packaged Tini as PID 1 for both web and CLI commands, including queues and schedulers. Reap adopted orphan processes without forwarding shutdown signals to the entire web process group. Regression tests create 200 orphan PHP processes while each container remains alive; previous pre-init CLI images accumulate them.
 
-Stable publication is serialized. Immediately before publishing, the workflow fetches tags and compares numeric stable versions. A historical release can publish its version-specific tags but cannot promote the shared stable aliases when a newer stable tag exists. Prerelease tags do not control this decision.
+- Block mixed-case PHP filenames, PHP backup suffixes and alternate PHP source extensions instead of serving their contents. Normal Generic PHP execution, Laravel's front controller, hidden-path denial and ACME access remain covered by regression tests.
+- Drain active Nginx requests before stopping PHP-FPM. `SHUTDOWN_TIMEOUT` bounds the complete operation (default 30 seconds, range 1–300); forced shutdown exits with error. Give Docker/Compose a longer stop grace period, for example 40 seconds with the default.
+- Add `/readyz`, backed by PHP-FPM's built-in ping, and use it for Docker health checks. `/healthz` remains Nginx liveness. Neither checks application databases or caches. CLI workers still need `--no-healthcheck` and their own checks.
+- Exclude credentials and development files from Docker's build context using an explicit runtime-file allowlist. Reject malformed PHP build versions.
+- Correct read-only mount ownership, modes and upload capacity guidance, including a 17 MiB multipart regression. Laravel writable storage remains application-managed.
+- Make image size measurements fail on save/compressor failures; keep the current extension contracts and size budgets.
 
-This safeguard applies to workflows containing this change; it does not retroactively modify workflows stored in older Git tags. Only the latest stable release should promote aliases through a manual publishing process.
+## Release corrections
 
-Image signing and promotion of the exact tested build artifacts remain separate follow-up work. This release does not claim that mutable package repositories make independent rebuilds byte-for-byte reproducible.
+Runtime validation retains suite logs, exit codes and the exact tested image IDs.
+Promotion requires complete fresh results on both architectures and verifies log
+hashes against the saved evidence. Registry checks read actual image configuration,
+populated SPDX SBOMs and SLSA provenance for every platform before signing and
+after promotion. Final tags must match the tested indexes before the GitHub
+Release is made public. See the [release runbook](docs/RELEASING.md).
 
-## Package updates
+Staging artifacts are built once with SBOM/provenance. Native amd64 and arm64 jobs pull, scan and test their exact digests, including real PHP/Laravel applications. Scan results must match every APK package/version, identify the expected image and use a current vulnerability database. Fixable HIGH/CRITICAL findings block promotion.
 
-Every successful release now appends a package-by-package comparison with the previous stable release to its GitHub Release notes and attaches Markdown and JSON inventories. The report covers Generic/Laravel, PHP 8.3/8.4/8.5 and amd64/arm64. Current-image references come from the digests returned by the actual publication.
+Package comparison with the previous stable release is prepared before public tags change. The publishing job signs and verifies the tested indexes using keyless Cosign and saves evidence to a draft GitHub Release. It copies those same indexes to version tags, then stable aliases. Existing version tags can only be reused when their digest matches; conflicts fail before promotion. A failed partial promotion can be rerun, and notes can be repaired independently without building or moving images. See [SUPPORT.md](SUPPORT.md#publishing-a-maintenance-correction).
 
-The local amd64 preparation for 2.0.3 confirmed these changes against the existing local 2.0.2 images:
+All workflow actions are pinned by complete commit SHA. Validation jobs have read-only repository permissions, checkout credentials are not persisted, and only publishing/signing jobs receive the required write/OIDC permissions. Daily maintenance candidates and weekly dependency updates keep upstream fixes visible.
 
-| Packages | Previous | New | Affected variants |
-|---|---|---|---|
-| apk-tools, libapk | 3.0.7-r0 | 3.0.8-r0 | All six |
-| libcurl | 8.21.0-r0 | 8.22.0-r0 | All six |
-| pcre2 | 10.47-r1 | 10.48-r0 | All six |
-| tzdata | 2026c-r0 | 2026d-r0 | All six |
-| xz-libs | 5.8.3-r0 | 5.8.4-r0 | All six |
-| PHP 8.4 core and bundled extensions | 8.4.24-r0 | 8.4.25-r0 | Generic and Laravel PHP 8.4 |
-| PHP 8.5 core and bundled extensions | 8.5.9-r0 | 8.5.10-r0 | Generic and Laravel PHP 8.5 |
+## Package evidence and publication
 
-See [the detailed local package comparison](reports/2.0.3-local-packages.md) and [machine-readable evidence](reports/2.0.3-local-packages.json). These are local build observations, not a claim about the eventual published images; the automatically attached registry report is authoritative for publication.
+The audit of public 2.0.3 identified package vulnerabilities; 2.0.4 uses fresh Alpine packages. The original local observations are recorded in [the remediation report](reports/remediation-2.0.4/REMEDIATION.md); the subsequent PID 1/orphan correction has [separate evidence](reports/zombies-2026-10-30/REPORT.md). These observations do not establish the state of future registry builds. The release workflow attaches the authoritative per-platform inventories and scan evidence for the exact promoted digests.
 
-No specific CVE correction is claimed from a version comparison alone. The reported Docker Scout high-severity finding must be checked against its CVE and a scan of the published digest. Docker Scout was not available during local preparation.
+Release tag: `v2.0.4`, matching `VERSION`. Repository: `joaopinto14/production`. Versioned tags are `2.0.4-php8.x`, `2.0.4-laravel-php8.x` and `2.0.4` (Generic PHP 8.5). Eligible releases also promote the existing stable aliases; historical releases cannot roll them back.
 
-Application code can remain read-only to the runtime user.
-
-Alpine 3.24, PHP 8.3/8.4/8.5, Generic/Laravel variants, port 8080, UID/GID 10001:10001, CLI mode, non-root execution and the existing `/healthz` response are retained.
-
-The `/healthz` endpoint checks Nginx only; it does not execute PHP or verify application dependencies. Configuration values outside the documented syntax now fail early.
-
-## Validation
-
-The release gate remains `./tests/test-release.sh`: clean builds, six-image contracts, smoke tests, configuration, HTTP behavior, concurrency, logging, crash/signal handling, hardened execution, size budgets, real PHP/Laravel applications, restart stability and amd64/arm64 builds.
-
-New regression coverage includes hidden PHP files and directories, hidden PATH_INFO, exact ACME exceptions, invalid configuration, a real 16 KiB FastCGI response header, stable alias selection and package inventory comparisons.
-
-## Publishing
-
-The release tag is `v2.0.3` and must match `VERSION`. The official repository is `joaopinto14/production`.
-
-Version tags follow `2.0.3-php8.x` and `2.0.3-laravel-php8.x`. When eligible for alias promotion, Generic PHP 8.5 also receives `latest` and Laravel PHP 8.5 receives `laravel`; the PHP-specific stable aliases are updated as well.
-
-The GitHub Actions workflow requires `DOCKERHUB_TOKEN`, builds with SBOM and provenance attestations, publishes images, generates the package report and creates or updates the GitHub Release with the report attached. A missing baseline or incomplete inventory fails the release-note step instead of silently claiming a complete package comparison.
-
-## Upgrade
-
-Use the matching 2.0.3 image and recreate the application containers. Existing images and running containers do not update themselves. Preserve writable Laravel `storage/` and `bootstrap/cache/` mounts for UID/GID 10001:10001.
+After publication, recreate application containers using the selected 2.0.4 image. Old images and running containers do not update automatically. Port 8080, Alpine 3.24, UID/GID 10001:10001, CLI mode and documented extensions are retained.

@@ -21,6 +21,16 @@ server {
         return 200 "ok\n";
     }
 
+    location = /readyz {
+        access_log off;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME /readyz;
+        fastcgi_pass unix:/run/production/php/php-fpm.sock;
+        fastcgi_connect_timeout 1s;
+        fastcgi_read_timeout 2s;
+        fastcgi_hide_header X-Powered-By;
+    }
+
     location = /favicon.ico {
         access_log off;
         log_not_found off;
@@ -61,7 +71,7 @@ server {
 
     # Laravel uses a single front controller.
     # Never expose or execute another PHP file from public/.
-    location ~ \.php$ {
+    location ~* \.(?:php|phtml|phar|phps)(?:[^a-z0-9]|$) {
         return 404;
     }
 

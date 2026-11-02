@@ -1,0 +1,191 @@
+{
+  "http_generic": {
+    "/": {
+      "status": 200,
+      "body": "{\"ok\":true,\"bytes\":0}",
+      "length": 21
+    },
+    "/source.php": {
+      "status": 200,
+      "body": "EXECUTED",
+      "length": 8
+    },
+    "/source.PHP": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.pHp": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.php.bak": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.php~": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.phtml": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/.env": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/%2eenv": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/index.php/.private/marker": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/.well-known/acme.txt": {
+      "status": 200,
+      "body": "acme-ok",
+      "length": 7
+    },
+    "/.well-known/.private/marker.txt": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/missing.php": {
+      "status": 404,
+      "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    }
+  },
+  "health_without_fpm_socket": {
+    "health": {
+      "status": 200,
+      "body": "ok\n",
+      "length": 3
+    },
+    "php": {
+      "status": 502,
+      "body": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 150
+    }
+  },
+  "graceful_in_flight": {
+    "response": {
+      "status": 502,
+      "body": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 150
+    },
+    "seconds": 0.31,
+    "exit_code": 0
+  },
+  "http_laravel": {
+    "/": {
+      "status": 200,
+      "body": "{\"ok\":true,\"bytes\":0}",
+      "length": 21
+    },
+    "/source.php": {
+      "status": 404,
+      "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/source.PHP": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.pHp": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.php.bak": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.php~": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/source.phtml": {
+      "status": 200,
+      "body": "<?php /* AUDIT_SOURCE_MARKER */ echo \"EXECUTED\";",
+      "length": 48
+    },
+    "/.env": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/%2eenv": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/index.php/.private/marker": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/.well-known/acme.txt": {
+      "status": 200,
+      "body": "acme-ok",
+      "length": 7
+    },
+    "/.well-known/.private/marker.txt": {
+      "status": 403,
+      "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    },
+    "/missing.php": {
+      "status": 404,
+      "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 146
+    }
+  },
+  "readme_readonly": {
+    "exit_code": 1,
+    "logs": "mkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/nginx/': Permission denied\nmkdir: can't create directory '/run/production/php/': Permission denied\n"
+  },
+  "tmpfs_capacity": {
+    "small": {
+      "status": 200,
+      "body": "{\"ok\":true,\"bytes\":1024}",
+      "length": 24
+    },
+    "large": {
+      "status": 500,
+      "body": "<html>\r\n<head><title>500 Internal Server Error</title></head>\r\n<body>\r\n<center><h1>500 Internal Server Error</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 170
+    },
+    "disk_errors": [
+      "2026/10/21 20:24:24 [crit] 28#28: *4 pwrite() \"/run/production/nginx/client_body/0000000001\" failed (28: No space left on device), client: 172.17.0.1, server: _, request: \"POST / HTTP/1.1\", host: \"127.0.0.1:32771\""
+    ]
+  },
+  "blocked_shutdown": {
+    "state_after_3_seconds": "running",
+    "exit_after_forced_stop": 137
+  },
+  "size_false_success": {
+    "exit_code": 0,
+    "stdout": "\n============================================================\nCompressed image size regression budgets\n============================================================\n[test] production:2.0.3-php8.3: 20 compressed bytes (budget 20000000)\n[test] production:2.0.3-php8.4: 20 compressed bytes (budget 20000000)\n[test] production:2.0.3-php8.5: 20 compressed bytes (budget 23000000)\n[test] production:2.0.3-laravel-php8.3: 20 compressed bytes (budget 28000000)\n[test] production:2.0.3-laravel-php8.4: 20 compressed bytes (budget 29000000)\n[test] production:2.0.3-laravel-php8.5: 20 compressed bytes (budget 32000000)\nCompressed image size budgets passed.\n",
+    "stderr": "audit: simulated docker save failure\naudit: simulated docker save failure\naudit: simulated docker save failure\naudit: simulated docker save failure\naudit: simulated docker save failure\naudit: simulated docker save failure\n"
+  },
+  "context_markers": {
+    ".aws/audit-marker": true,
+    ".codex/audit-marker": true,
+    ".agents/audit-marker": true,
+    ".env": true
+  }
+}
