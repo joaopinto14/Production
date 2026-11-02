@@ -1,23 +1,10 @@
 #!/bin/sh
 set -eu
 
-VERSION="${VERSION:-2.0.2}"
-PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.1}"
+VERSION="${VERSION:-$(cat VERSION)}"
+PREVIOUS_VERSION="${PREVIOUS_VERSION:-2.0.3}"
 IMAGE_NAME="${IMAGE_NAME:-production}"
-
-compressed_size() {
-    image="$1"
-
-    if ! docker image inspect "${image}" >/dev/null 2>&1; then
-        printf '%s\n' '-'
-        return
-    fi
-
-    docker image save "${image}" \
-        | gzip -c \
-        | wc -c \
-        | tr -d '[:space:]'
-}
+. ./tests/compressed-size.sh
 
 printf '%-8s %16s %16s %16s %14s\n' \
     "PHP" "${PREVIOUS_VERSION} generic" "${VERSION} generic" "${VERSION} laravel" "Laravel extra"

@@ -1,0 +1,77 @@
+name: Maintenance candidates
+
+on:
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - docker-bake.hcl
+      - entrypoint/**
+      - nginx/**
+      - php/**
+      - scripts/**
+      - tests/**
+      - .github/dependabot.yml
+      - .github/workflows/maintenance.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-maintenance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  candidates:
+    name: Candidates (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    env:
+      IMAGE_NAME: production-candidate
+      PYTHONDONTWRITEBYTECODE: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+
+      - name: Build fresh local candidates
+        id: build
+        run: |
+          set -euo pipefail
+          VERSION="$(cat VERSION)"
+          VCS_REF="$(git rev-parse HEAD)"
+          export VERSION VCS_REF
+          docker buildx bake --pull --no-cache --load
+
+      - name: Test all six candidates
+        env:
+          SKIP_BUILD: '1'
+        run: ./tests/test-all.sh
+
+      - name: Inventory and scan candidates
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: python3 scripts/check-candidates.py --platform linux/${{ matrix.arch }}
+
+      - name: Preserve candidate evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: maintenance-${{ matrix.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate-reports/
+          if-no-files-found: warn
+          retention-days: 30

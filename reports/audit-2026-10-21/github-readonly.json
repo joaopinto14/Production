@@ -1,0 +1,26 @@
+{
+  "repository": {
+    "full_name": "joaopinto14/Production",
+    "default_branch": "main",
+    "visibility": "public",
+    "archived": false
+  },
+  "workflows": [
+    {
+      "name": "CI",
+      "path": ".github/workflows/ci.yml",
+      "state": "active"
+    },
+    {
+      "name": "Release",
+      "path": ".github/workflows/release.yml",
+      "state": "active"
+    }
+  ],
+  "main_protection": {
+    "verified": true,
+    "enforce_admins": true,
+    "require_pull_request_reviews": true,
+    "required_status_checks": null
+  }
+}

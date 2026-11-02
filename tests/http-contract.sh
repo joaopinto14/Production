@@ -31,12 +31,27 @@ make_common_files() {
         chmod 0644 "${root}/${file}"
     done
     chmod 0755 "${root}/.private" "${root}/.well-known-secret" "${root}/.well-known/.hidden"
+    for file in source.PHP source.pHp source.php.bak source.php~ source.phtml source.phar source.phps; do
+        printf '%s' '<?php /* source-must-never-be-exposed */' > "${root}/${file}"
+        chmod 0644 "${root}/${file}"
+    done
 }
 
 assert_hidden_paths() {
     for path in /.hidden.php /.private/secret.php /.well-known/.hidden/secret.php /.well-known-secret/secret.php /index.php/.private/secret; do
         assert_eq '403' "$(http_status "$1" "${path}")" "hidden path protection: ${path}"
     done
+}
+
+assert_source_protection() {
+    for path in /source.PHP /source.pHp /source.php.bak /source.php~ /source.phtml /source.phar /source.phps; do
+        assert_eq '404' "$(http_status "$1" "${path}")" "source protection: ${path}"
+    done
+    assert_eq 'ready' "$(http_body "$1" /readyz)" "FPM readiness"
+    docker exec "$1" mv /run/production/php/php-fpm.sock /run/production/php/php-fpm.sock.saved
+    assert_eq '200' "$(http_status "$1" /healthz)" "Nginx liveness without FPM socket"
+    assert_eq '502' "$(http_status "$1" /readyz)" "readiness fails without FPM socket"
+    docker exec "$1" mv /run/production/php/php-fpm.sock.saved /run/production/php/php-fpm.sock
 }
 
 GENERIC_DIR="$(mktemp -d)"; DIRS="${DIRS} ${GENERIC_DIR}"; chmod 0755 "${GENERIC_DIR}"
@@ -61,6 +76,7 @@ assert_eq 'direct-ok' "$(http_body "${GENERIC}" /direct.php)" "generic direct PH
 assert_eq 'static-ok' "$(http_body "${GENERIC}" /static.txt)" "generic static file"
 assert_eq '403' "$(http_status "${GENERIC}" /.env)" "generic dotfile protection"
 assert_hidden_paths "${GENERIC}"
+assert_source_protection "${GENERIC}"
 assert_eq 'acme-ok' "$(http_body "${GENERIC}" /.well-known/acme.txt)" "ACME well-known access"
 assert_eq 'ok' "$(http_body "${GENERIC}" /healthz)" "generic health endpoint"
 
@@ -108,6 +124,7 @@ assert_eq '404' "$(http_status "${LARAVEL}" /direct.php)" "Laravel direct PHP pr
 assert_eq 'static-ok' "$(http_body "${LARAVEL}" /static.txt)" "Laravel static file"
 assert_eq '403' "$(http_status "${LARAVEL}" /.env)" "Laravel dotfile protection"
 assert_hidden_paths "${LARAVEL}"
+assert_source_protection "${LARAVEL}"
 assert_eq 'large-header-ok' "$(http_body "${LARAVEL}" '/?large_header=1')" "Laravel 16 KiB FastCGI response header"
 assert_eq 'acme-ok' "$(http_body "${LARAVEL}" /.well-known/acme.txt)" "Laravel ACME well-known access"
 assert_eq 'ok' "$(http_body "${LARAVEL}" /healthz)" "Laravel health endpoint"

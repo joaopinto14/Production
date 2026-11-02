@@ -28,10 +28,10 @@ for variant in ${VARIANTS}; do
         health="$(docker image inspect "${image}" --format '{{json .Config.Healthcheck.Test}}')"
         envs="$(docker image inspect "${image}" --format '{{range .Config.Env}}{{println .}}{{end}}')"
 
-        assert_eq '["/usr/local/bin/entrypoint.sh"]' "${entrypoint}" "entrypoint contract"
+        assert_eq '["/sbin/tini","-s","--","/usr/local/bin/entrypoint.sh"]' "${entrypoint}" "init/entrypoint contract"
         assert_eq '["/usr/local/bin/production-runtime"]' "${command}" "command contract"
         assert_contains "${ports}" '8080/tcp' "exposed port contract"
-        assert_contains "${health}" '/healthz' "healthcheck contract"
+        assert_contains "${health}" '/readyz' "healthcheck contract"
         assert_contains "${envs}" 'TIMEZONE=UTC' "timezone default"
         assert_contains "${envs}" 'PHP_MEMORY_LIMIT=128M' "memory default"
         assert_contains "${envs}" 'UPLOAD_MAX_SIZE=8M' "upload default"
@@ -55,11 +55,12 @@ for variant in ${VARIANTS}; do
             ! command -v python3 >/dev/null 2>&1
             ! apk info -e supervisor >/dev/null 2>&1
             test -x /usr/local/bin/production-runtime
+            test -x /sbin/tini
         "
 
         if [ "${variant}" = "generic" ]; then
             docker run --rm "${image}" php -r '
-                $required = ["ctype","curl","fileinfo","mbstring","openssl","PDO","session","tokenizer","xml","Zend OPcache"];
+                $required = ["ctype","curl","fileinfo","mbstring","openssl","PDO","Phar","session","tokenizer","xml","Zend OPcache"];
                 $forbidden = ["bcmath","dom","intl","pcntl","pdo_mysql","pdo_pgsql","pdo_sqlite","redis","zip"];
                 foreach ($required as $ext) { if (!extension_loaded($ext)) { fwrite(STDERR, "Missing extension: $ext\n"); exit(1); } }
                 foreach ($forbidden as $ext) { if (extension_loaded($ext)) { fwrite(STDERR, "Unexpected generic extension: $ext\n"); exit(1); } }
@@ -67,12 +68,16 @@ for variant in ${VARIANTS}; do
         else
             docker run --rm "${image}" php -r '
                 $required = [
-                    "ctype","curl","dom","fileinfo","filter","hash","mbstring","openssl","pcre","PDO","session","tokenizer","xml","Zend OPcache",
+                    "ctype","curl","dom","fileinfo","filter","hash","mbstring","openssl","pcre","PDO","Phar","session","tokenizer","xml","Zend OPcache",
                     "bcmath","intl","pcntl","pdo_mysql","pdo_pgsql","pdo_sqlite","redis","zip"
                 ];
                 foreach ($required as $ext) { if (!extension_loaded($ext)) { fwrite(STDERR, "Missing Laravel extension: $ext\n"); exit(1); } }
             '
         fi
+
+        log "Reading and executing a Phar archive (${variant}/${php_version})"
+        docker run --rm -i "${image}" php < tests/phar.php \
+            || fail "Phar archive contract failed (${variant}/${php_version})."
     done
 done
 

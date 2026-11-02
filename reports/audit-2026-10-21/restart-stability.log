@@ -1,0 +1,15 @@
+
+============================================================
+Restart stability and zombie-process tests
+============================================================
+[test] generic: restart cycle 1/5
+[test] generic: restart cycle 2/5
+[test] generic: restart cycle 3/5
+[test] generic: restart cycle 4/5
+[test] generic: restart cycle 5/5
+[test] laravel: restart cycle 1/5
+[test] laravel: restart cycle 2/5
+[test] laravel: restart cycle 3/5
+[test] laravel: restart cycle 4/5
+[test] laravel: restart cycle 5/5
+Restart stability and zombie-process tests passed.

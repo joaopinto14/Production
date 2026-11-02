@@ -1,0 +1,194 @@
+{
+  "expected": {
+    "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+    "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+    "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+    "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+    "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+    "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+    "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+    "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+  },
+  "images": [
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-php8.3",
+      "image_id": "sha256:810918586551b3aea07885c02591cc0e1363e9c6335daa5d404456de3d042a8c",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-php8.4",
+      "image_id": "sha256:a9d2af9bf25c33f00eb740e0e269a5aa07415b11b3904f2a1ad4de378b77cdcd",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-php8.5",
+      "image_id": "sha256:798f197e2a34e85b089625e9bff154b0bfa6e2bb3a0d59032b50cc4e36990771",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-laravel-php8.3",
+      "image_id": "sha256:6729f5a0ec1dcdda2cf8e931ff171e274ac2053ddad2ee99a799b0e6ab83a41b",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-laravel-php8.4",
+      "image_id": "sha256:30f98186da15f3a994b47ffd78f405c891e7bf709a3d477cdc9e2b3e91103e89",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/amd64",
+      "reference": "production-candidate:2.0.4-laravel-php8.5",
+      "image_id": "sha256:8a01d33028b809c07c64ed7e4076c1320ddf2dcf94723d0bc46a6aee2a7340b5",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-php8.3",
+      "image_id": "sha256:a45a7f98309c9ae0627b215136b05564b0b94000f6e8aaba50d8a54f9837a1d6",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-php8.4",
+      "image_id": "sha256:92388c926413ba6b0c002d852d01c7b831e102ee6f3cb64afd106fe86674dcea",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-php8.5",
+      "image_id": "sha256:a40936f666e7c6a0af6993e930894615a6b4089b2b4556a482a3d30e7f5ebfc8",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-laravel-php8.3",
+      "image_id": "sha256:af9e4441d85a2b9182571c40ec98163e5d82e4915c0f00b08db09cb2fe8f2a89",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-laravel-php8.4",
+      "image_id": "sha256:4e1303b775ab24be4c3e4a2eebdca4a6a6c26e874e6ff5dedce718ab3dc0f782",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "reference": "production-candidate-arm64:2.0.4-laravel-php8.5",
+      "image_id": "sha256:3dee676ac2ec1340ac703b7128657919619932bc8edf4784dd38d1c3fc70d988",
+      "sha256": {
+        "/usr/local/bin/entrypoint.sh": "40e824bb88eee2d03b0faf8a09e024e9a4d9abd7e5a027750a831672d7f49fa2",
+        "/usr/local/bin/production-runtime": "ba17b4bbd8e42c08dce8f273b211e70bc9e8798158ff35e40abb65e6913691f2",
+        "/etc/nginx/nginx.conf": "e03bfde880a5b0f651f6f65b7f2e7b35bb286659db3c9fc274d7c7d30e7d74d5",
+        "/etc/nginx/default.conf.template": "c94ab7d255949b40e65369286956734f678cce49de69124022b3ffd94c5a2ae2",
+        "/etc/nginx/laravel.conf.template": "d2a9d0677a914e8f5cd8fa15bebfeac3e06ed14ee9f85c5b1eee832f1dac0ab4",
+        "/etc/production/php/php-fpm.conf": "fc48a59ead533828b7dd8b48232f2238ae9ec45827603f6b638d24d36b7d25fc",
+        "/etc/production/php/php-fpm.d/www.conf": "11cb3b9af235fcef1e6498a54ec4be5605d85d60a26d8076227269460b3cb749",
+        "/etc/production/php/conf.d/50-production.ini": "3255cddef50d052c5ceaafabd8cbfd44ad31297bc8229edc78fba22d97ea4f38"
+      }
+    }
+  ]
+}

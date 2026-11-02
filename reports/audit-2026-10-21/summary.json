@@ -1,0 +1,268 @@
+{
+  "date": "2026-10-21",
+  "head": "5bc91e1",
+  "scope": "working tree including uncommitted section-1 implementation; candidate runtime amd64; published 2.0.3 inventories/scans amd64 and arm64",
+  "tests": {
+    "runtime_suite": {
+      "status": "passed",
+      "seconds": 243,
+      "reused_images": true
+    },
+    "python_tests": 27,
+    "real_generic": "passed on 8.3/8.4/8.5",
+    "real_laravel": "passed on 8.3/8.4/8.5; framework 13.38.0",
+    "restart_stability": "passed; 5 cycles per variant",
+    "release_contract": "passed",
+    "actionlint": "passed",
+    "secret_history": {
+      "findings": 0,
+      "commits_scanned": 20
+    },
+    "secret_worktree": {
+      "findings": 0,
+      "scope": "source snapshot; credential-provider directories excluded"
+    }
+  },
+  "images": {
+    "scans": {
+      "count": 6,
+      "unique_cves_by_severity": {},
+      "reports": [
+        {
+          "report": "scans/trivy-laravel-php8.3.json",
+          "configuration_digest": "sha256:6f609cfbce830254cbcda0d66cca0f4645cbb7df72d181d62940ea8940be44b6",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        },
+        {
+          "report": "scans/trivy-laravel-php8.4.json",
+          "configuration_digest": "sha256:c55cc5147d7240a6242748e32d83970044c88809b68a0a10fcf7074886149944",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        },
+        {
+          "report": "scans/trivy-laravel-php8.5.json",
+          "configuration_digest": "sha256:a190924d38cef12ef3d672ef90f37bec490f03390b533c06b6188d18c92e5206",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        },
+        {
+          "report": "scans/trivy-php8.3.json",
+          "configuration_digest": "sha256:39c04b4a47d2acc661ff2be9446c17dcd11c7b050b699966dfb8c3e783fb684c",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        },
+        {
+          "report": "scans/trivy-php8.4.json",
+          "configuration_digest": "sha256:9e9165844f4d0b95b6f0ee33fae38cb48927cfc63817d07ff38b2ae95dddd936",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        },
+        {
+          "report": "scans/trivy-php8.5.json",
+          "configuration_digest": "sha256:6c08c3b70e3720d9fbae4ce54ff2b03cd8e586f77c396d259095c0d3bae39699",
+          "occurrences_by_severity": {},
+          "unique_cves": 0
+        }
+      ]
+    },
+    "published": {
+      "count": 12,
+      "unique_cves_by_severity": {
+        "MEDIUM": 10,
+        "HIGH": 2,
+        "LOW": 1
+      },
+      "reports": [
+        {
+          "report": "published/trivy-laravel-php8.3-amd64.json",
+          "configuration_digest": "sha256:8b57547bc230a8618309ace086b8ce36cca0b93c2c7febf166b002cddf6cbcaf",
+          "occurrences_by_severity": {
+            "MEDIUM": 186,
+            "HIGH": 24,
+            "LOW": 23
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-laravel-php8.3-arm64.json",
+          "configuration_digest": "sha256:9c68e9fba3f0cca73f56d2c6cc2e0367fb30b84b705d827c2a8d47e2474fa387",
+          "occurrences_by_severity": {
+            "MEDIUM": 186,
+            "HIGH": 24,
+            "LOW": 23
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-laravel-php8.4-amd64.json",
+          "configuration_digest": "sha256:f63783f55fb68b713af9ea496927550b670959edff7f28f555b41584ecbd558f",
+          "occurrences_by_severity": {
+            "MEDIUM": 186,
+            "HIGH": 24,
+            "LOW": 23
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-laravel-php8.4-arm64.json",
+          "configuration_digest": "sha256:d81ce147a0af1e8fee85cd9e9b03f5f217f22a680fc2e00cb38b35ccd56a1c5d",
+          "occurrences_by_severity": {
+            "MEDIUM": 186,
+            "HIGH": 24,
+            "LOW": 23
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-laravel-php8.5-amd64.json",
+          "configuration_digest": "sha256:62071785b3325c9aefe31d9a1711e64b47495b6aeb6ac7d598bfe3866701ca4b",
+          "occurrences_by_severity": {
+            "MEDIUM": 178,
+            "HIGH": 23,
+            "LOW": 22
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-laravel-php8.5-arm64.json",
+          "configuration_digest": "sha256:2fb868f545a5510e6758fc79381a9882b3d42be7fc045759e664d8a95c39a816",
+          "occurrences_by_severity": {
+            "MEDIUM": 178,
+            "HIGH": 23,
+            "LOW": 22
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.3-amd64.json",
+          "configuration_digest": "sha256:d8b2fe8b96d18c47b4263131ebd3ac5fdd200dfb9a0ca284316802d9d25eb375",
+          "occurrences_by_severity": {
+            "MEDIUM": 106,
+            "HIGH": 14,
+            "LOW": 13
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.3-arm64.json",
+          "configuration_digest": "sha256:086c74bbfcd38e42822309dc0c10e4b2fd6271902817e98740548df9b0522a94",
+          "occurrences_by_severity": {
+            "MEDIUM": 106,
+            "HIGH": 14,
+            "LOW": 13
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.4-amd64.json",
+          "configuration_digest": "sha256:fe84f6fa8250137bf014ad45e3456bf3be26be2ed4900ae23dc1db0d604a994e",
+          "occurrences_by_severity": {
+            "MEDIUM": 106,
+            "HIGH": 14,
+            "LOW": 13
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.4-arm64.json",
+          "configuration_digest": "sha256:2c00a21b96a3c85430cb7442664dede8b188e582e882d6bd55af621f80fe0700",
+          "occurrences_by_severity": {
+            "MEDIUM": 106,
+            "HIGH": 14,
+            "LOW": 13
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.5-amd64.json",
+          "configuration_digest": "sha256:42fc5396ddceb1328abfd32e9bd01d4133feb86925aa49201fdad161845373db",
+          "occurrences_by_severity": {
+            "MEDIUM": 98,
+            "HIGH": 13,
+            "LOW": 12
+          },
+          "unique_cves": 13
+        },
+        {
+          "report": "published/trivy-php8.5-arm64.json",
+          "configuration_digest": "sha256:47fa9b51111dfeca74cdb845ff750ed8139da809da82510b811a5aa5999da897",
+          "occurrences_by_severity": {
+            "MEDIUM": 98,
+            "HIGH": 13,
+            "LOW": 12
+          },
+          "unique_cves": 13
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "A01",
+      "severity": "high",
+      "type": "dependency scan; exploitability conditional",
+      "title": "Published 2.0.3 retains dependencies with reported vulnerabilities"
+    },
+    {
+      "id": "A02",
+      "severity": "high",
+      "type": "confirmed source disclosure when matching files exist",
+      "title": "Alternative PHP names and backups are served as static source"
+    },
+    {
+      "id": "A03",
+      "severity": "medium",
+      "type": "confirmed availability failure",
+      "title": "Shutdown loses active requests and has no bounded wait"
+    },
+    {
+      "id": "A04",
+      "severity": "medium",
+      "type": "confirmed release assurance gap",
+      "title": "Stable publication rebuilds artefacts without binding maintenance scans to promoted digests"
+    },
+    {
+      "id": "A05",
+      "severity": "medium",
+      "type": "confirmed workflow ordering/recovery gap",
+      "title": "Release can fail after alias promotion and cannot safely resume through the current preflight"
+    },
+    {
+      "id": "A06",
+      "severity": "medium",
+      "type": "CI hardening gap",
+      "title": "Mutable Actions references and broad release-job permissions"
+    },
+    {
+      "id": "A07",
+      "severity": "medium",
+      "type": "confirmed context exposure possibility; no actual secret exposure established",
+      "title": "Credential-provider paths and .env are not excluded from build context"
+    },
+    {
+      "id": "A08",
+      "severity": "medium",
+      "type": "confirmed deployment/availability failures",
+      "title": "Read-only example fails and tmpfs capacity can be smaller than allowed requests"
+    },
+    {
+      "id": "A09",
+      "severity": "medium",
+      "type": "confirmed false-positive test success",
+      "title": "Image-size budget passes when docker save fails"
+    },
+    {
+      "id": "A10",
+      "severity": "medium",
+      "type": "documented operational limitation; confirmed experimentally",
+      "title": "Health endpoint stays successful while PHP requests fail"
+    },
+    {
+      "id": "A11",
+      "severity": "low",
+      "type": "confirmed scan-policy completeness gap",
+      "title": "A partial OS package report can pass the candidate policy"
+    }
+  ]
+}

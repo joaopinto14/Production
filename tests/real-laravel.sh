@@ -6,7 +6,8 @@ set -eu
 section "Real Laravel 13 application tests"
 
 LARAVEL_CONSTRAINT="${LARAVEL_CONSTRAINT:-^13.0}"
-COMPOSER_IMAGE="${COMPOSER_IMAGE:-composer:2}"
+COMPOSER_IMAGE="${COMPOSER_IMAGE:-composer:2@sha256:d0c32820c62cc860fddd22adceed4eeda7698b093a7a88d503414172ce400626}"
+COMPOSER_NETWORK="${COMPOSER_NETWORK:-bridge}"
 ROOT="$(mktemp -d)"
 APP_DIR="${ROOT}/app"
 CONTAINERS=""
@@ -41,6 +42,7 @@ trap cleanup EXIT INT TERM
 
 log "Creating a real Laravel application (${LARAVEL_CONSTRAINT}) with Composer outside the runtime image"
 docker run --rm \
+    --network "${COMPOSER_NETWORK}" \
     --user "$(id -u):$(id -g)" \
     -e HOME=/tmp \
     -e COMPOSER_HOME=/tmp/composer \
@@ -51,6 +53,7 @@ docker run --rm \
 
 log "Resolving production dependencies for the lowest supported PHP version (8.3)"
 docker run --rm \
+    --network "${COMPOSER_NETWORK}" \
     --user "$(id -u):$(id -g)" \
     -e HOME=/tmp \
     -e COMPOSER_HOME=/tmp/composer \

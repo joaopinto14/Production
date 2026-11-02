@@ -6,6 +6,9 @@ set -eu
 section "Multi-architecture build validation"
 
 BUILDER_NAME="${MULTIARCH_BUILDER:-production-multiarch}"
+PREFLIGHT_LOG="$(mktemp)"
+trap 'rm -f "${PREFLIGHT_LOG}"' EXIT
+trap 'exit 1' INT TERM
 
 extra_args=""
 if [ "${NO_CACHE:-0}" = "1" ]; then
@@ -18,10 +21,11 @@ ensure_builder() {
         log "Using existing Buildx builder: ${BUILDER_NAME}"
     else
         log "Creating dedicated docker-container Buildx builder: ${BUILDER_NAME}"
-        docker buildx create \
-            --name "${BUILDER_NAME}" \
-            --driver docker-container \
-            >/dev/null
+        set -- docker buildx create --name "${BUILDER_NAME}" --driver docker-container
+        if [ -n "${MULTIARCH_BUILDER_NETWORK:-}" ]; then
+            set -- "$@" --driver-opt "network=${MULTIARCH_BUILDER_NETWORK}"
+        fi
+        "$@" >/dev/null
     fi
 
     log "Bootstrapping Buildx builder"
@@ -30,27 +34,29 @@ ensure_builder() {
 
 preflight_arm64() {
     log "Checking that the builder can execute ARM64 RUN steps"
+    base_reference="$(sed -n 's/^FROM //p' Dockerfile)"
 
     if printf '%s\n' \
-        '# syntax=docker/dockerfile:1' \
-        'FROM alpine:3.24' \
+        "FROM ${base_reference}" \
         'RUN uname -m >/dev/null' \
         | docker buildx build \
             --builder "${BUILDER_NAME}" \
             --platform linux/arm64 \
-            --progress quiet \
+            --progress plain \
             -f - \
-            . >/dev/null 2>&1; then
+            . >"${PREFLIGHT_LOG}" 2>&1; then
         return 0
     fi
 
+    cat "${PREFLIGHT_LOG}" >&2
     cat >&2 <<EOF2
-[test] ERROR: builder '${BUILDER_NAME}' cannot execute linux/arm64 RUN steps.
+[test] ERROR: builder '${BUILDER_NAME}' did not complete the ARM64 preflight.
 
-This host needs ARM64 emulation (QEMU/binfmt) or a native ARM64 builder node.
-Docker's documented Linux fallback is:
+Read the build error above first: registry/network failures do not establish
+that emulation is missing. If execution fails with an architecture error, use
+a native ARM64 node or Docker's documented Linux QEMU/binfmt setup:
 
-  docker run --privileged --rm tonistiigi/binfmt --install arm64
+  docker run --privileged --rm tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0 --install arm64
 
 Then rerun:
 

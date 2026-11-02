@@ -1,0 +1,8 @@
+
+============================================================
+Real PHP application tests
+============================================================
+[test] Starting real generic app on PHP 8.3
+[test] Starting real generic app on PHP 8.4
+[test] Starting real generic app on PHP 8.5
+Real PHP application tests passed on PHP 8.3, 8.4 and 8.5.

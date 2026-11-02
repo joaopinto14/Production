@@ -22,11 +22,16 @@ grep -F 'fastcgi_buffer_size 32k;' nginx/laravel.conf.template >/dev/null || fai
 grep -F 'fastcgi_buffers 8 32k;' nginx/laravel.conf.template >/dev/null || fail "Laravel fastcgi_buffers regression."
 grep -F 'fastcgi_busy_buffers_size 64k;' nginx/laravel.conf.template >/dev/null || fail "Laravel fastcgi_busy_buffers_size regression."
 grep -F 'fastcgi_read_timeout 300s;' nginx/laravel.conf.template >/dev/null || fail "Laravel fastcgi_read_timeout regression."
-grep -F 'location ~ \.php$ {' nginx/laravel.conf.template >/dev/null || fail "Laravel must block direct execution/exposure of non-front-controller PHP files."
+grep -F 'location ~* \.(?:php|phtml|phar|phps)(?:[^a-z0-9]|$) {' nginx/laravel.conf.template >/dev/null || fail "Laravel must block direct execution/exposure of non-front-controller PHP files."
 
 log "Checking shell syntax"
 python3 tests/release-policy.py
 python3 tests/package-report.py
+python3 tests/maintenance.py
+python3 tests/release-promotion.py
+python3 tests/release-verification.py
+python3 tests/candidate-validation.py
+python3 -c 'import runpy; from pathlib import Path; runpy.run_path("scripts/check-candidates.py")["base_reference"](Path("Dockerfile").read_text())'
 for script in entrypoint/*.sh tests/*.sh; do
     sh -n "${script}" || fail "Shell syntax error in ${script}."
 done

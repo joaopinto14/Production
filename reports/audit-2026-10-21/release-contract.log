@@ -1,0 +1,33 @@
+
+============================================================
+Stable release contract
+============================================================
+[test] Checking stable Docker Hub release tags and platforms
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking historical releases cannot overwrite stable aliases
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking supply-chain attestations for every release target
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking GitHub release workflow contract
+Stable release contract passed.

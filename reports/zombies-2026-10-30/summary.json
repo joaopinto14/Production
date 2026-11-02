@@ -1,0 +1,80 @@
+{
+  "created_at": "2026-10-30T10:41:27.162927+00:00",
+  "version": "2.0.4 (unreleased, additional init correction)",
+  "platform": "linux/amd64",
+  "image_repository": "production-zombie-fix",
+  "orphan_scenarios": 12,
+  "orphans_created": 2400,
+  "persistent_zombies": 0,
+  "negative_control_zombies": 200,
+  "older_image_docker_init": "passed in CLI and web",
+  "nested_init": "passed in CLI and web",
+  "signal_and_shutdown_tests": "passed; active-request draining and deadline retained",
+  "cli_exit_codes": "7 preserved, TERM -> 143; web graceful stop -> 0",
+  "all_runtime_checks": "passed by phases; initial test-all aborted on new fixture /proc read race, corrected orphan fixture and remaining checks re-executed",
+  "tini_version": "0.19.0-r3",
+  "tini_binary_bytes": 23576,
+  "size_budgets": [
+    {
+      "image": "production-zombie-fix:2.0.4-php8.3",
+      "compressed_bytes": 17461964,
+      "budget": 20000000
+    },
+    {
+      "image": "production-zombie-fix:2.0.4-php8.4",
+      "compressed_bytes": 17846119,
+      "budget": 20000000
+    },
+    {
+      "image": "production-zombie-fix:2.0.4-php8.5",
+      "compressed_bytes": 20337288,
+      "budget": 23000000
+    },
+    {
+      "image": "production-zombie-fix:2.0.4-laravel-php8.3",
+      "compressed_bytes": 23483572,
+      "budget": 28000000
+    },
+    {
+      "image": "production-zombie-fix:2.0.4-laravel-php8.4",
+      "compressed_bytes": 24579510,
+      "budget": 29000000
+    },
+    {
+      "image": "production-zombie-fix:2.0.4-laravel-php8.5",
+      "compressed_bytes": 26580593,
+      "budget": 32000000
+    }
+  ],
+  "vulnerability_scans": [
+    {
+      "report": "trivy-laravel-php8.3.json",
+      "vulnerabilities": 0
+    },
+    {
+      "report": "trivy-laravel-php8.4.json",
+      "vulnerabilities": 0
+    },
+    {
+      "report": "trivy-laravel-php8.5.json",
+      "vulnerabilities": 0
+    },
+    {
+      "report": "trivy-php8.3.json",
+      "vulnerabilities": 0
+    },
+    {
+      "report": "trivy-php8.4.json",
+      "vulnerabilities": 0
+    },
+    {
+      "report": "trivy-php8.5.json",
+      "vulnerabilities": 0
+    }
+  ],
+  "production_root_cause": "unconfirmed: screenshot does not identify PPIDs/container",
+  "pending": [
+    "native ARM64 validation of the new init before release",
+    "commit/merge, release workflow and public image validation"
+  ]
+}

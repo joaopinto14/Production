@@ -1,0 +1,70 @@
+{
+  "scope": "isolated localhost registry, synthetic promotion tags only; no Docker Hub publication",
+  "digest": "sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d",
+  "manifest": {
+    "schemaVersion": 2,
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "manifests": [
+      {
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "digest": "sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95",
+        "size": 2557,
+        "platform": {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      },
+      {
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "digest": "sha256:2f38f3e2b2df1677b45b1a1440a330b87a94b46bcbb10a3763584abe4c8ddda9",
+        "size": 2557,
+        "platform": {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      },
+      {
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "digest": "sha256:22fac53b12d0beede914f59f4a5462d3066e7988c5030736b31501b6381286bb",
+        "size": 1111,
+        "annotations": {
+          "vnd.docker.reference.digest": "sha256:2811e73f6b2b770bdb302c848fcfff6b075c83da5635295a3393c9c7a1e70f95",
+          "vnd.docker.reference.type": "attestation-manifest"
+        },
+        "platform": {
+          "architecture": "unknown",
+          "os": "unknown"
+        }
+      },
+      {
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "digest": "sha256:7273b83380ab14ce4070ff5a5ca5fd580f0619de039a088dc4343a0eafc9bb55",
+        "size": 1111,
+        "annotations": {
+          "vnd.docker.reference.digest": "sha256:2f38f3e2b2df1677b45b1a1440a330b87a94b46bcbb10a3763584abe4c8ddda9",
+          "vnd.docker.reference.type": "attestation-manifest"
+        },
+        "platform": {
+          "architecture": "unknown",
+          "os": "unknown"
+        }
+      }
+    ]
+  },
+  "second_run": "identical digest retained",
+  "promotion": {
+    "updated_at": "2026-10-21T21:44:53.540958+00:00",
+    "completed": [
+      {
+        "reference": "localhost:32776/production-proof:2.0.4",
+        "digest": "sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d",
+        "immutable": true
+      },
+      {
+        "reference": "localhost:32776/production-proof:latest",
+        "digest": "sha256:46318624fec48f1af18232f5e51f0c01bd0f38e7324938a0ba5e1a7ba27a0e9d",
+        "immutable": false
+      }
+    ]
+  }
+}

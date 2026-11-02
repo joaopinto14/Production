@@ -1,0 +1,35 @@
+{
+  "runtime_TERM": {
+    "request_started": true,
+    "response": {
+      "status": 502,
+      "body": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 150
+    },
+    "seconds": 1.21,
+    "exit_code": 0,
+    "logs": "[Production] Version 2.0.3\n[Production] Variant generic\n[Production] PHP 8.5.11\n[Production] Runtime user: 10001:10001\n[Production] Document root: /var/www/html\n[Production] Listening on: 8080\n[Production] PHP-FPM PID: 24\n[Production] Nginx PID: 25\n[Production] Stopping Nginx and PHP-FPM\n{\"time_local\":\"21/Oct/2026:20:32:02 +0000\",\"request\":\"GET / HTTP/1.1\",\"status\":502,\"body_bytes_sent\":150,\"request_time\":0.449,\"http_referer\":\"\",\"http_user_agent\":\"\",\"http_x_forwarded_for\":\"\",\"remote_addr\":\"172.17.0.1\"}\n[21-Oct-2026 20:31:59] NOTICE: fpm is running, pid 24\n[21-Oct-2026 20:31:59] NOTICE: ready to handle connections\n[21-Oct-2026 20:32:02] NOTICE: Finishing ...\n2026/10/21 20:32:02 [error] 27#27: *2 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.17.0.1, server: _, request: \"GET / HTTP/1.1\", upstream: \"fastcgi://unix:/run/production/php/php-fpm.sock:\", host: \"127.0.0.1:32773\"\n[21-Oct-2026 20:32:02] NOTICE: exiting, bye-bye!\n"
+  },
+  "fpm_QUIT": {
+    "request_started": true,
+    "response": {
+      "status": 502,
+      "body": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n",
+      "length": 150
+    },
+    "seconds": 2.8,
+    "exit_code": 1,
+    "logs": "[Production] Version 2.0.3\n[Production] Variant generic\n[Production] PHP 8.5.11\n[Production] Runtime user: 10001:10001\n[Production] Document root: /var/www/html\n[Production] Listening on: 8080\n[Production] PHP-FPM PID: 24\n[Production] Nginx PID: 25\n{\"time_local\":\"21/Oct/2026:20:32:10 +0000\",\"request\":\"GET / HTTP/1.1\",\"status\":502,\"body_bytes_sent\":150,\"request_time\":0.463,\"http_referer\":\"\",\"http_user_agent\":\"\",\"http_x_forwarded_for\":\"\",\"remote_addr\":\"172.17.0.1\"}\n[Production] PHP-FPM exited unexpectedly (status 0)\n[21-Oct-2026 20:32:05] NOTICE: fpm is running, pid 24\n[21-Oct-2026 20:32:05] NOTICE: ready to handle connections\n[21-Oct-2026 20:32:10] NOTICE: Finishing ...\n2026/10/21 20:32:10 [error] 27#27: *2 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.17.0.1, server: _, request: \"GET / HTTP/1.1\", upstream: \"fastcgi://unix:/run/production/php/php-fpm.sock:\", host: \"127.0.0.1:32774\"\n[21-Oct-2026 20:32:10] NOTICE: exiting, bye-bye!\n"
+  },
+  "nginx_QUIT": {
+    "request_started": true,
+    "response": {
+      "status": 200,
+      "body": "request-completed",
+      "length": 17
+    },
+    "seconds": 5.97,
+    "exit_code": 1,
+    "logs": "[Production] Version 2.0.3\n[Production] Variant generic\n[Production] PHP 8.5.11\n[Production] Runtime user: 10001:10001\n[Production] Document root: /var/www/html\n[Production] Listening on: 8080\n[Production] PHP-FPM PID: 24\n[Production] Nginx PID: 25\n{\"time_local\":\"21/Oct/2026:20:32:26 +0000\",\"request\":\"GET / HTTP/1.1\",\"status\":200,\"body_bytes_sent\":28,\"request_time\":5.016,\"http_referer\":\"\",\"http_user_agent\":\"\",\"http_x_forwarded_for\":\"\",\"remote_addr\":\"172.17.0.1\"}\n[Production] Nginx exited unexpectedly (status 0)\n[21-Oct-2026 20:32:16] NOTICE: fpm is running, pid 24\n[21-Oct-2026 20:32:16] NOTICE: ready to handle connections\n[21-Oct-2026 20:32:26] NOTICE: Finishing ...\n[21-Oct-2026 20:32:26] NOTICE: exiting, bye-bye!\n"
+  }
+}

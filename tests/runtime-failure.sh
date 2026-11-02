@@ -61,4 +61,6 @@ for signal in TERM INT QUIT; do
     assert_exit_code "${container}" 0
 done
 
+python3 tests/runtime-drain.py "${IMAGE}"
+
 printf '%s\n' 'Runtime crash and signal tests passed.'

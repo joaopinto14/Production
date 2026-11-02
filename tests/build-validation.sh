@@ -30,6 +30,12 @@ expect_build_failure unsupported-php "Unsupported PHP version: 8.2" \
     --build-arg PHP_VERSION=8.2 \
     --build-arg VARIANT=generic
 
+expect_build_failure malformed-php "Unsupported PHP version: 8..5" \
+    --build-arg PHP_VERSION=8..5
+
+log "Checking that credentials and development files never enter the context"
+python3 tests/build-context.py
+
 log "Rejecting unsupported variants"
 expect_build_failure unsupported-variant "Unsupported variant: wordpress" \
     --build-arg VERSION="${TEST_VERSION}" \

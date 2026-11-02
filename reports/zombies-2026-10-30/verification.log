@@ -1,0 +1,84 @@
+production-zombie-fix:2.0.4-php8.3 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-php8.3 web: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-php8.4 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-php8.4 web: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-php8.5 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-php8.5 web: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.3 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.3 web: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.4 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.4 web: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.5 cli: 200 orphans, persistent zombies=0
+production-zombie-fix:2.0.4-laravel-php8.5 web: 200 orphans, persistent zombies=0
+
+============================================================
+Hardened runtime security tests
+============================================================
+[test] Checking a 17 MiB multipart upload on read-only root (generic)
+[test] Checking no-new-privileges and zero effective capabilities (generic)
+[test] Checking read-only root with explicitly writable tmpfs surfaces (generic)
+[test] Checking a 17 MiB multipart upload on read-only root (laravel)
+[test] Checking no-new-privileges and zero effective capabilities (laravel)
+[test] Checking read-only root with explicitly writable tmpfs surfaces (laravel)
+Hardened runtime security tests passed.
+
+============================================================
+Compressed image size regression budgets
+============================================================
+[test] production-zombie-fix:2.0.4-php8.3: 17461964 compressed bytes (budget 20000000)
+[test] production-zombie-fix:2.0.4-php8.4: 17846119 compressed bytes (budget 20000000)
+[test] production-zombie-fix:2.0.4-php8.5: 20337288 compressed bytes (budget 23000000)
+[test] production-zombie-fix:2.0.4-laravel-php8.3: 23483572 compressed bytes (budget 28000000)
+[test] production-zombie-fix:2.0.4-laravel-php8.4: 24579510 compressed bytes (budget 29000000)
+[test] production-zombie-fix:2.0.4-laravel-php8.5: 26580593 compressed bytes (budget 32000000)
+Compressed image size budgets passed.
+
+============================================================
+Restart stability and zombie-process tests
+============================================================
+[test] generic: restart cycle 1/5
+[test] generic: restart cycle 2/5
+[test] generic: restart cycle 3/5
+[test] generic: restart cycle 4/5
+[test] generic: restart cycle 5/5
+[test] laravel: restart cycle 1/5
+[test] laravel: restart cycle 2/5
+[test] laravel: restart cycle 3/5
+[test] laravel: restart cycle 4/5
+[test] laravel: restart cycle 5/5
+[test] Checking the detector against a deliberately unreaped child
+persistent zombie found: /proc/61/stat:5620396
+Restart stability and zombie-process tests passed.
+
+============================================================
+Stable release contract
+============================================================
+[test] Checking stable Docker Hub release tags and platforms
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking historical releases cannot overwrite stable aliases
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking supply-chain attestations for every release target
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+#1 [internal] load local bake definitions
+#1 reading docker-bake.hcl 4.28kB / 4.28kB done
+#1 DONE 0.0s
+[test] Checking GitHub release workflow contract
+Stable release contract passed.

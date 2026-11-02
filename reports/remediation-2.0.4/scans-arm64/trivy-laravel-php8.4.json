@@ -1,0 +1,3453 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.76.1"
+  },
+  "ReportID": "01a16083-9bf1-713a-b405-4fcbf2774a4e",
+  "CreatedAt": "2026-10-21T22:10:00.305083537Z",
+  "ArtifactID": "sha256:ecb8aef95d81221e047ade627f1de6024619a8d98d667740e7aeb6657a40a263",
+  "ArtifactName": "/input/image.tar",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "Size": 67699712,
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.24.2"
+    },
+    "ImageID": "sha256:ecb8aef95d81221e047ade627f1de6024619a8d98d667740e7aeb6657a40a263",
+    "DiffIDs": [
+      "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b",
+      "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2",
+      "sha256:0e4122dae40dbebd69894d95b9e855c23fc08f762796f49bdeb248100f6c7a29",
+      "sha256:5fb74fd90ec5fbb44f21b8d2e517cc4f28789bf9338a57cbc3177a8e82cdff58",
+      "sha256:d9e2afa59f6b213a74cf6df018477c370b6100bb383d48147e3eb2e2a66897e4",
+      "sha256:f71f25ea19dfccf2eb5a739b16c395c7e0a3cb1294389d01dda2fae7b88ff2c8",
+      "sha256:40a54c52dd1a4af96236533c7b3043f84b779e7e89e99e6eca096630716b631a",
+      "sha256:c1786f77ce15ff9620475b4579f24225d7d2d5f114deb1694dcf51ac5f583004",
+      "sha256:07fade81998b6e5a59f1d2854c3ffcf3c4fa51d2d09413648738cec185872974",
+      "sha256:6a24f2b69d10c9a0d935243601ccb0d52d5a07cec131e5b7b872fe810645e833",
+      "sha256:d9b368477e9d2338a643cb354c2368e09e685b2a5bd5be7de5088397812d3372",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    ],
+    "ImageConfig": {
+      "architecture": "arm64",
+      "created": "2026-10-21T22:57:20.938695244+01:00",
+      "history": [
+        {
+          "created": "2026-09-17T20:37:05.258369293Z",
+          "created_by": "ADD alpine-minirootfs-3.24.2-aarch64.tar.gz / # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-09-17T20:37:05.258369293Z",
+          "created_by": "CMD [\"/bin/sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG VERSION=2.0.4",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG PHP_VERSION=8.4",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG VARIANT=laravel",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG VCS_REF=unknown",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG WWW_UID=10001",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ARG WWW_GID=10001",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "LABEL org.opencontainers.image.title=Production org.opencontainers.image.description=Lightweight PHP production runtime with optional Laravel variant org.opencontainers.image.version=2.0.4 org.opencontainers.image.authors=João Pinto \u003cgeral@joaopinto.pt\u003e org.opencontainers.image.vendor=João Pinto org.opencontainers.image.url=https://github.com/joaopinto14/Production org.opencontainers.image.documentation=https://github.com/joaopinto14/Production#readme org.opencontainers.image.source=https://github.com/joaopinto14/Production org.opencontainers.image.revision=unknown org.opencontainers.image.licenses=MIT org.opencontainers.image.base.name=docker.io/library/alpine:3.24 io.joaopinto.production.php-version=8.4 io.joaopinto.production.variant=laravel io.joaopinto.production.runtime-user=www io.joaopinto.production.runtime-uid=10001 io.joaopinto.production.runtime-gid=10001 io.joaopinto.production.runtime-port=8080",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "ENV PRODUCTION_VERSION=2.0.4 PRODUCTION_PHP_VERSION=8.4 PRODUCTION_VARIANT=laravel TIMEZONE=UTC TZ=UTC PHP_MEMORY_LIMIT=128M UPLOAD_MAX_SIZE=8M PHPRC=/etc/php-active PHP_INI_SCAN_DIR=/etc/php-active/conf.d:/etc/production/php/conf.d:/run/production/php/conf.d HOME=/tmp",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:35:26.96316679+01:00",
+          "created_by": "RUN |6 VERSION=2.0.4 PHP_VERSION=8.4 VARIANT=laravel VCS_REF=unknown WWW_UID=10001 WWW_GID=10001 /bin/sh -c set -eux;     case \"${PHP_VERSION}\" in         8.3) PHP_SLOT=83 ;;         8.4) PHP_SLOT=84 ;;         8.5) PHP_SLOT=85 ;;         *) echo \"Unsupported PHP version: ${PHP_VERSION}. Supported: 8.3, 8.4, 8.5.\" \u003e\u00262; exit 1 ;;     esac;     case \"${VARIANT}\" in         generic|laravel) ;;         *) echo \"Unsupported variant: ${VARIANT}. Supported: generic, laravel.\" \u003e\u00262; exit 1 ;;     esac;     PHP_PACKAGES=\"         php${PHP_SLOT}         php${PHP_SLOT}-fpm         php${PHP_SLOT}-ctype         php${PHP_SLOT}-curl         php${PHP_SLOT}-fileinfo         php${PHP_SLOT}-mbstring         php${PHP_SLOT}-openssl         php${PHP_SLOT}-pdo         php${PHP_SLOT}-session         php${PHP_SLOT}-tokenizer         php${PHP_SLOT}-xml     \";     if [ \"${PHP_SLOT}\" != \"85\" ]; then         PHP_PACKAGES=\"${PHP_PACKAGES} php${PHP_SLOT}-opcache\";     fi;     if [ \"${VARIANT}\" = \"laravel\" ]; then         PHP_PACKAGES=\"${PHP_PACKAGES}             php${PHP_SLOT}-bcmath             php${PHP_SLOT}-dom             php${PHP_SLOT}-intl             php${PHP_SLOT}-pcntl             php${PHP_SLOT}-pdo_mysql             php${PHP_SLOT}-pdo_pgsql             php${PHP_SLOT}-pdo_sqlite             php${PHP_SLOT}-pecl-redis             php${PHP_SLOT}-zip         \";     fi;     apk upgrade --no-cache;     apk add --no-cache         ca-certificates         nginx         tzdata         ${PHP_PACKAGES};     addgroup -S -g \"${WWW_GID}\" www;     adduser -S -D -H -u \"${WWW_UID}\" -G www www;     mkdir -p         /usr/local/bin         /usr/local/sbin         /var/www/html         /etc/production/php/conf.d         /etc/production/php/php-fpm.d         /run/production/nginx/http.d         /run/production/nginx/client_body         /run/production/nginx/proxy         /run/production/nginx/fastcgi         /run/production/nginx/uwsgi         /run/production/nginx/scgi         /run/production/php/conf.d;     ln -s \"/etc/php${PHP_SLOT}\" /etc/php-active;     ln -s \"/usr/bin/php${PHP_SLOT}\" /usr/local/bin/php;     ln -s \"/usr/sbin/php-fpm${PHP_SLOT}\" /usr/local/sbin/php-fpm;     chown -R www:www /var/www/html /run/production;     rm -f /etc/nginx/http.d/default.conf # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:27.501362763+01:00",
+          "created_by": "COPY php/settings.ini /etc/production/php/conf.d/50-production.ini # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:27.811625767+01:00",
+          "created_by": "COPY php/php-fpm.conf /etc/production/php/php-fpm.conf # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:28.216368438+01:00",
+          "created_by": "COPY php/www.conf /etc/production/php/php-fpm.d/www.conf # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:28.712521767+01:00",
+          "created_by": "COPY nginx/nginx.conf /etc/nginx/nginx.conf # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:29.579419954+01:00",
+          "created_by": "COPY nginx/default.conf.template /etc/nginx/default.conf.template # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:30.377839989+01:00",
+          "created_by": "COPY nginx/laravel.conf.template /etc/nginx/laravel.conf.template # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:35:31.031160049+01:00",
+          "created_by": "COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:57:19.643082911+01:00",
+          "created_by": "COPY entrypoint/runtime.sh /usr/local/bin/production-runtime # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:57:20.774347132+01:00",
+          "created_by": "RUN |6 VERSION=2.0.4 PHP_VERSION=8.4 VARIANT=laravel VCS_REF=unknown WWW_UID=10001 WWW_GID=10001 /bin/sh -c chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "WORKDIR /var/www/html",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "USER www",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "EXPOSE [8080/tcp]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "HEALTHCHECK {Test:[CMD-SHELL wget -q -T 2 -O /dev/null http://127.0.0.1:8080/readyz || exit 1] Interval:30s Timeout:3s StartPeriod:5s StartInterval:0s Retries:3}",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "STOPSIGNAL SIGTERM",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "ENTRYPOINT [\"/usr/local/bin/entrypoint.sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-21T22:57:20.938695244+01:00",
+          "created_by": "CMD [\"/usr/local/bin/production-runtime\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b",
+          "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2",
+          "sha256:0e4122dae40dbebd69894d95b9e855c23fc08f762796f49bdeb248100f6c7a29",
+          "sha256:5fb74fd90ec5fbb44f21b8d2e517cc4f28789bf9338a57cbc3177a8e82cdff58",
+          "sha256:d9e2afa59f6b213a74cf6df018477c370b6100bb383d48147e3eb2e2a66897e4",
+          "sha256:f71f25ea19dfccf2eb5a739b16c395c7e0a3cb1294389d01dda2fae7b88ff2c8",
+          "sha256:40a54c52dd1a4af96236533c7b3043f84b779e7e89e99e6eca096630716b631a",
+          "sha256:c1786f77ce15ff9620475b4579f24225d7d2d5f114deb1694dcf51ac5f583004",
+          "sha256:07fade81998b6e5a59f1d2854c3ffcf3c4fa51d2d09413648738cec185872974",
+          "sha256:6a24f2b69d10c9a0d935243601ccb0d52d5a07cec131e5b7b872fe810645e833",
+          "sha256:d9b368477e9d2338a643cb354c2368e09e685b2a5bd5be7de5088397812d3372",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/usr/local/bin/production-runtime"
+        ],
+        "Healthcheck": {
+          "Test": [
+            "CMD-SHELL",
+            "wget -q -T 2 -O /dev/null http://127.0.0.1:8080/readyz || exit 1"
+          ],
+          "Interval": 30000000000,
+          "Timeout": 3000000000,
+          "StartPeriod": 5000000000,
+          "Retries": 3
+        },
+        "Entrypoint": [
+          "/usr/local/bin/entrypoint.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "PRODUCTION_VERSION=2.0.4",
+          "PRODUCTION_PHP_VERSION=8.4",
+          "PRODUCTION_VARIANT=laravel",
+          "TIMEZONE=UTC",
+          "TZ=UTC",
+          "PHP_MEMORY_LIMIT=128M",
+          "UPLOAD_MAX_SIZE=8M",
+          "PHPRC=/etc/php-active",
+          "PHP_INI_SCAN_DIR=/etc/php-active/conf.d:/etc/production/php/conf.d:/run/production/php/conf.d",
+          "HOME=/tmp"
+        ],
+        "Labels": {
+          "io.joaopinto.production.php-version": "8.4",
+          "io.joaopinto.production.runtime-gid": "10001",
+          "io.joaopinto.production.runtime-port": "8080",
+          "io.joaopinto.production.runtime-uid": "10001",
+          "io.joaopinto.production.runtime-user": "www",
+          "io.joaopinto.production.variant": "laravel",
+          "org.opencontainers.image.authors": "João Pinto \u003cgeral@joaopinto.pt\u003e",
+          "org.opencontainers.image.base.name": "docker.io/library/alpine:3.24",
+          "org.opencontainers.image.description": "Lightweight PHP production runtime with optional Laravel variant",
+          "org.opencontainers.image.documentation": "https://github.com/joaopinto14/Production#readme",
+          "org.opencontainers.image.licenses": "MIT",
+          "org.opencontainers.image.revision": "unknown",
+          "org.opencontainers.image.source": "https://github.com/joaopinto14/Production",
+          "org.opencontainers.image.title": "Production",
+          "org.opencontainers.image.url": "https://github.com/joaopinto14/Production",
+          "org.opencontainers.image.vendor": "João Pinto",
+          "org.opencontainers.image.version": "2.0.4"
+        },
+        "User": "www",
+        "WorkingDir": "/var/www/html",
+        "ExposedPorts": {
+          "8080/tcp": {}
+        },
+        "ArgsEscaped": true,
+        "StopSignal": "SIGTERM"
+      }
+    },
+    "Layers": [
+      {
+        "Size": 8941568,
+        "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+        "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+      },
+      {
+        "Size": 58708992,
+        "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+        "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+      },
+      {
+        "Size": 4096,
+        "Digest": "sha256:4bbdd1053ef817f1266d530b2364585cc76bfee209bc8df8490a2d30f2f143a4",
+        "DiffID": "sha256:0e4122dae40dbebd69894d95b9e855c23fc08f762796f49bdeb248100f6c7a29"
+      },
+      {
+        "Size": 3584,
+        "Digest": "sha256:83c6ac908ff22f72fabe9fc3d9d3de74393c28710a18fd014f363af61865300f",
+        "DiffID": "sha256:5fb74fd90ec5fbb44f21b8d2e517cc4f28789bf9338a57cbc3177a8e82cdff58"
+      },
+      {
+        "Size": 4096,
+        "Digest": "sha256:f6ab64514e75841d374b15ca3dab97e7735f28658a669081f84cfc6f4db6f31b",
+        "DiffID": "sha256:d9e2afa59f6b213a74cf6df018477c370b6100bb383d48147e3eb2e2a66897e4"
+      },
+      {
+        "Size": 4096,
+        "Digest": "sha256:41357c04d3b86d3153015929ee8cabeb5153d2f0e612a20f21ea14db1fcef58a",
+        "DiffID": "sha256:f71f25ea19dfccf2eb5a739b16c395c7e0a3cb1294389d01dda2fae7b88ff2c8"
+      },
+      {
+        "Size": 4608,
+        "Digest": "sha256:644a7fce4ca9aed85e20e2707dfedfde4ccb2aea73cc373573cb1858762c890f",
+        "DiffID": "sha256:40a54c52dd1a4af96236533c7b3043f84b779e7e89e99e6eca096630716b631a"
+      },
+      {
+        "Size": 4608,
+        "Digest": "sha256:aef936ae4145f2c9614ce44f83413832a661226f8ec0dbcde87ab5a542c71a13",
+        "DiffID": "sha256:c1786f77ce15ff9620475b4579f24225d7d2d5f114deb1694dcf51ac5f583004"
+      },
+      {
+        "Size": 7168,
+        "Digest": "sha256:6f9d5a7badca628121cdf3f96bdb0b62780c358137665ad560372f978d7a8e14",
+        "DiffID": "sha256:07fade81998b6e5a59f1d2854c3ffcf3c4fa51d2d09413648738cec185872974"
+      },
+      {
+        "Size": 5632,
+        "Digest": "sha256:4ba7083bb98cafb3d852a46a290a9ccf6eb11de5fdd73f452f3bd570b45c6a01",
+        "DiffID": "sha256:6a24f2b69d10c9a0d935243601ccb0d52d5a07cec131e5b7b872fe810645e833"
+      },
+      {
+        "Size": 10240,
+        "Digest": "sha256:4e05832bca12611b5e8d090c9ae4f46e994bfd3d121bf09ce280cab18e9749ab",
+        "DiffID": "sha256:d9b368477e9d2338a643cb354c2368e09e685b2a5bd5be7de5088397812d3372"
+      },
+      {
+        "Size": 1024,
+        "Digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+        "DiffID": "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      }
+    ]
+  },
+  "Results": [
+    {
+      "Target": "/input/image.tar (alpine 3.24.2)",
+      "Class": "os-pkgs",
+      "Type": "alpine",
+      "Packages": [
+        {
+          "ID": "acl-libs@2.3.2-r1",
+          "Name": "acl-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/acl-libs@2.3.2-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "d42e042091b9b2a8"
+          },
+          "Version": "2.3.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "acl",
+          "SrcVersion": "2.3.2-r1",
+          "Licenses": [
+            "LGPL-2.1-or-later",
+            "GPL-2.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:3f647a9e2d06f9600a7bfefdecb2a29af94eacd1",
+          "InstalledFiles": [
+            "usr/lib/libacl.so.1",
+            "usr/lib/libacl.so.1.1.2302"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "alpine-baselayout@3.7.2-r1",
+          "Name": "alpine-baselayout",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-baselayout@3.7.2-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "304a3a90fc88fa6b"
+          },
+          "Version": "3.7.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "alpine-baselayout",
+          "SrcVersion": "3.7.2-r1",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "alpine-baselayout-data@3.7.2-r1",
+            "busybox-binsh@1.37.0-r31"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:ee13a18ee7e29d75872017403d59c0484dacd963",
+          "InstalledFiles": [
+            "etc/motd",
+            "etc/crontabs/root",
+            "etc/modprobe.d/aliases.conf",
+            "etc/modprobe.d/blacklist.conf",
+            "etc/modprobe.d/i386.conf",
+            "etc/profile.d/20locale.sh",
+            "etc/profile.d/README",
+            "etc/profile.d/color_prompt.sh.disabled",
+            "usr/lib/sysctl.d/00-alpine.conf",
+            "var/lock",
+            "var/run",
+            "var/spool/mail",
+            "var/spool/cron/crontabs"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "alpine-baselayout-data@3.7.2-r1",
+          "Name": "alpine-baselayout-data",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-baselayout-data@3.7.2-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "9107750a7f29a381"
+          },
+          "Version": "3.7.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "alpine-baselayout",
+          "SrcVersion": "3.7.2-r1",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:3337c83d21c8eb114e0d4bb275e561dd3493bdb8",
+          "InstalledFiles": [
+            "etc/fstab",
+            "etc/group",
+            "etc/hostname",
+            "etc/hosts",
+            "etc/inittab",
+            "etc/modules",
+            "etc/mtab",
+            "etc/nsswitch.conf",
+            "etc/passwd",
+            "etc/profile",
+            "etc/protocols",
+            "etc/services",
+            "etc/shadow",
+            "etc/shells",
+            "etc/sysctl.conf"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "alpine-keys@2.6-r0",
+          "Name": "alpine-keys",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-keys@2.6-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "fd9daa4d0a52a3c0"
+          },
+          "Version": "2.6-r0",
+          "Arch": "aarch64",
+          "SrcName": "alpine-keys",
+          "SrcVersion": "2.6-r0",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:6440d281ac88714d96ea12641cc6ab93cdec1b8c",
+          "InstalledFiles": [
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58cbb476.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58e4f17d.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5e69ca50.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-60ac2099.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616abc23.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ac3bc.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616db30d.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-66ba20fe.rsa.pub",
+            "usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/armhf/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/armhf/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+            "usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+            "usr/share/apk/keys/loongarch64/alpine-devel@lists.alpinelinux.org-66ba20fe.rsa.pub",
+            "usr/share/apk/keys/mips64/alpine-devel@lists.alpinelinux.org-5e69ca50.rsa.pub",
+            "usr/share/apk/keys/ppc64le/alpine-devel@lists.alpinelinux.org-58cbb476.rsa.pub",
+            "usr/share/apk/keys/ppc64le/alpine-devel@lists.alpinelinux.org-616abc23.rsa.pub",
+            "usr/share/apk/keys/riscv64/alpine-devel@lists.alpinelinux.org-60ac2099.rsa.pub",
+            "usr/share/apk/keys/riscv64/alpine-devel@lists.alpinelinux.org-616db30d.rsa.pub",
+            "usr/share/apk/keys/s390x/alpine-devel@lists.alpinelinux.org-58e4f17d.rsa.pub",
+            "usr/share/apk/keys/s390x/alpine-devel@lists.alpinelinux.org-616ac3bc.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "alpine-release@3.24.2-r0",
+          "Name": "alpine-release",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-release@3.24.2-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "df9a4c7998a694e5"
+          },
+          "Version": "3.24.2-r0",
+          "Arch": "aarch64",
+          "SrcName": "alpine-base",
+          "SrcVersion": "3.24.2-r0",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "alpine-keys@2.6-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:b47f6f48bd3b0edc7a5de392f27d5bb2452ffb53",
+          "InstalledFiles": [
+            "etc/alpine-release",
+            "etc/issue",
+            "etc/os-release",
+            "etc/secfixes.d/alpine",
+            "usr/lib/os-release"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "apk-tools@3.0.8-r0",
+          "Name": "apk-tools",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/apk-tools@3.0.8-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "7ac2944253ab4ea0"
+          },
+          "Version": "3.0.8-r0",
+          "Arch": "aarch64",
+          "SrcName": "apk-tools",
+          "SrcVersion": "3.0.8-r0",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "ca-certificates-bundle@20261020-r0",
+            "libapk@3.0.8-r0",
+            "libcrypto3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:11f39e6c92ad589c04f7b3bc4da8ebed186efbca",
+          "InstalledFiles": [
+            "sbin/apk"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "argon2-libs@20190702-r5",
+          "Name": "argon2-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/argon2-libs@20190702-r5?arch=aarch64\u0026distro=3.24.2",
+            "UID": "96f485a2a7d08f0a"
+          },
+          "Version": "20190702-r5",
+          "Arch": "aarch64",
+          "SrcName": "argon2",
+          "SrcVersion": "20190702-r5",
+          "Licenses": [
+            "Apache-2.0",
+            "CC0-1.0"
+          ],
+          "Maintainer": "Corey Oliver \u003ccoreyjonoliver@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:39c119b402589089fd7e277cb9bc451d420c359b",
+          "InstalledFiles": [
+            "usr/lib/libargon2.so.1"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "brotli-libs@1.2.0-r1",
+          "Name": "brotli-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/brotli-libs@1.2.0-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "dbd1bba0feebbe94"
+          },
+          "Version": "1.2.0-r1",
+          "Arch": "aarch64",
+          "SrcName": "brotli",
+          "SrcVersion": "1.2.0-r1",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "prspkt \u003cprspkt@protonmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:8ead4b39dbeaeb6c2877bf17e1d653cf629e257e",
+          "InstalledFiles": [
+            "usr/lib/libbrotlicommon.so.1",
+            "usr/lib/libbrotlicommon.so.1.2.0",
+            "usr/lib/libbrotlidec.so.1",
+            "usr/lib/libbrotlidec.so.1.2.0",
+            "usr/lib/libbrotlienc.so.1",
+            "usr/lib/libbrotlienc.so.1.2.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "busybox@1.37.0-r31",
+          "Name": "busybox",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.37.0-r31?arch=aarch64\u0026distro=3.24.2",
+            "UID": "6ab72dc13861ad6e"
+          },
+          "Version": "1.37.0-r31",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.37.0-r31",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:71cffc2981f2d54b3937c25be2f5169b3fb04532",
+          "InstalledFiles": [
+            "bin/busybox",
+            "etc/securetty",
+            "etc/busybox-paths.d/busybox",
+            "etc/logrotate.d/acpid",
+            "etc/network/if-up.d/dad",
+            "etc/udhcpc/udhcpc.conf",
+            "usr/share/udhcpc/default.script"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "busybox-binsh@1.37.0-r31",
+          "Name": "busybox-binsh",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.37.0-r31?arch=aarch64\u0026distro=3.24.2",
+            "UID": "dd2aa04cf600f874"
+          },
+          "Version": "1.37.0-r31",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.37.0-r31",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "busybox@1.37.0-r31"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:6b1f7722a3e7bb97d04e8ef906fd72c0667ba5d0",
+          "InstalledFiles": [
+            "bin/sh"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "c-ares@1.34.9-r0",
+          "Name": "c-ares",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/c-ares@1.34.9-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "65e059b4b8edda78"
+          },
+          "Version": "1.34.9-r0",
+          "Arch": "aarch64",
+          "SrcName": "c-ares",
+          "SrcVersion": "1.34.9-r0",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Carlo Landmeter \u003cclandmeter@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:1518aecb2e63a1d346b1268a3f8e9762b352a770",
+          "InstalledFiles": [
+            "usr/lib/libcares.so.2",
+            "usr/lib/libcares.so.2.19.8"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "ca-certificates@20261020-r0",
+          "Name": "ca-certificates",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ca-certificates@20261020-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "f937d514e69f508a"
+          },
+          "Version": "20261020-r0",
+          "Arch": "aarch64",
+          "SrcName": "ca-certificates",
+          "SrcVersion": "20261020-r0",
+          "Licenses": [
+            "MPL-2.0",
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "busybox-binsh@1.37.0-r31",
+            "libcrypto3@3.5.9-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:a6ef95d903a909d82579946e87aa64be29f3b363",
+          "InstalledFiles": [
+            "etc/ca-certificates.conf",
+            "etc/apk/protected_paths.d/ca-certificates.list",
+            "etc/ca-certificates/update.d/certhash",
+            "usr/bin/c_rehash",
+            "usr/sbin/update-ca-certificates",
+            "usr/share/ca-certificates/mozilla/ACCVRAIZ1.crt",
+            "usr/share/ca-certificates/mozilla/AC_RAIZ_FNMT-RCM.crt",
+            "usr/share/ca-certificates/mozilla/AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.crt",
+            "usr/share/ca-certificates/mozilla/ANF_Secure_Server_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/Actalis_Authentication_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/Amazon_Root_CA_1.crt",
+            "usr/share/ca-certificates/mozilla/Amazon_Root_CA_2.crt",
+            "usr/share/ca-certificates/mozilla/Amazon_Root_CA_3.crt",
+            "usr/share/ca-certificates/mozilla/Amazon_Root_CA_4.crt",
+            "usr/share/ca-certificates/mozilla/Atos_TrustedRoot_Root_CA_ECC_TLS_2021.crt",
+            "usr/share/ca-certificates/mozilla/Atos_TrustedRoot_Root_CA_RSA_TLS_2021.crt",
+            "usr/share/ca-certificates/mozilla/Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.crt",
+            "usr/share/ca-certificates/mozilla/BJCA_Global_Root_CA1.crt",
+            "usr/share/ca-certificates/mozilla/BJCA_Global_Root_CA2.crt",
+            "usr/share/ca-certificates/mozilla/Buypass_Class_2_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/Buypass_Class_3_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/CA_Disig_Root_R2.crt",
+            "usr/share/ca-certificates/mozilla/CFCA_EV_ROOT.crt",
+            "usr/share/ca-certificates/mozilla/COMODO_ECC_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/COMODO_RSA_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/Certainly_Root_E1.crt",
+            "usr/share/ca-certificates/mozilla/Certainly_Root_R1.crt",
+            "usr/share/ca-certificates/mozilla/Certigna_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/Certum_EC-384_CA.crt",
+            "usr/share/ca-certificates/mozilla/Certum_Trusted_Network_CA.crt",
+            "usr/share/ca-certificates/mozilla/Certum_Trusted_Network_CA_2.crt",
+            "usr/share/ca-certificates/mozilla/Certum_Trusted_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_BR_Root_CA_1_2020.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_BR_Root_CA_2_2023.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_EV_Root_CA_1_2020.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_EV_Root_CA_2_2023.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_Root_Class_3_CA_2_2009.crt",
+            "usr/share/ca-certificates/mozilla/D-TRUST_Root_Class_3_CA_2_EV_2009.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_Assured_ID_Root_G2.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_Assured_ID_Root_G3.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_Global_Root_G2.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_Global_Root_G3.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_TLS_ECC_P384_Root_G5.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_TLS_RSA4096_Root_G5.crt",
+            "usr/share/ca-certificates/mozilla/DigiCert_Trusted_Root_G4.crt",
+            "usr/share/ca-certificates/mozilla/GDCA_TrustAUTH_R5_ROOT.crt",
+            "usr/share/ca-certificates/mozilla/GTS_Root_R1.crt",
+            "usr/share/ca-certificates/mozilla/GTS_Root_R3.crt",
+            "usr/share/ca-certificates/mozilla/GTS_Root_R4.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_ECC_Root_CA_-_R4.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_ECC_Root_CA_-_R5.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_Root_CA_-_R3.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_Root_CA_-_R6.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_Root_E46.crt",
+            "usr/share/ca-certificates/mozilla/GlobalSign_Root_R46.crt",
+            "usr/share/ca-certificates/mozilla/Go_Daddy_Root_Certificate_Authority_-_G2.crt",
+            "usr/share/ca-certificates/mozilla/HARICA_TLS_ECC_Root_CA_2021.crt",
+            "usr/share/ca-certificates/mozilla/HARICA_TLS_RSA_Root_CA_2021.crt",
+            "usr/share/ca-certificates/mozilla/Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.crt",
+            "usr/share/ca-certificates/mozilla/Hellenic_Academic_and_Research_Institutions_RootCA_2015.crt",
+            "usr/share/ca-certificates/mozilla/HiPKI_Root_CA_-_G1.crt",
+            "usr/share/ca-certificates/mozilla/Hongkong_Post_Root_CA_3.crt",
+            "usr/share/ca-certificates/mozilla/ISRG_Root_X1.crt",
+            "usr/share/ca-certificates/mozilla/ISRG_Root_X2.crt",
+            "usr/share/ca-certificates/mozilla/IdenTrust_Commercial_Root_CA_1.crt",
+            "usr/share/ca-certificates/mozilla/IdenTrust_Public_Sector_Root_CA_1.crt",
+            "usr/share/ca-certificates/mozilla/Izenpe.com.crt",
+            "usr/share/ca-certificates/mozilla/Microsec_e-Szigno_Root_CA_2009.crt",
+            "usr/share/ca-certificates/mozilla/Microsoft_ECC_Root_Certificate_Authority_2017.crt",
+            "usr/share/ca-certificates/mozilla/Microsoft_RSA_Root_Certificate_Authority_2017.crt",
+            "usr/share/ca-certificates/mozilla/NAVER_Global_Root_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_Főtanúsítvány.crt",
+            "usr/share/ca-certificates/mozilla/OISTE_Server_Root_ECC_G1.crt",
+            "usr/share/ca-certificates/mozilla/OISTE_Server_Root_RSA_G1.crt",
+            "usr/share/ca-certificates/mozilla/OISTE_WISeKey_Global_Root_GB_CA.crt",
+            "usr/share/ca-certificates/mozilla/OISTE_WISeKey_Global_Root_GC_CA.crt",
+            "usr/share/ca-certificates/mozilla/QuoVadis_Root_CA_1_G3.crt",
+            "usr/share/ca-certificates/mozilla/QuoVadis_Root_CA_2_G3.crt",
+            "usr/share/ca-certificates/mozilla/QuoVadis_Root_CA_3_G3.crt",
+            "usr/share/ca-certificates/mozilla/SECOM_TLS_ECC_Root_CA_2024.crt",
+            "usr/share/ca-certificates/mozilla/SECOM_TLS_RSA_Root_CA_2024.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_EV_Root_Certification_Authority_ECC.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_EV_Root_Certification_Authority_RSA_R2.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_Root_Certification_Authority_ECC.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_Root_Certification_Authority_RSA.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_TLS_ECC_Root_CA_2022.crt",
+            "usr/share/ca-certificates/mozilla/SSL.com_TLS_RSA_Root_CA_2022.crt",
+            "usr/share/ca-certificates/mozilla/SZAFIR_ROOT_CA2.crt",
+            "usr/share/ca-certificates/mozilla/Sectigo_Public_Server_Authentication_Root_E46.crt",
+            "usr/share/ca-certificates/mozilla/Sectigo_Public_Server_Authentication_Root_R46.crt",
+            "usr/share/ca-certificates/mozilla/SecureSign_Root_CA14.crt",
+            "usr/share/ca-certificates/mozilla/SecureSign_Root_CA15.crt",
+            "usr/share/ca-certificates/mozilla/Security_Communication_ECC_RootCA1.crt",
+            "usr/share/ca-certificates/mozilla/Security_Communication_RootCA2.crt",
+            "usr/share/ca-certificates/mozilla/Starfield_Root_Certificate_Authority_-_G2.crt",
+            "usr/share/ca-certificates/mozilla/Starfield_Services_Root_Certificate_Authority_-_G2.crt",
+            "usr/share/ca-certificates/mozilla/SwissSign_RSA_TLS_Root_CA_2022_-_1.crt",
+            "usr/share/ca-certificates/mozilla/T-TeleSec_GlobalRoot_Class_2.crt",
+            "usr/share/ca-certificates/mozilla/T-TeleSec_GlobalRoot_Class_3.crt",
+            "usr/share/ca-certificates/mozilla/TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.crt",
+            "usr/share/ca-certificates/mozilla/TWCA_CYBER_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/TWCA_Global_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/TWCA_Root_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/Telekom_Security_TLS_ECC_Root_2020.crt",
+            "usr/share/ca-certificates/mozilla/Telekom_Security_TLS_RSA_Root_2023.crt",
+            "usr/share/ca-certificates/mozilla/Telia_EC_TLS_Root_CA_v3.crt",
+            "usr/share/ca-certificates/mozilla/Telia_RSA_TLS_Root_CA_v3.crt",
+            "usr/share/ca-certificates/mozilla/Telia_Root_CA_v2.crt",
+            "usr/share/ca-certificates/mozilla/TrustAsia_Global_Root_CA_G3.crt",
+            "usr/share/ca-certificates/mozilla/TrustAsia_Global_Root_CA_G4.crt",
+            "usr/share/ca-certificates/mozilla/TrustAsia_TLS_ECC_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/TrustAsia_TLS_RSA_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/TunTrust_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/UCA_Extended_Validation_Root.crt",
+            "usr/share/ca-certificates/mozilla/UCA_Global_G2_Root.crt",
+            "usr/share/ca-certificates/mozilla/USERTrust_ECC_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/USERTrust_RSA_Certification_Authority.crt",
+            "usr/share/ca-certificates/mozilla/certSIGN_Root_CA_G2.crt",
+            "usr/share/ca-certificates/mozilla/e-Szigno_Root_CA_2017.crt",
+            "usr/share/ca-certificates/mozilla/e-Szigno_TLS_Root_CA_2023.crt",
+            "usr/share/ca-certificates/mozilla/emSign_Root_CA_-_G1.crt",
+            "usr/share/ca-certificates/mozilla/vTrus_ECC_Root_CA.crt",
+            "usr/share/ca-certificates/mozilla/vTrus_Root_CA.crt"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "ca-certificates-bundle@20261020-r0",
+          "Name": "ca-certificates-bundle",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ca-certificates-bundle@20261020-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "8c8506518dd3fac9"
+          },
+          "Version": "20261020-r0",
+          "Arch": "aarch64",
+          "SrcName": "ca-certificates",
+          "SrcVersion": "20261020-r0",
+          "Licenses": [
+            "MPL-2.0",
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:d53ced4643e66fc2388cab5ea6b4ac688bb7296f",
+          "InstalledFiles": [
+            "etc/ssl/cert.pem",
+            "etc/ssl/certs/ca-certificates.crt",
+            "etc/ssl1.1/cert.pem",
+            "etc/ssl1.1/certs"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "icu-data-en@78.1-r0",
+          "Name": "icu-data-en",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/icu-data-en@78.1-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "da846d72371dfdfa"
+          },
+          "Version": "78.1-r0",
+          "Arch": "aarch64",
+          "SrcName": "icu",
+          "SrcVersion": "78.1-r0",
+          "Licenses": [
+            "ICU"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "busybox-binsh@1.37.0-r31"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:ecb6a27f5da21f0e02b0b3fe7337ca8fee1a36d6",
+          "InstalledFiles": [
+            "usr/share/icu/78.1/icudt78l.dat"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "icu-libs@78.1-r0",
+          "Name": "icu-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/icu-libs@78.1-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "8854aac4b7e60f0b"
+          },
+          "Version": "78.1-r0",
+          "Arch": "aarch64",
+          "SrcName": "icu",
+          "SrcVersion": "78.1-r0",
+          "Licenses": [
+            "ICU"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "icu-data-en@78.1-r0",
+            "libgcc@15.2.0-r5",
+            "libstdc++@15.2.0-r5",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:6142e665d9107c5b3842c1a38c7fa930ae571d1f",
+          "InstalledFiles": [
+            "usr/lib/libicudata.so.78",
+            "usr/lib/libicudata.so.78.1",
+            "usr/lib/libicui18n.so.78",
+            "usr/lib/libicui18n.so.78.1",
+            "usr/lib/libicuio.so.78",
+            "usr/lib/libicuio.so.78.1",
+            "usr/lib/libicuuc.so.78",
+            "usr/lib/libicuuc.so.78.1"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libapk@3.0.8-r0",
+          "Name": "libapk",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libapk@3.0.8-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "28753f6d325d1f06"
+          },
+          "Version": "3.0.8-r0",
+          "Arch": "aarch64",
+          "SrcName": "apk-tools",
+          "SrcVersion": "3.0.8-r0",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:472e0dab8bac78aa14d3ad6c4737cf6048651974",
+          "InstalledFiles": [
+            "usr/lib/libapk.so.3.0.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libbz2@1.0.8-r6",
+          "Name": "libbz2",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libbz2@1.0.8-r6?arch=aarch64\u0026distro=3.24.2",
+            "UID": "8bbfa052de5e428b"
+          },
+          "Version": "1.0.8-r6",
+          "Arch": "aarch64",
+          "SrcName": "bzip2",
+          "SrcVersion": "1.0.8-r6",
+          "Licenses": [
+            "bzip-2-1.0.6"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:64ae5f8dae8a663935e22b0ed5b903d1f768a1ee",
+          "InstalledFiles": [
+            "usr/lib/libbz2.so.1",
+            "usr/lib/libbz2.so.1.0.8"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libcrypto3@3.5.9-r0",
+          "Name": "libcrypto3",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.5.9-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "961986d198935ac4"
+          },
+          "Version": "3.5.9-r0",
+          "Arch": "aarch64",
+          "SrcName": "openssl",
+          "SrcVersion": "3.5.9-r0",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:9dddc367ab91bffbca7fe2388c610220c0548acc",
+          "InstalledFiles": [
+            "etc/ssl/ct_log_list.cnf",
+            "etc/ssl/ct_log_list.cnf.dist",
+            "etc/ssl/openssl.cnf",
+            "etc/ssl/openssl.cnf.dist",
+            "usr/lib/libcrypto.so.3",
+            "usr/lib/engines-3/afalg.so",
+            "usr/lib/engines-3/capi.so",
+            "usr/lib/engines-3/loader_attic.so",
+            "usr/lib/engines-3/padlock.so",
+            "usr/lib/ossl-modules/legacy.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libcurl@8.22.0-r0",
+          "Name": "libcurl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libcurl@8.22.0-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "8fc75b25de03040d"
+          },
+          "Version": "8.22.0-r0",
+          "Arch": "aarch64",
+          "SrcName": "curl",
+          "SrcVersion": "8.22.0-r0",
+          "Licenses": [
+            "curl"
+          ],
+          "Maintainer": "Achill Gilgenast \u003cachill@achill.org\u003e",
+          "DependsOn": [
+            "brotli-libs@1.2.0-r1",
+            "c-ares@1.34.9-r0",
+            "ca-certificates-bundle@20261020-r0",
+            "libcrypto3@3.5.9-r0",
+            "libidn2@2.3.8-r0",
+            "libpsl@0.21.5-r3",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "nghttp2-libs@1.70.0-r0",
+            "zlib@1.3.2-r1",
+            "zstd-libs@1.5.7-r2"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:c24a770882be0c1cc5595a04bc26bcd4da430ccc",
+          "InstalledFiles": [
+            "usr/lib/libcurl.so.4",
+            "usr/lib/libcurl.so.4.8.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libedit@20260508.3.1-r1",
+          "Name": "libedit",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libedit@20260508.3.1-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "182f506e6d950a07"
+          },
+          "Version": "20260508.3.1-r1",
+          "Arch": "aarch64",
+          "SrcName": "libedit",
+          "SrcVersion": "20260508.3.1-r1",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Achill Gilgenast \u003cachill@achill.org\u003e",
+          "DependsOn": [
+            "libncursesw@6.6_p20260516-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:e71cbbcff80122d4d5c164ca6d32e2bc7d3fd59f",
+          "InstalledFiles": [
+            "usr/lib/libedit.so.0",
+            "usr/lib/libedit.so.0.0.77"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libgcc@15.2.0-r5",
+          "Name": "libgcc",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libgcc@15.2.0-r5?arch=aarch64\u0026distro=3.24.2",
+            "UID": "6b0780839c66d39f"
+          },
+          "Version": "15.2.0-r5",
+          "Arch": "aarch64",
+          "SrcName": "gcc",
+          "SrcVersion": "15.2.0-r5",
+          "Licenses": [
+            "GPL-2.0-or-later",
+            "LGPL-2.1-or-later"
+          ],
+          "Maintainer": "Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:24b50bfb674c67e129581a1a22c1c3ed523b6d48",
+          "InstalledFiles": [
+            "usr/lib/libgcc_s.so.1"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libidn2@2.3.8-r0",
+          "Name": "libidn2",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libidn2@2.3.8-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "a46dcf0188053bbe"
+          },
+          "Version": "2.3.8-r0",
+          "Arch": "aarch64",
+          "SrcName": "libidn2",
+          "SrcVersion": "2.3.8-r0",
+          "Licenses": [
+            "GPL-2.0-or-later",
+            "LGPL-3.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "libunistring@1.4.2-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:cef8a58ad0c65f18ce1685da1bc6492ac4ab09e3",
+          "InstalledFiles": [
+            "usr/lib/libidn2.so.0",
+            "usr/lib/libidn2.so.0.4.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libncursesw@6.6_p20260516-r0",
+          "Name": "libncursesw",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libncursesw@6.6_p20260516-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "d8c947c546bda248"
+          },
+          "Version": "6.6_p20260516-r0",
+          "Arch": "aarch64",
+          "SrcName": "ncurses",
+          "SrcVersion": "6.6_p20260516-r0",
+          "Licenses": [
+            "X-11"
+          ],
+          "Maintainer": "Milan P. Stanić \u003cmps@arvanta.net\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "ncurses-terminfo-base@6.6_p20260516-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:c0d979fa47a4d4cdd511695c5e5f0ce3e8cf1ea2",
+          "InstalledFiles": [
+            "usr/lib/libncursesw.so.6",
+            "usr/lib/libncursesw.so.6.6"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libpq@18.6-r0",
+          "Name": "libpq",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libpq@18.6-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "5ddb8b8a33a7c248"
+          },
+          "Version": "18.6-r0",
+          "Arch": "aarch64",
+          "SrcName": "postgresql18",
+          "SrcVersion": "18.6-r0",
+          "Licenses": [
+            "PostgreSQL"
+          ],
+          "Maintainer": "Jakub Jirutka \u003cjakub@jirutka.cz\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:1f9d051fff97d284655861b6dfe8bd17593301d8",
+          "InstalledFiles": [
+            "usr/lib/libpq.so.5",
+            "usr/lib/libpq.so.5.18"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libpsl@0.21.5-r3",
+          "Name": "libpsl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libpsl@0.21.5-r3?arch=aarch64\u0026distro=3.24.2",
+            "UID": "33b9de8b80e5ebe9"
+          },
+          "Version": "0.21.5-r3",
+          "Arch": "aarch64",
+          "SrcName": "libpsl",
+          "SrcVersion": "0.21.5-r3",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "libidn2@2.3.8-r0",
+            "libunistring@1.4.2-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:1fc94b0c28626c54e8a8228865f495aa24e5ab67",
+          "InstalledFiles": [
+            "usr/lib/libpsl.so.5",
+            "usr/lib/libpsl.so.5.3.5"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libssl3@3.5.9-r0",
+          "Name": "libssl3",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.5.9-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "c0d6fb199e6f2c9c"
+          },
+          "Version": "3.5.9-r0",
+          "Arch": "aarch64",
+          "SrcName": "openssl",
+          "SrcVersion": "3.5.9-r0",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:7cfbe098b63ab1c212dfb5ad1bc57e5770263cb6",
+          "InstalledFiles": [
+            "usr/lib/libssl.so.3"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libstdc++@15.2.0-r5",
+          "Name": "libstdc++",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libstdc%2B%2B@15.2.0-r5?arch=aarch64\u0026distro=3.24.2",
+            "UID": "2ebc40c0bd2fd406"
+          },
+          "Version": "15.2.0-r5",
+          "Arch": "aarch64",
+          "SrcName": "gcc",
+          "SrcVersion": "15.2.0-r5",
+          "Licenses": [
+            "GPL-2.0-or-later",
+            "LGPL-2.1-or-later"
+          ],
+          "Maintainer": "Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+          "DependsOn": [
+            "libgcc@15.2.0-r5",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:e9659a34219ef24567e259306ffdc31a8e8ecaa6",
+          "InstalledFiles": [
+            "usr/lib/libstdc++.so.6",
+            "usr/lib/libstdc++.so.6.0.34"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libunistring@1.4.2-r0",
+          "Name": "libunistring",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libunistring@1.4.2-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "cb8bcb57878bba4a"
+          },
+          "Version": "1.4.2-r0",
+          "Arch": "aarch64",
+          "SrcName": "libunistring",
+          "SrcVersion": "1.4.2-r0",
+          "Licenses": [
+            "GPL-2.0-or-later",
+            "LGPL-3.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:89076557eca547817f2a05a1438c57ad7be9ab56",
+          "InstalledFiles": [
+            "usr/lib/libunistring.so.5",
+            "usr/lib/libunistring.so.5.2.1"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libxml2@2.13.9-r2",
+          "Name": "libxml2",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libxml2@2.13.9-r2?arch=aarch64\u0026distro=3.24.2",
+            "UID": "75acebc3182ef473"
+          },
+          "Version": "2.13.9-r2",
+          "Arch": "aarch64",
+          "SrcName": "libxml2",
+          "SrcVersion": "2.13.9-r2",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Carlo Landmeter \u003cclandmeter@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "xz-libs@5.8.4-r0",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:5ea424050a6d20efe6f2120e7307386cae320275",
+          "InstalledFiles": [
+            "usr/lib/libxml2.so.2",
+            "usr/lib/libxml2.so.2.13.9"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "libzip@1.11.4-r2",
+          "Name": "libzip",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libzip@1.11.4-r2?arch=aarch64\u0026distro=3.24.2",
+            "UID": "b9570456f0584e15"
+          },
+          "Version": "1.11.4-r2",
+          "Arch": "aarch64",
+          "SrcName": "libzip",
+          "SrcVersion": "1.11.4-r2",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Jingyun Hua \u003chuajingyun@loongson.cn\u003e",
+          "DependsOn": [
+            "libbz2@1.0.8-r6",
+            "libcrypto3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "xz-libs@5.8.4-r0",
+            "zlib@1.3.2-r1",
+            "zstd-libs@1.5.7-r2"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:3532aa2e3069205817d79e2bfdbdf46805c129fa",
+          "InstalledFiles": [
+            "usr/lib/libzip.so.5",
+            "usr/lib/libzip.so.5.5"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "lz4-libs@1.10.0-r1",
+          "Name": "lz4-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/lz4-libs@1.10.0-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "80ddeae79df7a578"
+          },
+          "Version": "1.10.0-r1",
+          "Arch": "aarch64",
+          "SrcName": "lz4",
+          "SrcVersion": "1.10.0-r1",
+          "Licenses": [
+            "BSD-2-Clause",
+            "GPL-2.0-or-later"
+          ],
+          "Maintainer": "Stuart Cardall \u003cdeveloper@it-offshore.co.uk\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:462a112add795da688d918488a1d42f1391b3935",
+          "InstalledFiles": [
+            "usr/lib/liblz4.so.1",
+            "usr/lib/liblz4.so.1.10.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "musl@1.2.6-r3",
+          "Name": "musl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/musl@1.2.6-r3?arch=aarch64\u0026distro=3.24.2",
+            "UID": "b836d5e005347926"
+          },
+          "Version": "1.2.6-r3",
+          "Arch": "aarch64",
+          "SrcName": "musl",
+          "SrcVersion": "1.2.6-r3",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:2f159d022523c7a6b78729a6632985cb7714fbe6",
+          "InstalledFiles": [
+            "lib/ld-musl-aarch64.so.1",
+            "lib/libc.musl-aarch64.so.1"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "musl-utils@1.2.6-r3",
+          "Name": "musl-utils",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/musl-utils@1.2.6-r3?arch=aarch64\u0026distro=3.24.2",
+            "UID": "10298f539cdcabfb"
+          },
+          "Version": "1.2.6-r3",
+          "Arch": "aarch64",
+          "SrcName": "musl",
+          "SrcVersion": "1.2.6-r3",
+          "Licenses": [
+            "MIT",
+            "BSD-2-Clause",
+            "GPL-2.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "scanelf@1.3.9-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:c38121afffd1f2dd7681f7ac66058a3cd723d030",
+          "InstalledFiles": [
+            "sbin/ldconfig",
+            "usr/bin/getconf",
+            "usr/bin/getent",
+            "usr/bin/iconv",
+            "usr/bin/ldd"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "ncurses-terminfo-base@6.6_p20260516-r0",
+          "Name": "ncurses-terminfo-base",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ncurses-terminfo-base@6.6_p20260516-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "dc8047c706e282c8"
+          },
+          "Version": "6.6_p20260516-r0",
+          "Arch": "aarch64",
+          "SrcName": "ncurses",
+          "SrcVersion": "6.6_p20260516-r0",
+          "Licenses": [
+            "X-11"
+          ],
+          "Maintainer": "Milan P. Stanić \u003cmps@arvanta.net\u003e",
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:fcccc512533b4dff6f44ad36b06f9b43e8848d1f",
+          "InstalledFiles": [
+            "etc/terminfo/a/alacritty",
+            "etc/terminfo/a/ansi",
+            "etc/terminfo/d/dumb",
+            "etc/terminfo/g/gnome",
+            "etc/terminfo/g/gnome-256color",
+            "etc/terminfo/k/konsole",
+            "etc/terminfo/k/konsole-256color",
+            "etc/terminfo/k/konsole-linux",
+            "etc/terminfo/l/linux",
+            "etc/terminfo/p/putty",
+            "etc/terminfo/p/putty-256color",
+            "etc/terminfo/r/rxvt",
+            "etc/terminfo/r/rxvt-256color",
+            "etc/terminfo/s/screen",
+            "etc/terminfo/s/screen-256color",
+            "etc/terminfo/s/st-0.6",
+            "etc/terminfo/s/st-0.7",
+            "etc/terminfo/s/st-0.8",
+            "etc/terminfo/s/st-0.8.5",
+            "etc/terminfo/s/st-16color",
+            "etc/terminfo/s/st-256color",
+            "etc/terminfo/s/st-direct",
+            "etc/terminfo/s/sun",
+            "etc/terminfo/t/terminator",
+            "etc/terminfo/t/terminology",
+            "etc/terminfo/t/terminology-0.6.1",
+            "etc/terminfo/t/terminology-1.0.0",
+            "etc/terminfo/t/terminology-1.8.1",
+            "etc/terminfo/t/tmux",
+            "etc/terminfo/t/tmux-256color",
+            "etc/terminfo/v/vt100",
+            "etc/terminfo/v/vt102",
+            "etc/terminfo/v/vt200",
+            "etc/terminfo/v/vt220",
+            "etc/terminfo/v/vt52",
+            "etc/terminfo/v/vte",
+            "etc/terminfo/v/vte-256color",
+            "etc/terminfo/x/xterm",
+            "etc/terminfo/x/xterm-256color",
+            "etc/terminfo/x/xterm-color",
+            "etc/terminfo/x/xterm-xfree86"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "nghttp2-libs@1.70.0-r0",
+          "Name": "nghttp2-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/nghttp2-libs@1.70.0-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "39e120589167f060"
+          },
+          "Version": "1.70.0-r0",
+          "Arch": "aarch64",
+          "SrcName": "nghttp2",
+          "SrcVersion": "1.70.0-r0",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Francesco Colista \u003cfcolista@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:a1389f5e6ee2e69dce6ae4d25f52fd647b2de358",
+          "InstalledFiles": [
+            "usr/lib/libnghttp2.so.14",
+            "usr/lib/libnghttp2.so.14.29.5"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "nginx@1.30.4-r1",
+          "Name": "nginx",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/nginx@1.30.4-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "72b5fd53ce43da10"
+          },
+          "Version": "1.30.4-r1",
+          "Arch": "aarch64",
+          "SrcName": "nginx",
+          "SrcVersion": "1.30.4-r1",
+          "Licenses": [
+            "BSD-2-Clause"
+          ],
+          "Maintainer": "Jakub Jirutka \u003cjakub@jirutka.cz\u003e",
+          "DependsOn": [
+            "busybox-binsh@1.37.0-r31",
+            "libcrypto3@3.5.9-r0",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "pcre2@10.49-r0",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:bb1dd4c178e1ba1c5ae2d16c8d4f7bf9b9d80560",
+          "InstalledFiles": [
+            "etc/logrotate.d/nginx",
+            "etc/nginx/fastcgi.conf",
+            "etc/nginx/fastcgi_params",
+            "etc/nginx/mime.types",
+            "etc/nginx/nginx.conf",
+            "etc/nginx/scgi_params",
+            "etc/nginx/uwsgi_params",
+            "usr/sbin/nginx",
+            "usr/share/nginx/http-default_server.conf",
+            "var/lib/nginx/logs",
+            "var/lib/nginx/modules",
+            "var/lib/nginx/run",
+            "var/lib/nginx/html/50x.html",
+            "var/lib/nginx/html/index.html"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "oniguruma@6.9.10-r0",
+          "Name": "oniguruma",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/oniguruma@6.9.10-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "9a87f131f9eb6fe3"
+          },
+          "Version": "6.9.10-r0",
+          "Arch": "aarch64",
+          "SrcName": "oniguruma",
+          "SrcVersion": "6.9.10-r0",
+          "Licenses": [
+            "BSD-2-Clause"
+          ],
+          "Maintainer": "Francesco Colista \u003cfcolista@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:a82fa1e1b34010049c6c1c4d2ce851c83c0f02ab",
+          "InstalledFiles": [
+            "usr/lib/libonig.so.5",
+            "usr/lib/libonig.so.5.5.0"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "pcre2@10.49-r0",
+          "Name": "pcre2",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/pcre2@10.49-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "ba47342143e12c42"
+          },
+          "Version": "10.49-r0",
+          "Arch": "aarch64",
+          "SrcName": "pcre2",
+          "SrcVersion": "10.49-r0",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Jakub Jirutka \u003cjakub@jirutka.cz\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:d1ee539ba0630a4408992f63bb96866237807eee",
+          "InstalledFiles": [
+            "usr/lib/libpcre2-8.so.0",
+            "usr/lib/libpcre2-8.so.0.16.1",
+            "usr/lib/libpcre2-posix.so.3",
+            "usr/lib/libpcre2-posix.so.3.0.9"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84@8.4.27-r0",
+          "Name": "php84",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "b29ba00e263cc4af"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "argon2-libs@20190702-r5",
+            "libedit@20260508.3.1-r1",
+            "libxml2@2.13.9-r2",
+            "musl@1.2.6-r3",
+            "pcre2@10.49-r0",
+            "php84-common@8.4.27-r0",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:cec787bb40ca6d4bee9d8e1fecaec1699fff9a75",
+          "InstalledFiles": [
+            "usr/bin/php84"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-bcmath@8.4.27-r0",
+          "Name": "php84-bcmath",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-bcmath@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "2b8d24f7b7b51eeb"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:69f995aa8400e595a3b13ac5e73b7502ec88b47d",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_bcmath.ini",
+            "usr/lib/php84/modules/bcmath.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-common@8.4.27-r0",
+          "Name": "php84-common",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-common@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "769da59150e71b35"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:09f4bc2c2d3ae0922b5a391f6d5c8e114d991133",
+          "InstalledFiles": [
+            "etc/php84/php.ini"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-ctype@8.4.27-r0",
+          "Name": "php84-ctype",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-ctype@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "fb83c49857b928a3"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:bb151d52a5857bf55514223df1c55756b153ae53",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_ctype.ini",
+            "usr/lib/php84/modules/ctype.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-curl@8.4.27-r0",
+          "Name": "php84-curl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-curl@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "c4ad9347e8fc4b56"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libcurl@8.22.0-r0",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:db4e4d8744a7d8a258a37b0021fbd01347d53a4e",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_curl.ini",
+            "usr/lib/php84/modules/curl.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-dom@8.4.27-r0",
+          "Name": "php84-dom",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-dom@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "c525307c9e2397c9"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libxml2@2.13.9-r2",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:b201332730e4b3d775c53e69a68f92c5482e71cb",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_dom.ini",
+            "usr/lib/php84/modules/dom.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-fileinfo@8.4.27-r0",
+          "Name": "php84-fileinfo",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-fileinfo@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "b55e980362b0ed2f"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:522a0e3f6ac6ff205a79c9c0aa5b7d7e585d12a8",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_fileinfo.ini",
+            "usr/lib/php84/modules/fileinfo.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-fpm@8.4.27-r0",
+          "Name": "php84-fpm",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-fpm@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "cdc2cc380ab18470"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "acl-libs@2.3.2-r1",
+            "argon2-libs@20190702-r5",
+            "libedit@20260508.3.1-r1",
+            "libxml2@2.13.9-r2",
+            "musl@1.2.6-r3",
+            "pcre2@10.49-r0",
+            "php84-common@8.4.27-r0",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:cc310e2a3246c4d7810292d74ccef371058281c1",
+          "InstalledFiles": [
+            "etc/init.d/php-fpm84",
+            "etc/logrotate.d/php-fpm84",
+            "etc/php84/php-fpm.conf",
+            "etc/php84/php-fpm.d/www.conf",
+            "usr/sbin/php-fpm84",
+            "usr/share/php84/fpm/status.html"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-intl@8.4.27-r0",
+          "Name": "php84-intl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-intl@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "15eb200c601d4e75"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "icu-libs@78.1-r0",
+            "libgcc@15.2.0-r5",
+            "libstdc++@15.2.0-r5",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:6190a0c82ef8f53799e0ace37cf027abd5ecc85e",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_intl.ini",
+            "usr/lib/php84/modules/intl.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-mbstring@8.4.27-r0",
+          "Name": "php84-mbstring",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-mbstring@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "730f054ef3a8a25b"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "oniguruma@6.9.10-r0",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:7b7e56e6a7d6bdfeb5cb7da750584a64d5f90b9c",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_mbstring.ini",
+            "usr/lib/php84/modules/mbstring.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-mysqlnd@8.4.27-r0",
+          "Name": "php84-mysqlnd",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-mysqlnd@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "f10901289f9bd7ea"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0",
+            "php84-openssl@8.4.27-r0",
+            "zlib@1.3.2-r1"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:3edc41d299897c06afb96ec6d7042632e96156ec",
+          "InstalledFiles": [
+            "etc/php84/conf.d/01_mysqlnd.ini",
+            "usr/lib/php84/modules/mysqlnd.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-opcache@8.4.27-r0",
+          "Name": "php84-opcache",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-opcache@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "eb3dd04138fade11"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:ea048e7e7f2080695dd1071354234fc052929e37",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_opcache.ini",
+            "usr/lib/php84/modules/opcache.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-openssl@8.4.27-r0",
+          "Name": "php84-openssl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-openssl@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "8c99080176379253"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:f60353d8f5b89821b598bcb3306e4ace25a96b48",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_openssl.ini",
+            "usr/lib/php84/modules/openssl.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pcntl@8.4.27-r0",
+          "Name": "php84-pcntl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pcntl@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "71085f630d006c20"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:f3c431191c268535cbee23b6e3b8d40a7f6523a3",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_pcntl.ini",
+            "usr/lib/php84/modules/pcntl.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pdo@8.4.27-r0",
+          "Name": "php84-pdo",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pdo@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "4052ec49e8fd32c0"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:d8b7302bc24796a8ef808de84ac22ad426f80898",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_pdo.ini",
+            "usr/lib/php84/modules/pdo.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pdo_mysql@8.4.27-r0",
+          "Name": "php84-pdo_mysql",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pdo_mysql@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "fe167b55378b1ce4"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0",
+            "php84-mysqlnd@8.4.27-r0",
+            "php84-pdo@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:4158f99a4c27b3c110217cc8758d34549636a4fa",
+          "InstalledFiles": [
+            "etc/php84/conf.d/02_pdo_mysql.ini",
+            "usr/lib/php84/modules/pdo_mysql.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pdo_pgsql@8.4.27-r0",
+          "Name": "php84-pdo_pgsql",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pdo_pgsql@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "37dc43bedb9a7242"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libpq@18.6-r0",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0",
+            "php84-pdo@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:0cc10ed281d356499e9a722dc0551349e2d7a5a8",
+          "InstalledFiles": [
+            "etc/php84/conf.d/01_pdo_pgsql.ini",
+            "usr/lib/php84/modules/pdo_pgsql.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pdo_sqlite@8.4.27-r0",
+          "Name": "php84-pdo_sqlite",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pdo_sqlite@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "3f50d70190a149c2"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0",
+            "php84-pdo@8.4.27-r0",
+            "sqlite-libs@3.53.4-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:c030999e2fb71f2542cdf89bd224edc2ea4a2d0b",
+          "InstalledFiles": [
+            "etc/php84/conf.d/01_pdo_sqlite.ini",
+            "usr/lib/php84/modules/pdo_sqlite.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pecl-igbinary@3.2.17_rc1-r0",
+          "Name": "php84-pecl-igbinary",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pecl-igbinary@3.2.17_rc1-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "4d20aa6ed49c050e"
+          },
+          "Version": "3.2.17_rc1-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84-pecl-igbinary",
+          "SrcVersion": "3.2.17_rc1-r0",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:66d24bb79b93d70aba6b73d90d472a78df1cfe7c",
+          "InstalledFiles": [
+            "etc/php84/conf.d/10_igbinary.ini",
+            "usr/include/php84/ext/igbinary/igbinary.h",
+            "usr/include/php84/ext/igbinary/php_igbinary.h",
+            "usr/include/php84/ext/igbinary/src/php7/igbinary.h",
+            "usr/include/php84/ext/igbinary/src/php7/php_igbinary.h",
+            "usr/lib/php84/modules/igbinary.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pecl-msgpack@3.0.1-r0",
+          "Name": "php84-pecl-msgpack",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pecl-msgpack@3.0.1-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "3b27ddff892fda31"
+          },
+          "Version": "3.0.1-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84-pecl-msgpack",
+          "SrcVersion": "3.0.1-r0",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-session@8.4.27-r0",
+            "php84-sockets@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:7652358820502da2560fe51eb24a6cdb7cb85a90",
+          "InstalledFiles": [
+            "etc/php84/conf.d/10_msgpack.ini",
+            "usr/include/php84/ext/msgpack/php_msgpack.h",
+            "usr/lib/php84/modules/msgpack.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-pecl-redis@6.3.0-r0",
+          "Name": "php84-pecl-redis",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-pecl-redis@6.3.0-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "a13876f8ccb697bd"
+          },
+          "Version": "6.3.0-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84-pecl-redis",
+          "SrcVersion": "6.3.0-r0",
+          "Licenses": [
+            "PHP-3.01"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "lz4-libs@1.10.0-r1",
+            "musl@1.2.6-r3",
+            "php84-pecl-igbinary@3.2.17_rc1-r0",
+            "php84-pecl-msgpack@3.0.1-r0",
+            "php84-session@8.4.27-r0",
+            "zstd-libs@1.5.7-r2"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:e30239b28124946d490018878c16c4075cc0c4fc",
+          "InstalledFiles": [
+            "etc/php84/conf.d/20_redis.ini",
+            "usr/lib/php84/modules/redis.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-session@8.4.27-r0",
+          "Name": "php84-session",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-session@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "baecc720912b1f26"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:0403ac4dd385e65f027300f090c689ec39775eab",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_session.ini",
+            "usr/lib/php84/modules/session.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-sockets@8.4.27-r0",
+          "Name": "php84-sockets",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-sockets@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "e8559a69aa98380a"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:641aa3d3b2207474db3047ecfcce78707b9e34e9",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_sockets.ini",
+            "usr/lib/php84/modules/sockets.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-tokenizer@8.4.27-r0",
+          "Name": "php84-tokenizer",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-tokenizer@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "3605919c37dae485"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:1b0a4ab5fcb6460a3f6d903f3affdc86d77033be",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_tokenizer.ini",
+            "usr/lib/php84/modules/tokenizer.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-xml@8.4.27-r0",
+          "Name": "php84-xml",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-xml@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "306da441ca96a714"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libxml2@2.13.9-r2",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:e98240c739e89c29d5643e6f6197284710d86b42",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_xml.ini",
+            "usr/lib/php84/modules/xml.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "php84-zip@8.4.27-r0",
+          "Name": "php84-zip",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/php84-zip@8.4.27-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "22865f5aed4b7bd4"
+          },
+          "Version": "8.4.27-r0",
+          "Arch": "aarch64",
+          "SrcName": "php84",
+          "SrcVersion": "8.4.27-r0",
+          "Licenses": [
+            "PHP-3.01",
+            "BSD-3-Clause",
+            "LGPL-2.0-or-later",
+            "MIT",
+            "Zend-2.0"
+          ],
+          "Maintainer": "Andy Postnikov \u003capostnikov@gmail.com\u003e",
+          "DependsOn": [
+            "libzip@1.11.4-r2",
+            "musl@1.2.6-r3",
+            "php84-common@8.4.27-r0"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:fdb04b3386da06b1d78797d53374a339b9e7fc3c",
+          "InstalledFiles": [
+            "etc/php84/conf.d/00_zip.ini",
+            "usr/lib/php84/modules/zip.so"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "scanelf@1.3.9-r1",
+          "Name": "scanelf",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/scanelf@1.3.9-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "80fc822077279234"
+          },
+          "Version": "1.3.9-r1",
+          "Arch": "aarch64",
+          "SrcName": "pax-utils",
+          "SrcVersion": "1.3.9-r1",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:dc8c1ca6362d648f03640184baf8914b62b643fb",
+          "InstalledFiles": [
+            "usr/bin/scanelf"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "sqlite-libs@3.53.4-r0",
+          "Name": "sqlite-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/sqlite-libs@3.53.4-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "2ed505e27995f2c9"
+          },
+          "Version": "3.53.4-r0",
+          "Arch": "aarch64",
+          "SrcName": "sqlite",
+          "SrcVersion": "3.53.4-r0",
+          "Licenses": [
+            "blessing"
+          ],
+          "Maintainer": "Jingyun Hua \u003chuajingyun@loongson.cn\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:396b29ff3a4cc61853e001323fc3fecc8b3c83e5",
+          "InstalledFiles": [
+            "usr/lib/libsqlite3.so.0",
+            "usr/lib/libsqlite3.so.3.53.4"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "ssl_client@1.37.0-r31",
+          "Name": "ssl_client",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.37.0-r31?arch=aarch64\u0026distro=3.24.2",
+            "UID": "80a58aacbcbb78d1"
+          },
+          "Version": "1.37.0-r31",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.37.0-r31",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "libcrypto3@3.5.9-r0",
+            "libssl3@3.5.9-r0",
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:a9986cd6f37dbddae7862a6d4be71683472e7c2ea708e87db14f8a6393c00f00",
+            "DiffID": "sha256:1b349a3334531b575b01d409540dd8aca14ef29abddacd50f36643d7c949db4b"
+          },
+          "Digest": "sha1:4107c3f70dda302e0c3ed46299419245a8a280b4",
+          "InstalledFiles": [
+            "usr/bin/ssl_client"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "tzdata@2026e-r0",
+          "Name": "tzdata",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/tzdata@2026e-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "2bed3d858e1100bf"
+          },
+          "Version": "2026e-r0",
+          "Arch": "aarch64",
+          "SrcName": "tzdata",
+          "SrcVersion": "2026e-r0",
+          "Licenses": [
+            "Public-Domain"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:fb102670f3c39367ab79377b184dcdabc4365af8",
+          "InstalledFiles": [
+            "usr/share/zoneinfo/CET",
+            "usr/share/zoneinfo/CST6CDT",
+            "usr/share/zoneinfo/Cuba",
+            "usr/share/zoneinfo/EET",
+            "usr/share/zoneinfo/EST",
+            "usr/share/zoneinfo/EST5EDT",
+            "usr/share/zoneinfo/Egypt",
+            "usr/share/zoneinfo/Eire",
+            "usr/share/zoneinfo/Factory",
+            "usr/share/zoneinfo/GB",
+            "usr/share/zoneinfo/GB-Eire",
+            "usr/share/zoneinfo/GMT",
+            "usr/share/zoneinfo/GMT+0",
+            "usr/share/zoneinfo/GMT-0",
+            "usr/share/zoneinfo/GMT0",
+            "usr/share/zoneinfo/Greenwich",
+            "usr/share/zoneinfo/HST",
+            "usr/share/zoneinfo/Hongkong",
+            "usr/share/zoneinfo/Iceland",
+            "usr/share/zoneinfo/Iran",
+            "usr/share/zoneinfo/Israel",
+            "usr/share/zoneinfo/Jamaica",
+            "usr/share/zoneinfo/Japan",
+            "usr/share/zoneinfo/Kwajalein",
+            "usr/share/zoneinfo/Libya",
+            "usr/share/zoneinfo/MET",
+            "usr/share/zoneinfo/MST",
+            "usr/share/zoneinfo/MST7MDT",
+            "usr/share/zoneinfo/NZ",
+            "usr/share/zoneinfo/NZ-CHAT",
+            "usr/share/zoneinfo/Navajo",
+            "usr/share/zoneinfo/PRC",
+            "usr/share/zoneinfo/PST8PDT",
+            "usr/share/zoneinfo/Poland",
+            "usr/share/zoneinfo/Portugal",
+            "usr/share/zoneinfo/ROC",
+            "usr/share/zoneinfo/ROK",
+            "usr/share/zoneinfo/Singapore",
+            "usr/share/zoneinfo/Turkey",
+            "usr/share/zoneinfo/UCT",
+            "usr/share/zoneinfo/UTC",
+            "usr/share/zoneinfo/Universal",
+            "usr/share/zoneinfo/W-SU",
+            "usr/share/zoneinfo/WET",
+            "usr/share/zoneinfo/Zulu",
+            "usr/share/zoneinfo/iso3166.tab",
+            "usr/share/zoneinfo/leap-seconds.list",
+            "usr/share/zoneinfo/posixrules",
+            "usr/share/zoneinfo/zone.tab",
+            "usr/share/zoneinfo/zone1970.tab",
+            "usr/share/zoneinfo/Africa/Abidjan",
+            "usr/share/zoneinfo/Africa/Accra",
+            "usr/share/zoneinfo/Africa/Addis_Ababa",
+            "usr/share/zoneinfo/Africa/Algiers",
+            "usr/share/zoneinfo/Africa/Asmara",
+            "usr/share/zoneinfo/Africa/Asmera",
+            "usr/share/zoneinfo/Africa/Bamako",
+            "usr/share/zoneinfo/Africa/Bangui",
+            "usr/share/zoneinfo/Africa/Banjul",
+            "usr/share/zoneinfo/Africa/Bissau",
+            "usr/share/zoneinfo/Africa/Blantyre",
+            "usr/share/zoneinfo/Africa/Brazzaville",
+            "usr/share/zoneinfo/Africa/Bujumbura",
+            "usr/share/zoneinfo/Africa/Cairo",
+            "usr/share/zoneinfo/Africa/Casablanca",
+            "usr/share/zoneinfo/Africa/Ceuta",
+            "usr/share/zoneinfo/Africa/Conakry",
+            "usr/share/zoneinfo/Africa/Dakar",
+            "usr/share/zoneinfo/Africa/Dar_es_Salaam",
+            "usr/share/zoneinfo/Africa/Djibouti",
+            "usr/share/zoneinfo/Africa/Douala",
+            "usr/share/zoneinfo/Africa/El_Aaiun",
+            "usr/share/zoneinfo/Africa/Freetown",
+            "usr/share/zoneinfo/Africa/Gaborone",
+            "usr/share/zoneinfo/Africa/Harare",
+            "usr/share/zoneinfo/Africa/Johannesburg",
+            "usr/share/zoneinfo/Africa/Juba",
+            "usr/share/zoneinfo/Africa/Kampala",
+            "usr/share/zoneinfo/Africa/Khartoum",
+            "usr/share/zoneinfo/Africa/Kigali",
+            "usr/share/zoneinfo/Africa/Kinshasa",
+            "usr/share/zoneinfo/Africa/Lagos",
+            "usr/share/zoneinfo/Africa/Libreville",
+            "usr/share/zoneinfo/Africa/Lome",
+            "usr/share/zoneinfo/Africa/Luanda",
+            "usr/share/zoneinfo/Africa/Lubumbashi",
+            "usr/share/zoneinfo/Africa/Lusaka",
+            "usr/share/zoneinfo/Africa/Malabo",
+            "usr/share/zoneinfo/Africa/Maputo",
+            "usr/share/zoneinfo/Africa/Maseru",
+            "usr/share/zoneinfo/Africa/Mbabane",
+            "usr/share/zoneinfo/Africa/Mogadishu",
+            "usr/share/zoneinfo/Africa/Monrovia",
+            "usr/share/zoneinfo/Africa/Nairobi",
+            "usr/share/zoneinfo/Africa/Ndjamena",
+            "usr/share/zoneinfo/Africa/Niamey",
+            "usr/share/zoneinfo/Africa/Nouakchott",
+            "usr/share/zoneinfo/Africa/Ouagadougou",
+            "usr/share/zoneinfo/Africa/Porto-Novo",
+            "usr/share/zoneinfo/Africa/Sao_Tome",
+            "usr/share/zoneinfo/Africa/Timbuktu",
+            "usr/share/zoneinfo/Africa/Tripoli",
+            "usr/share/zoneinfo/Africa/Tunis",
+            "usr/share/zoneinfo/Africa/Windhoek",
+            "usr/share/zoneinfo/America/Adak",
+            "usr/share/zoneinfo/America/Anchorage",
+            "usr/share/zoneinfo/America/Anguilla",
+            "usr/share/zoneinfo/America/Antigua",
+            "usr/share/zoneinfo/America/Araguaina",
+            "usr/share/zoneinfo/America/Aruba",
+            "usr/share/zoneinfo/America/Asuncion",
+            "usr/share/zoneinfo/America/Atikokan",
+            "usr/share/zoneinfo/America/Atka",
+            "usr/share/zoneinfo/America/Bahia",
+            "usr/share/zoneinfo/America/Bahia_Banderas",
+            "usr/share/zoneinfo/America/Barbados",
+            "usr/share/zoneinfo/America/Belem",
+            "usr/share/zoneinfo/America/Belize",
+            "usr/share/zoneinfo/America/Blanc-Sablon",
+            "usr/share/zoneinfo/America/Boa_Vista",
+            "usr/share/zoneinfo/America/Bogota",
+            "usr/share/zoneinfo/America/Boise",
+            "usr/share/zoneinfo/America/Buenos_Aires",
+            "usr/share/zoneinfo/America/Cambridge_Bay",
+            "usr/share/zoneinfo/America/Campo_Grande",
+            "usr/share/zoneinfo/America/Cancun",
+            "usr/share/zoneinfo/America/Caracas",
+            "usr/share/zoneinfo/America/Catamarca",
+            "usr/share/zoneinfo/America/Cayenne",
+            "usr/share/zoneinfo/America/Cayman",
+            "usr/share/zoneinfo/America/Chicago",
+            "usr/share/zoneinfo/America/Chihuahua",
+            "usr/share/zoneinfo/America/Ciudad_Juarez",
+            "usr/share/zoneinfo/America/Coral_Harbour",
+            "usr/share/zoneinfo/America/Cordoba",
+            "usr/share/zoneinfo/America/Costa_Rica",
+            "usr/share/zoneinfo/America/Coyhaique",
+            "usr/share/zoneinfo/America/Creston",
+            "usr/share/zoneinfo/America/Cuiaba",
+            "usr/share/zoneinfo/America/Curacao",
+            "usr/share/zoneinfo/America/Danmarkshavn",
+            "usr/share/zoneinfo/America/Dawson",
+            "usr/share/zoneinfo/America/Dawson_Creek",
+            "usr/share/zoneinfo/America/Denver",
+            "usr/share/zoneinfo/America/Detroit",
+            "usr/share/zoneinfo/America/Dominica",
+            "usr/share/zoneinfo/America/Edmonton",
+            "usr/share/zoneinfo/America/Eirunepe",
+            "usr/share/zoneinfo/America/El_Salvador",
+            "usr/share/zoneinfo/America/Ensenada",
+            "usr/share/zoneinfo/America/Fort_Nelson",
+            "usr/share/zoneinfo/America/Fort_Wayne",
+            "usr/share/zoneinfo/America/Fortaleza",
+            "usr/share/zoneinfo/America/Glace_Bay",
+            "usr/share/zoneinfo/America/Godthab",
+            "usr/share/zoneinfo/America/Goose_Bay",
+            "usr/share/zoneinfo/America/Grand_Turk",
+            "usr/share/zoneinfo/America/Grenada",
+            "usr/share/zoneinfo/America/Guadeloupe",
+            "usr/share/zoneinfo/America/Guatemala",
+            "usr/share/zoneinfo/America/Guayaquil",
+            "usr/share/zoneinfo/America/Guyana",
+            "usr/share/zoneinfo/America/Halifax",
+            "usr/share/zoneinfo/America/Havana",
+            "usr/share/zoneinfo/America/Hermosillo",
+            "usr/share/zoneinfo/America/Indianapolis",
+            "usr/share/zoneinfo/America/Inuvik",
+            "usr/share/zoneinfo/America/Iqaluit",
+            "usr/share/zoneinfo/America/Jamaica",
+            "usr/share/zoneinfo/America/Jujuy",
+            "usr/share/zoneinfo/America/Juneau",
+            "usr/share/zoneinfo/America/Knox_IN",
+            "usr/share/zoneinfo/America/Kralendijk",
+            "usr/share/zoneinfo/America/La_Paz",
+            "usr/share/zoneinfo/America/Lima",
+            "usr/share/zoneinfo/America/Los_Angeles",
+            "usr/share/zoneinfo/America/Louisville",
+            "usr/share/zoneinfo/America/Lower_Princes",
+            "usr/share/zoneinfo/America/Maceio",
+            "usr/share/zoneinfo/America/Managua",
+            "usr/share/zoneinfo/America/Manaus",
+            "usr/share/zoneinfo/America/Marigot",
+            "usr/share/zoneinfo/America/Martinique",
+            "usr/share/zoneinfo/America/Matamoros",
+            "usr/share/zoneinfo/America/Mazatlan",
+            "usr/share/zoneinfo/America/Mendoza",
+            "usr/share/zoneinfo/America/Menominee",
+            "usr/share/zoneinfo/America/Merida",
+            "usr/share/zoneinfo/America/Metlakatla",
+            "usr/share/zoneinfo/America/Mexico_City",
+            "usr/share/zoneinfo/America/Miquelon",
+            "usr/share/zoneinfo/America/Moncton",
+            "usr/share/zoneinfo/America/Monterrey",
+            "usr/share/zoneinfo/America/Montevideo",
+            "usr/share/zoneinfo/America/Montreal",
+            "usr/share/zoneinfo/America/Montserrat",
+            "usr/share/zoneinfo/America/Nassau",
+            "usr/share/zoneinfo/America/New_York",
+            "usr/share/zoneinfo/America/Nipigon",
+            "usr/share/zoneinfo/America/Nome",
+            "usr/share/zoneinfo/America/Noronha",
+            "usr/share/zoneinfo/America/Nuuk",
+            "usr/share/zoneinfo/America/Ojinaga",
+            "usr/share/zoneinfo/America/Panama",
+            "usr/share/zoneinfo/America/Pangnirtung",
+            "usr/share/zoneinfo/America/Paramaribo",
+            "usr/share/zoneinfo/America/Phoenix",
+            "usr/share/zoneinfo/America/Port-au-Prince",
+            "usr/share/zoneinfo/America/Port_of_Spain",
+            "usr/share/zoneinfo/America/Porto_Acre",
+            "usr/share/zoneinfo/America/Porto_Velho",
+            "usr/share/zoneinfo/America/Puerto_Rico",
+            "usr/share/zoneinfo/America/Punta_Arenas",
+            "usr/share/zoneinfo/America/Rainy_River",
+            "usr/share/zoneinfo/America/Rankin_Inlet",
+            "usr/share/zoneinfo/America/Recife",
+            "usr/share/zoneinfo/America/Regina",
+            "usr/share/zoneinfo/America/Resolute",
+            "usr/share/zoneinfo/America/Rio_Branco",
+            "usr/share/zoneinfo/America/Rosario",
+            "usr/share/zoneinfo/America/Santa_Isabel",
+            "usr/share/zoneinfo/America/Santarem",
+            "usr/share/zoneinfo/America/Santiago",
+            "usr/share/zoneinfo/America/Santo_Domingo",
+            "usr/share/zoneinfo/America/Sao_Paulo",
+            "usr/share/zoneinfo/America/Scoresbysund",
+            "usr/share/zoneinfo/America/Shiprock",
+            "usr/share/zoneinfo/America/Sitka",
+            "usr/share/zoneinfo/America/St_Barthelemy",
+            "usr/share/zoneinfo/America/St_Johns",
+            "usr/share/zoneinfo/America/St_Kitts",
+            "usr/share/zoneinfo/America/St_Lucia",
+            "usr/share/zoneinfo/America/St_Thomas",
+            "usr/share/zoneinfo/America/St_Vincent",
+            "usr/share/zoneinfo/America/Swift_Current",
+            "usr/share/zoneinfo/America/Tegucigalpa",
+            "usr/share/zoneinfo/America/Thule",
+            "usr/share/zoneinfo/America/Thunder_Bay",
+            "usr/share/zoneinfo/America/Tijuana",
+            "usr/share/zoneinfo/America/Toronto",
+            "usr/share/zoneinfo/America/Tortola",
+            "usr/share/zoneinfo/America/Vancouver",
+            "usr/share/zoneinfo/America/Virgin",
+            "usr/share/zoneinfo/America/Whitehorse",
+            "usr/share/zoneinfo/America/Winnipeg",
+            "usr/share/zoneinfo/America/Yakutat",
+            "usr/share/zoneinfo/America/Yellowknife",
+            "usr/share/zoneinfo/America/Argentina/Buenos_Aires",
+            "usr/share/zoneinfo/America/Argentina/Catamarca",
+            "usr/share/zoneinfo/America/Argentina/ComodRivadavia",
+            "usr/share/zoneinfo/America/Argentina/Cordoba",
+            "usr/share/zoneinfo/America/Argentina/Jujuy",
+            "usr/share/zoneinfo/America/Argentina/La_Rioja",
+            "usr/share/zoneinfo/America/Argentina/Mendoza",
+            "usr/share/zoneinfo/America/Argentina/Rio_Gallegos",
+            "usr/share/zoneinfo/America/Argentina/Salta",
+            "usr/share/zoneinfo/America/Argentina/San_Juan",
+            "usr/share/zoneinfo/America/Argentina/San_Luis",
+            "usr/share/zoneinfo/America/Argentina/Tucuman",
+            "usr/share/zoneinfo/America/Argentina/Ushuaia",
+            "usr/share/zoneinfo/America/Indiana/Indianapolis",
+            "usr/share/zoneinfo/America/Indiana/Knox",
+            "usr/share/zoneinfo/America/Indiana/Marengo",
+            "usr/share/zoneinfo/America/Indiana/Petersburg",
+            "usr/share/zoneinfo/America/Indiana/Tell_City",
+            "usr/share/zoneinfo/America/Indiana/Vevay",
+            "usr/share/zoneinfo/America/Indiana/Vincennes",
+            "usr/share/zoneinfo/America/Indiana/Winamac",
+            "usr/share/zoneinfo/America/Kentucky/Louisville",
+            "usr/share/zoneinfo/America/Kentucky/Monticello",
+            "usr/share/zoneinfo/America/North_Dakota/Beulah",
+            "usr/share/zoneinfo/America/North_Dakota/Center",
+            "usr/share/zoneinfo/America/North_Dakota/New_Salem",
+            "usr/share/zoneinfo/Antarctica/Casey",
+            "usr/share/zoneinfo/Antarctica/Davis",
+            "usr/share/zoneinfo/Antarctica/DumontDUrville",
+            "usr/share/zoneinfo/Antarctica/Macquarie",
+            "usr/share/zoneinfo/Antarctica/Mawson",
+            "usr/share/zoneinfo/Antarctica/McMurdo",
+            "usr/share/zoneinfo/Antarctica/Palmer",
+            "usr/share/zoneinfo/Antarctica/Rothera",
+            "usr/share/zoneinfo/Antarctica/South_Pole",
+            "usr/share/zoneinfo/Antarctica/Syowa",
+            "usr/share/zoneinfo/Antarctica/Troll",
+            "usr/share/zoneinfo/Antarctica/Vostok",
+            "usr/share/zoneinfo/Arctic/Longyearbyen",
+            "usr/share/zoneinfo/Asia/Aden",
+            "usr/share/zoneinfo/Asia/Almaty",
+            "usr/share/zoneinfo/Asia/Amman",
+            "usr/share/zoneinfo/Asia/Anadyr",
+            "usr/share/zoneinfo/Asia/Aqtau",
+            "usr/share/zoneinfo/Asia/Aqtobe",
+            "usr/share/zoneinfo/Asia/Ashgabat",
+            "usr/share/zoneinfo/Asia/Ashkhabad",
+            "usr/share/zoneinfo/Asia/Atyrau",
+            "usr/share/zoneinfo/Asia/Baghdad",
+            "usr/share/zoneinfo/Asia/Bahrain",
+            "usr/share/zoneinfo/Asia/Baku",
+            "usr/share/zoneinfo/Asia/Bangkok",
+            "usr/share/zoneinfo/Asia/Barnaul",
+            "usr/share/zoneinfo/Asia/Beirut",
+            "usr/share/zoneinfo/Asia/Bishkek",
+            "usr/share/zoneinfo/Asia/Brunei",
+            "usr/share/zoneinfo/Asia/Calcutta",
+            "usr/share/zoneinfo/Asia/Chita",
+            "usr/share/zoneinfo/Asia/Choibalsan",
+            "usr/share/zoneinfo/Asia/Chongqing",
+            "usr/share/zoneinfo/Asia/Chungking",
+            "usr/share/zoneinfo/Asia/Colombo",
+            "usr/share/zoneinfo/Asia/Dacca",
+            "usr/share/zoneinfo/Asia/Damascus",
+            "usr/share/zoneinfo/Asia/Dhaka",
+            "usr/share/zoneinfo/Asia/Dili",
+            "usr/share/zoneinfo/Asia/Dubai",
+            "usr/share/zoneinfo/Asia/Dushanbe",
+            "usr/share/zoneinfo/Asia/Famagusta",
+            "usr/share/zoneinfo/Asia/Gaza",
+            "usr/share/zoneinfo/Asia/Harbin",
+            "usr/share/zoneinfo/Asia/Hebron",
+            "usr/share/zoneinfo/Asia/Ho_Chi_Minh",
+            "usr/share/zoneinfo/Asia/Hong_Kong",
+            "usr/share/zoneinfo/Asia/Hovd",
+            "usr/share/zoneinfo/Asia/Irkutsk",
+            "usr/share/zoneinfo/Asia/Istanbul",
+            "usr/share/zoneinfo/Asia/Jakarta",
+            "usr/share/zoneinfo/Asia/Jayapura",
+            "usr/share/zoneinfo/Asia/Jerusalem",
+            "usr/share/zoneinfo/Asia/Kabul",
+            "usr/share/zoneinfo/Asia/Kamchatka",
+            "usr/share/zoneinfo/Asia/Karachi",
+            "usr/share/zoneinfo/Asia/Kashgar",
+            "usr/share/zoneinfo/Asia/Kathmandu",
+            "usr/share/zoneinfo/Asia/Katmandu",
+            "usr/share/zoneinfo/Asia/Khandyga",
+            "usr/share/zoneinfo/Asia/Kolkata",
+            "usr/share/zoneinfo/Asia/Krasnoyarsk",
+            "usr/share/zoneinfo/Asia/Kuala_Lumpur",
+            "usr/share/zoneinfo/Asia/Kuching",
+            "usr/share/zoneinfo/Asia/Kuwait",
+            "usr/share/zoneinfo/Asia/Macao",
+            "usr/share/zoneinfo/Asia/Macau",
+            "usr/share/zoneinfo/Asia/Magadan",
+            "usr/share/zoneinfo/Asia/Makassar",
+            "usr/share/zoneinfo/Asia/Manila",
+            "usr/share/zoneinfo/Asia/Muscat",
+            "usr/share/zoneinfo/Asia/Nicosia",
+            "usr/share/zoneinfo/Asia/Novokuznetsk",
+            "usr/share/zoneinfo/Asia/Novosibirsk",
+            "usr/share/zoneinfo/Asia/Omsk",
+            "usr/share/zoneinfo/Asia/Oral",
+            "usr/share/zoneinfo/Asia/Phnom_Penh",
+            "usr/share/zoneinfo/Asia/Pontianak",
+            "usr/share/zoneinfo/Asia/Pyongyang",
+            "usr/share/zoneinfo/Asia/Qatar",
+            "usr/share/zoneinfo/Asia/Qostanay",
+            "usr/share/zoneinfo/Asia/Qyzylorda",
+            "usr/share/zoneinfo/Asia/Rangoon",
+            "usr/share/zoneinfo/Asia/Riyadh",
+            "usr/share/zoneinfo/Asia/Saigon",
+            "usr/share/zoneinfo/Asia/Sakhalin",
+            "usr/share/zoneinfo/Asia/Samarkand",
+            "usr/share/zoneinfo/Asia/Seoul",
+            "usr/share/zoneinfo/Asia/Shanghai",
+            "usr/share/zoneinfo/Asia/Singapore",
+            "usr/share/zoneinfo/Asia/Srednekolymsk",
+            "usr/share/zoneinfo/Asia/Taipei",
+            "usr/share/zoneinfo/Asia/Tashkent",
+            "usr/share/zoneinfo/Asia/Tbilisi",
+            "usr/share/zoneinfo/Asia/Tehran",
+            "usr/share/zoneinfo/Asia/Tel_Aviv",
+            "usr/share/zoneinfo/Asia/Thimbu",
+            "usr/share/zoneinfo/Asia/Thimphu",
+            "usr/share/zoneinfo/Asia/Tokyo",
+            "usr/share/zoneinfo/Asia/Tomsk",
+            "usr/share/zoneinfo/Asia/Ujung_Pandang",
+            "usr/share/zoneinfo/Asia/Ulaanbaatar",
+            "usr/share/zoneinfo/Asia/Ulan_Bator",
+            "usr/share/zoneinfo/Asia/Urumqi",
+            "usr/share/zoneinfo/Asia/Ust-Nera",
+            "usr/share/zoneinfo/Asia/Vientiane",
+            "usr/share/zoneinfo/Asia/Vladivostok",
+            "usr/share/zoneinfo/Asia/Yakutsk",
+            "usr/share/zoneinfo/Asia/Yangon",
+            "usr/share/zoneinfo/Asia/Yekaterinburg",
+            "usr/share/zoneinfo/Asia/Yerevan",
+            "usr/share/zoneinfo/Atlantic/Azores",
+            "usr/share/zoneinfo/Atlantic/Bermuda",
+            "usr/share/zoneinfo/Atlantic/Canary",
+            "usr/share/zoneinfo/Atlantic/Cape_Verde",
+            "usr/share/zoneinfo/Atlantic/Faeroe",
+            "usr/share/zoneinfo/Atlantic/Faroe",
+            "usr/share/zoneinfo/Atlantic/Jan_Mayen",
+            "usr/share/zoneinfo/Atlantic/Madeira",
+            "usr/share/zoneinfo/Atlantic/Reykjavik",
+            "usr/share/zoneinfo/Atlantic/South_Georgia",
+            "usr/share/zoneinfo/Atlantic/St_Helena",
+            "usr/share/zoneinfo/Atlantic/Stanley",
+            "usr/share/zoneinfo/Australia/ACT",
+            "usr/share/zoneinfo/Australia/Adelaide",
+            "usr/share/zoneinfo/Australia/Brisbane",
+            "usr/share/zoneinfo/Australia/Broken_Hill",
+            "usr/share/zoneinfo/Australia/Canberra",
+            "usr/share/zoneinfo/Australia/Currie",
+            "usr/share/zoneinfo/Australia/Darwin",
+            "usr/share/zoneinfo/Australia/Eucla",
+            "usr/share/zoneinfo/Australia/Hobart",
+            "usr/share/zoneinfo/Australia/LHI",
+            "usr/share/zoneinfo/Australia/Lindeman",
+            "usr/share/zoneinfo/Australia/Lord_Howe",
+            "usr/share/zoneinfo/Australia/Melbourne",
+            "usr/share/zoneinfo/Australia/NSW",
+            "usr/share/zoneinfo/Australia/North",
+            "usr/share/zoneinfo/Australia/Perth",
+            "usr/share/zoneinfo/Australia/Queensland",
+            "usr/share/zoneinfo/Australia/South",
+            "usr/share/zoneinfo/Australia/Sydney",
+            "usr/share/zoneinfo/Australia/Tasmania",
+            "usr/share/zoneinfo/Australia/Victoria",
+            "usr/share/zoneinfo/Australia/West",
+            "usr/share/zoneinfo/Australia/Yancowinna",
+            "usr/share/zoneinfo/Brazil/Acre",
+            "usr/share/zoneinfo/Brazil/DeNoronha",
+            "usr/share/zoneinfo/Brazil/East",
+            "usr/share/zoneinfo/Brazil/West",
+            "usr/share/zoneinfo/Canada/Atlantic",
+            "usr/share/zoneinfo/Canada/Central",
+            "usr/share/zoneinfo/Canada/Eastern",
+            "usr/share/zoneinfo/Canada/Mountain",
+            "usr/share/zoneinfo/Canada/Newfoundland",
+            "usr/share/zoneinfo/Canada/Pacific",
+            "usr/share/zoneinfo/Canada/Saskatchewan",
+            "usr/share/zoneinfo/Canada/Yukon",
+            "usr/share/zoneinfo/Chile/Continental",
+            "usr/share/zoneinfo/Chile/EasterIsland",
+            "usr/share/zoneinfo/Etc/GMT",
+            "usr/share/zoneinfo/Etc/GMT+0",
+            "usr/share/zoneinfo/Etc/GMT+1",
+            "usr/share/zoneinfo/Etc/GMT+10",
+            "usr/share/zoneinfo/Etc/GMT+11",
+            "usr/share/zoneinfo/Etc/GMT+12",
+            "usr/share/zoneinfo/Etc/GMT+2",
+            "usr/share/zoneinfo/Etc/GMT+3",
+            "usr/share/zoneinfo/Etc/GMT+4",
+            "usr/share/zoneinfo/Etc/GMT+5",
+            "usr/share/zoneinfo/Etc/GMT+6",
+            "usr/share/zoneinfo/Etc/GMT+7",
+            "usr/share/zoneinfo/Etc/GMT+8",
+            "usr/share/zoneinfo/Etc/GMT+9",
+            "usr/share/zoneinfo/Etc/GMT-0",
+            "usr/share/zoneinfo/Etc/GMT-1",
+            "usr/share/zoneinfo/Etc/GMT-10",
+            "usr/share/zoneinfo/Etc/GMT-11",
+            "usr/share/zoneinfo/Etc/GMT-12",
+            "usr/share/zoneinfo/Etc/GMT-13",
+            "usr/share/zoneinfo/Etc/GMT-14",
+            "usr/share/zoneinfo/Etc/GMT-2",
+            "usr/share/zoneinfo/Etc/GMT-3",
+            "usr/share/zoneinfo/Etc/GMT-4",
+            "usr/share/zoneinfo/Etc/GMT-5",
+            "usr/share/zoneinfo/Etc/GMT-6",
+            "usr/share/zoneinfo/Etc/GMT-7",
+            "usr/share/zoneinfo/Etc/GMT-8",
+            "usr/share/zoneinfo/Etc/GMT-9",
+            "usr/share/zoneinfo/Etc/GMT0",
+            "usr/share/zoneinfo/Etc/Greenwich",
+            "usr/share/zoneinfo/Etc/UCT",
+            "usr/share/zoneinfo/Etc/UTC",
+            "usr/share/zoneinfo/Etc/Universal",
+            "usr/share/zoneinfo/Etc/Zulu",
+            "usr/share/zoneinfo/Europe/Amsterdam",
+            "usr/share/zoneinfo/Europe/Andorra",
+            "usr/share/zoneinfo/Europe/Astrakhan",
+            "usr/share/zoneinfo/Europe/Athens",
+            "usr/share/zoneinfo/Europe/Belfast",
+            "usr/share/zoneinfo/Europe/Belgrade",
+            "usr/share/zoneinfo/Europe/Berlin",
+            "usr/share/zoneinfo/Europe/Bratislava",
+            "usr/share/zoneinfo/Europe/Brussels",
+            "usr/share/zoneinfo/Europe/Bucharest",
+            "usr/share/zoneinfo/Europe/Budapest",
+            "usr/share/zoneinfo/Europe/Busingen",
+            "usr/share/zoneinfo/Europe/Chisinau",
+            "usr/share/zoneinfo/Europe/Copenhagen",
+            "usr/share/zoneinfo/Europe/Dublin",
+            "usr/share/zoneinfo/Europe/Gibraltar",
+            "usr/share/zoneinfo/Europe/Guernsey",
+            "usr/share/zoneinfo/Europe/Helsinki",
+            "usr/share/zoneinfo/Europe/Isle_of_Man",
+            "usr/share/zoneinfo/Europe/Istanbul",
+            "usr/share/zoneinfo/Europe/Jersey",
+            "usr/share/zoneinfo/Europe/Kaliningrad",
+            "usr/share/zoneinfo/Europe/Kiev",
+            "usr/share/zoneinfo/Europe/Kirov",
+            "usr/share/zoneinfo/Europe/Kyiv",
+            "usr/share/zoneinfo/Europe/Lisbon",
+            "usr/share/zoneinfo/Europe/Ljubljana",
+            "usr/share/zoneinfo/Europe/London",
+            "usr/share/zoneinfo/Europe/Luxembourg",
+            "usr/share/zoneinfo/Europe/Madrid",
+            "usr/share/zoneinfo/Europe/Malta",
+            "usr/share/zoneinfo/Europe/Mariehamn",
+            "usr/share/zoneinfo/Europe/Minsk",
+            "usr/share/zoneinfo/Europe/Monaco",
+            "usr/share/zoneinfo/Europe/Moscow",
+            "usr/share/zoneinfo/Europe/Nicosia",
+            "usr/share/zoneinfo/Europe/Oslo",
+            "usr/share/zoneinfo/Europe/Paris",
+            "usr/share/zoneinfo/Europe/Podgorica",
+            "usr/share/zoneinfo/Europe/Prague",
+            "usr/share/zoneinfo/Europe/Riga",
+            "usr/share/zoneinfo/Europe/Rome",
+            "usr/share/zoneinfo/Europe/Samara",
+            "usr/share/zoneinfo/Europe/San_Marino",
+            "usr/share/zoneinfo/Europe/Sarajevo",
+            "usr/share/zoneinfo/Europe/Saratov",
+            "usr/share/zoneinfo/Europe/Simferopol",
+            "usr/share/zoneinfo/Europe/Skopje",
+            "usr/share/zoneinfo/Europe/Sofia",
+            "usr/share/zoneinfo/Europe/Stockholm",
+            "usr/share/zoneinfo/Europe/Tallinn",
+            "usr/share/zoneinfo/Europe/Tirane",
+            "usr/share/zoneinfo/Europe/Tiraspol",
+            "usr/share/zoneinfo/Europe/Ulyanovsk",
+            "usr/share/zoneinfo/Europe/Uzhgorod",
+            "usr/share/zoneinfo/Europe/Vaduz",
+            "usr/share/zoneinfo/Europe/Vatican",
+            "usr/share/zoneinfo/Europe/Vienna",
+            "usr/share/zoneinfo/Europe/Vilnius",
+            "usr/share/zoneinfo/Europe/Volgograd",
+            "usr/share/zoneinfo/Europe/Warsaw",
+            "usr/share/zoneinfo/Europe/Zagreb",
+            "usr/share/zoneinfo/Europe/Zaporozhye",
+            "usr/share/zoneinfo/Europe/Zurich",
+            "usr/share/zoneinfo/Indian/Antananarivo",
+            "usr/share/zoneinfo/Indian/Chagos",
+            "usr/share/zoneinfo/Indian/Christmas",
+            "usr/share/zoneinfo/Indian/Cocos",
+            "usr/share/zoneinfo/Indian/Comoro",
+            "usr/share/zoneinfo/Indian/Kerguelen",
+            "usr/share/zoneinfo/Indian/Mahe",
+            "usr/share/zoneinfo/Indian/Maldives",
+            "usr/share/zoneinfo/Indian/Mauritius",
+            "usr/share/zoneinfo/Indian/Mayotte",
+            "usr/share/zoneinfo/Indian/Reunion",
+            "usr/share/zoneinfo/Mexico/BajaNorte",
+            "usr/share/zoneinfo/Mexico/BajaSur",
+            "usr/share/zoneinfo/Mexico/General",
+            "usr/share/zoneinfo/Pacific/Apia",
+            "usr/share/zoneinfo/Pacific/Auckland",
+            "usr/share/zoneinfo/Pacific/Bougainville",
+            "usr/share/zoneinfo/Pacific/Chatham",
+            "usr/share/zoneinfo/Pacific/Chuuk",
+            "usr/share/zoneinfo/Pacific/Easter",
+            "usr/share/zoneinfo/Pacific/Efate",
+            "usr/share/zoneinfo/Pacific/Enderbury",
+            "usr/share/zoneinfo/Pacific/Fakaofo",
+            "usr/share/zoneinfo/Pacific/Fiji",
+            "usr/share/zoneinfo/Pacific/Funafuti",
+            "usr/share/zoneinfo/Pacific/Galapagos",
+            "usr/share/zoneinfo/Pacific/Gambier",
+            "usr/share/zoneinfo/Pacific/Guadalcanal",
+            "usr/share/zoneinfo/Pacific/Guam",
+            "usr/share/zoneinfo/Pacific/Honolulu",
+            "usr/share/zoneinfo/Pacific/Johnston",
+            "usr/share/zoneinfo/Pacific/Kanton",
+            "usr/share/zoneinfo/Pacific/Kiritimati",
+            "usr/share/zoneinfo/Pacific/Kosrae",
+            "usr/share/zoneinfo/Pacific/Kwajalein",
+            "usr/share/zoneinfo/Pacific/Majuro",
+            "usr/share/zoneinfo/Pacific/Marquesas",
+            "usr/share/zoneinfo/Pacific/Midway",
+            "usr/share/zoneinfo/Pacific/Nauru",
+            "usr/share/zoneinfo/Pacific/Niue",
+            "usr/share/zoneinfo/Pacific/Norfolk",
+            "usr/share/zoneinfo/Pacific/Noumea",
+            "usr/share/zoneinfo/Pacific/Pago_Pago",
+            "usr/share/zoneinfo/Pacific/Palau",
+            "usr/share/zoneinfo/Pacific/Pitcairn",
+            "usr/share/zoneinfo/Pacific/Pohnpei",
+            "usr/share/zoneinfo/Pacific/Ponape",
+            "usr/share/zoneinfo/Pacific/Port_Moresby",
+            "usr/share/zoneinfo/Pacific/Rarotonga",
+            "usr/share/zoneinfo/Pacific/Saipan",
+            "usr/share/zoneinfo/Pacific/Samoa",
+            "usr/share/zoneinfo/Pacific/Tahiti",
+            "usr/share/zoneinfo/Pacific/Tarawa",
+            "usr/share/zoneinfo/Pacific/Tongatapu",
+            "usr/share/zoneinfo/Pacific/Truk",
+            "usr/share/zoneinfo/Pacific/Wake",
+            "usr/share/zoneinfo/Pacific/Wallis",
+            "usr/share/zoneinfo/Pacific/Yap",
+            "usr/share/zoneinfo/US/Alaska",
+            "usr/share/zoneinfo/US/Aleutian",
+            "usr/share/zoneinfo/US/Arizona",
+            "usr/share/zoneinfo/US/Central",
+            "usr/share/zoneinfo/US/East-Indiana",
+            "usr/share/zoneinfo/US/Eastern",
+            "usr/share/zoneinfo/US/Hawaii",
+            "usr/share/zoneinfo/US/Indiana-Starke",
+            "usr/share/zoneinfo/US/Michigan",
+            "usr/share/zoneinfo/US/Mountain",
+            "usr/share/zoneinfo/US/Pacific",
+            "usr/share/zoneinfo/US/Samoa"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "xz-libs@5.8.4-r0",
+          "Name": "xz-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/xz-libs@5.8.4-r0?arch=aarch64\u0026distro=3.24.2",
+            "UID": "30d13be0366488e3"
+          },
+          "Version": "5.8.4-r0",
+          "Arch": "aarch64",
+          "SrcName": "xz",
+          "SrcVersion": "5.8.4-r0",
+          "Licenses": [
+            "GPL-2.0-or-later",
+            "0BSD",
+            "Public-Domain",
+            "LGPL-2.1-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:15e7acfae870cac0fdcd359855538d5d66f14020",
+          "InstalledFiles": [
+            "usr/lib/liblzma.so.5",
+            "usr/lib/liblzma.so.5.8.4"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "zlib@1.3.2-r1",
+          "Name": "zlib",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/zlib@1.3.2-r1?arch=aarch64\u0026distro=3.24.2",
+            "UID": "d5fa52fdcd14f177"
+          },
+          "Version": "1.3.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "zlib",
+          "SrcVersion": "1.3.2-r1",
+          "Licenses": [
+            "Zlib"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:8cfdc97165598834c9e85a2f84b0a1f0cf10b752",
+          "InstalledFiles": [
+            "usr/lib/libz.so.1",
+            "usr/lib/libz.so.1.3.2"
+          ],
+          "AnalyzedBy": "apk"
+        },
+        {
+          "ID": "zstd-libs@1.5.7-r2",
+          "Name": "zstd-libs",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/zstd-libs@1.5.7-r2?arch=aarch64\u0026distro=3.24.2",
+            "UID": "69b585b92c588af4"
+          },
+          "Version": "1.5.7-r2",
+          "Arch": "aarch64",
+          "SrcName": "zstd",
+          "SrcVersion": "1.5.7-r2",
+          "Licenses": [
+            "BSD-3-Clause",
+            "GPL-2.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.6-r3"
+          ],
+          "Layer": {
+            "Digest": "sha256:06cd1b3990ab29986b1ce071457e3c942ac5b3c90043fc9ad5e4b6fc97996724",
+            "DiffID": "sha256:40fbbc4fed42cd9321e4cc7b2f29fbf2033469902c7cf9c4a5dcd405c1d30da2"
+          },
+          "Digest": "sha1:52b18513a07bf2bb0d0634688681f7edce36b9ca",
+          "InstalledFiles": [
+            "usr/lib/libzstd.so.1",
+            "usr/lib/libzstd.so.1.5.7"
+          ],
+          "AnalyzedBy": "apk"
+        }
+      ]
+    }
+  ]
+}

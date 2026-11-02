@@ -1,0 +1,145 @@
+{
+  "created_at": "2026-10-30T15:13:48.612471+00:00",
+  "version": "2.0.4 (unreleased)",
+  "platform": "linux/amd64",
+  "image_repository": "production-phar",
+  "phar_read_execute": "passed in all six variants",
+  "phar_readonly": "default retained; only fixture-creation subprocess uses -d phar.readonly=0",
+  "checks": [
+    "static/Python checks",
+    "six image contracts and Phar functional checks",
+    "six PHP-FPM smoke tests",
+    "HTTP including direct .phar denial",
+    "six size budgets"
+  ],
+  "images": [
+    {
+      "variant": "generic",
+      "php": "8.3",
+      "image_id": "sha256:e8df79e9ea9f1ca93c3e271d9627b145fc8747e190d476be1e93a600e01763fc",
+      "config_digest": "sha256:d257f73a046c6d47ec97a6519dedfb49208590e1320f0b8c7e9daf9ced55ca9c",
+      "package": "php83-phar",
+      "package_version": "8.3.36-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    },
+    {
+      "variant": "generic",
+      "php": "8.4",
+      "image_id": "sha256:d94045de98991ff26770d47ebf47667dd2382c84a1a8f2e69a86d5dd630e819c",
+      "config_digest": "sha256:bb4a3500dfa7063ccfb87a1d7f5a10dea08875e97741b884462010521c1bbddf",
+      "package": "php84-phar",
+      "package_version": "8.4.27-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    },
+    {
+      "variant": "generic",
+      "php": "8.5",
+      "image_id": "sha256:a0c50be0a0720d69e49b8df0bce348790464a72504c3f3de01650ec17cfc8812",
+      "config_digest": "sha256:bb622ec6dc3dfb779cbbd384d217f86d289fbc334363960ec7879abbd64ca467",
+      "package": "php85-phar",
+      "package_version": "8.5.12-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    },
+    {
+      "variant": "laravel",
+      "php": "8.3",
+      "image_id": "sha256:e7fd24cb6a834cdcee0cb1994eacb97ef32aab2955ca76b949dc3e3cf0a605d2",
+      "config_digest": "sha256:84afdee9dbe30667f16dae77a7cae32a48a37fce4d79b18ae8ce50b600a322e3",
+      "package": "php83-phar",
+      "package_version": "8.3.36-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    },
+    {
+      "variant": "laravel",
+      "php": "8.4",
+      "image_id": "sha256:e43cfb3abd21648b7106ab64d5b26369f3bf076737a4d09d9a4b090020bd2a88",
+      "config_digest": "sha256:3d18a1e6500583b53cb5db85dc635126139fdeca9bb3fe84d99e4be3f01fef99",
+      "package": "php84-phar",
+      "package_version": "8.4.27-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    },
+    {
+      "variant": "laravel",
+      "php": "8.5",
+      "image_id": "sha256:48127f88ae5a9c817e2a70aa98678e897bfa51aaeaff67c32c3fbd8641c8adbd",
+      "config_digest": "sha256:025cdcea91d819a6fe5bd0f4b68b83f1cac663bfe93464d1e46b4fe6dda240cd",
+      "package": "php85-phar",
+      "package_version": "8.5.12-r0",
+      "reported_vulnerabilities": 0,
+      "database": {
+        "Version": 2,
+        "NextUpdate": "2026-10-31T13:06:28.139592603Z",
+        "UpdatedAt": "2026-10-30T13:06:28.139593044Z",
+        "DownloadedAt": "2026-10-30T15:10:11.354088625Z"
+      }
+    }
+  ],
+  "size_budgets": [
+    {
+      "image": "production-phar:2.0.4-php8.3",
+      "compressed_bytes": 17586040,
+      "budget": 20000000
+    },
+    {
+      "image": "production-phar:2.0.4-php8.4",
+      "compressed_bytes": 17974467,
+      "budget": 20000000
+    },
+    {
+      "image": "production-phar:2.0.4-php8.5",
+      "compressed_bytes": 20469608,
+      "budget": 23000000
+    },
+    {
+      "image": "production-phar:2.0.4-laravel-php8.3",
+      "compressed_bytes": 23608301,
+      "budget": 28000000
+    },
+    {
+      "image": "production-phar:2.0.4-laravel-php8.4",
+      "compressed_bytes": 24702866,
+      "budget": 29000000
+    },
+    {
+      "image": "production-phar:2.0.4-laravel-php8.5",
+      "compressed_bytes": 26704068,
+      "budget": 32000000
+    }
+  ],
+  "source_sha256": {
+    "Dockerfile": "3c7ac753f3c0f3f98d220fb60a6f9bb95571bddb7eab08eda71c893eaba46d6a",
+    "tests/image-contract.sh": "d57838096ced655a94a27fbcd0c7d180ba7ed6ad6ef944a927975e70168a2598",
+    "tests/phar.php": "66af3740a7f96d25f53df54c499ce1a2f6132280421ae9d825d714ce9c5c942f"
+  },
+  "pending": "native ARM64 and release gates before publication"
+}
