@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
   pull_request:
   workflow_dispatch:
 
@@ -17,6 +17,7 @@ jobs:
   runtime-tests:
     name: Runtime tests
     runs-on: ubuntu-latest
+    timeout-minutes: 120
 
     steps:
       - name: Checkout
@@ -27,10 +28,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
 
-      - name: Run full test suite
-        run: ./tests/test-all.sh
+      - name: Build fresh images with the tested revision
+        id: build
+        run: |
+          VERSION="$(cat VERSION)" VCS_REF="$(git rev-parse HEAD)" docker buildx bake --pull --no-cache --load
+
+      - name: Run intensive tests and real PHP/Laravel applications
+        run: |
+          python3 scripts/validate-candidate.py --platform linux/amd64 \
+            --revision "$(git rev-parse HEAD)"
 
       - name: Inventory and scan tested images
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: python3 scripts/check-candidates.py --repository production --platform linux/amd64
 
       - name: Preserve scan evidence
@@ -63,3 +72,25 @@ jobs:
 
       - name: Build amd64 and arm64 variants
         run: docker buildx bake multiarch
+
+  release:
+    name: Request release after main passes
+    needs: [runtime-tests, multiarch-build]
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: production-release-request
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Tag a new version and explicitly dispatch its release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ github.sha }}
+        run: python3 scripts/release-automation.py start --revision "${REVISION}"

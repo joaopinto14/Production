@@ -41,8 +41,9 @@ base requires an explicit Dockerfile change and review.
 Dependabot checks Docker dependencies weekly on Mondays at 04:00 UTC and
 proposes digest/patch updates. Minor and major Alpine changes are excluded from
 automatic proposals: a new branch requires a deliberate review of packages,
-extension parity, architecture support and this policy. Pull requests affecting
-the runtime run the maintenance candidates workflow as well as normal CI.
+extension parity, architecture support and this policy. Pull requests run CI;
+release candidates additionally receive native amd64/arm64 validation before
+publication.
 Dependabot and scheduled workflows operate on the repository's default branch;
 these configurations become operational once merged there. No auto-merge is set.
 
@@ -51,31 +52,42 @@ mutable. Each candidate therefore retains the actual package inventory and image
 ID, together with the base index, resolved base manifest and scanner identity.
 Independent rebuilds are not claimed to be byte-for-byte reproducible.
 
-## Daily maintenance candidates
+## Monthly package refresh and candidate validation
 
-`.github/workflows/maintenance.yml` runs daily at **05:23 UTC**, manually through
-`workflow_dispatch`, and for relevant pull requests. Native amd64 and arm64 jobs:
+`.github/workflows/monthly.yml` is the only scheduled package-refresh workflow.
+It runs on day **1 at 00:00 Europe/Lisbon**, or manually from `main`. It prepares
+one patch-version pull request, runs CI and requests a protected merge. Main CI
+then requests Release, where publication requires all of the following:
 
-1. Build all six images with `--pull --no-cache`, using the pinned base and fresh
-   APK indexes/packages, under the **local** repository `production-candidate`.
-2. Run `tests/test-all.sh` against those same local images without rebuilding.
-3. Verify that the pinned base is an index containing both supported architectures.
-4. Read APK inventories without starting image contents, confirm the candidate's
-   base layers, and scan the inventoried image IDs using a digest-pinned Trivy.
-5. Preserve inventories and complete JSON vulnerability/package reports as GitHub
-   artifacts for 30 days, including available evidence after a failed check.
+1. Build all six variants with `--pull --no-cache`, using the pinned Alpine base
+   and the available APK package updates. Keep the supported Alpine/PHP branches
+   and variant contracts; branch migrations require a separate reviewed change.
+2. Save the staging digests, package inventories, SBOMs and provenance.
+3. Pull those exact candidates on native amd64 and arm64 runners, scan them and
+   run the full runtime, real PHP/Laravel application and restart suites without
+   rebuilding the images under test.
+4. Require complete successful evidence for both architectures, verify signatures
+   and promote the same validated indexes to new version tags and eligible aliases.
+5. Preserve release evidence for 90 days in Actions and attach it to the GitHub
+   Release. CI scan evidence is retained for 30 days.
+
+There is no separate daily maintenance workflow. Failed builds, tests or scans
+stop publication of the candidates; existing versioned images remain available.
+Packages are updated when building new images, not inside running containers.
+Tests cover the documented image contract, but cannot guarantee compatibility
+with every downstream application. Test that application against the new version
+before rollout and retain its previous version or digest for rollback.
 
 The scanner runs outside the runtime image and receives saved image archives,
-not the Docker socket. The workflow has read-only repository permissions, no
-registry login and no push step. It does not publish release tags or aliases.
-Runtime test failures still allow inventory/scanning when the build succeeded;
-inventory/scanner failures remain failures, not empty successful scans.
+not the Docker socket. Inventory/scanner failures remain failures, not empty
+successful scans. See the [release runbook](docs/RELEASING.md#monthly-package-refresh)
+for setup, publication and recovery.
 
 The candidate vulnerability gate rejects **HIGH/CRITICAL findings with an
 available fixed version**, mismatched/incomplete scan reports, incomplete APK package/version sets, stale scan/database evidence and an OS reported as end-of-support. Other findings, including those
 without a fix, remain in the complete reports for review; passing is not a claim
 of zero vulnerabilities. There are currently no automatic allowlists or ignore
-files in this workflow. Review scanner/DB failures and every failed scheduled run.
+files in this validation. Review scanner/DB failures and every failed scheduled run.
 Review the pinned Trivy version/digest during the monthly maintenance review too.
 
 To reproduce on a native supported host without touching existing local release
@@ -116,7 +128,15 @@ Registry updates across multiple tags cannot be atomic. If a registry/network fa
 
 For notes-only repair, dispatch **Release** with the existing tag and `repair_notes=true`. This reads its saved package report and rewrites notes without building, signing or promoting images; it does not publish an unfinished draft. Missing evidence fails the repair instead of inventing a report. Artifacts are retained for 90 days in Actions and attached to the draft/public GitHub Release before promotion. Keep that release evidence for long-term recovery.
 
-`release` is the restricted GitHub deployment environment for registry credentials. Allow only `v*` tags and the `main` dispatch branch. Keep Docker Hub credentials scoped to this repository; only publishing needs GitHub contents-write and signing needs OIDC. Configure main to require **Runtime tests** and **Multi-architecture build**, including strict/up-to-date status checks. `scripts/configure-repository.py` applies and verifies these protections while preserving existing branch-review rules. Existing workflows in older Git tags are not changed retroactively.
+`release` is the restricted GitHub deployment environment for registry credentials. Allow only `v*` tags and the `main` dispatch branch. Keep Docker Hub credentials scoped to this repository; signing needs OIDC. GitHub write permissions are limited to release requests, monthly PR preparation and publishing jobs. Configure main to require pull requests, **Runtime tests** and **Multi-architecture build**, including strict/up-to-date status checks. `scripts/configure-repository.py` applies and verifies these protections and monthly PR permissions while preserving existing branch-review rules. Existing workflows in older Git tags are not changed retroactively.
+
+Monthly package refreshes are scheduled for day 1 at 00:00 Europe/Lisbon, following
+Portugal's summer/winter time automatically. They prepare a new
+patch release through a tested PR, request main CI and use the same native release
+validation gates before publishing. Published version tags are never rebuilt in
+place; only eligible stable aliases move. Human review/environment requirements
+can hold a monthly release, and failed tests retain the previous public images.
+See [monthly refresh setup and recovery](docs/RELEASING.md#monthly-package-refresh).
 
 After publication, verify version/alias digests, both architecture manifests, signatures and attached package/scan reports. Do not claim an upstream CVE is fixed from a version comparison alone.
 

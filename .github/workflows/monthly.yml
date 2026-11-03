@@ -1,0 +1,34 @@
+name: Monthly package refresh
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+      timezone: Europe/Lisbon
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-monthly-refresh
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Prepare and test the monthly patch release
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Prepare patch, await CI, merge through protections and request main CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/release-automation.py monthly --timeout 6600

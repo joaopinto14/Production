@@ -43,6 +43,27 @@ def initial_protection(protection, status):
     return result
 
 
+def automation_settings(root, apply):
+    repository = api(root)
+    if repository.get("default_branch") != "main":
+        raise ValueError("Monthly schedules require main to be the default branch")
+    if not repository.get("allow_squash_merge"):
+        if not apply:
+            raise ValueError("Monthly patch pull requests require squash merging to be enabled")
+        api(root, "PATCH", dict(allow_squash_merge=True))
+    path = root + "/actions/permissions/workflow"
+    settings = api(path)
+    if not settings.get("can_approve_pull_request_reviews"):
+        if not apply:
+            raise ValueError("Enable Actions > General > Allow GitHub Actions to create and approve pull requests")
+        api(path, "PUT", dict(default_workflow_permissions=settings["default_workflow_permissions"],
+                              can_approve_pull_request_reviews=True))
+    verified = api(path)
+    if not verified.get("can_approve_pull_request_reviews"):
+        raise RuntimeError("GitHub did not confirm monthly PR creation permissions after the update")
+    return verified
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", default="joaopinto14/Production")
@@ -50,6 +71,7 @@ def main():
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     root = f"repos/{args.repository}"
+    workflow_permissions = automation_settings(root, args.apply)
     protection_path = root + "/branches/main/protection"
     protection = api(protection_path)
     status = protection.get("required_status_checks") or {}
@@ -60,6 +82,18 @@ def main():
         checks.setdefault(context, -1)
     checks.update({name: 15368 for name in required})  # Verified GitHub Actions App.
     configured = status.get("strict") is True and all(current_checks.get(name) == 15368 for name in required)
+    if protection.get("required_pull_request_reviews") is None:
+        if not args.apply:
+            raise ValueError("main must require a pull request before merging")
+        payload = initial_protection(protection, dict(strict=True, checks=[
+            dict(context=name, app_id=app) for name, app in sorted(checks.items())]))
+        # Zero required approvals permits tested monthly PRs to merge unattended.
+        # Existing review requirements are preserved rather than weakened.
+        payload["required_pull_request_reviews"] = dict(required_approving_review_count=0,
+                                                        dismiss_stale_reviews=True,
+                                                        require_code_owner_reviews=False)
+        api(protection_path, "PUT", payload)
+        configured = True
     if not configured:
         if not args.apply:
             raise ValueError("main must require Runtime tests and Multi-architecture build from GitHub Actions, strict=true")
@@ -89,13 +123,14 @@ def main():
             raise ValueError(f"Missing release deployment ref: {kind} {name}")
         api(environment_path + "/deployment-branch-policies", "POST", dict(name=name, type=kind))
     evidence = dict(branch=api(protection_path), environment=api(environment_path),
+                    workflow_permissions=workflow_permissions,
                     deployment_refs=api(environment_path + "/deployment-branch-policies"))
     final = evidence["branch"]["required_status_checks"]
     assert final["strict"] and required <= {item["context"] for item in final["checks"]}
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(evidence, indent=2) + "\n")
-    print("Repository protections verified: required GitHub Actions checks, strict status policy, release refs main/v*.")
+    print("Repository protections verified: required PRs/checks, strict status policy, monthly PR permissions, release refs main/v*.")
 
 
 if __name__ == "__main__":

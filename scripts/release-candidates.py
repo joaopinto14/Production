@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build resumable staging tags once, then save the six immutable index digests."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -12,14 +13,15 @@ TAGS = runpy.run_path(str(Path(__file__).with_name("check-release-tags.py")))
 
 def digest(reference):
     result = subprocess.run(["docker", "buildx", "imagetools", "inspect", reference,
-                             "--format", "{{json .Manifest}}"], capture_output=True, text=True)
+                             "--raw"], capture_output=True)
     if result.returncode:
-        error = result.stderr.strip()
+        error = result.stderr.decode().strip()
         if ("manifest unknown" in error.lower() or "no such manifest" in error.lower()
                 or error.endswith(f"{reference}: not found")):
             return None
         raise RuntimeError(f"Cannot inspect {reference}: {error}")
-    value = json.loads(result.stdout)["digest"]
+    json.loads(result.stdout)  # Invalid/incomplete registry responses must fail.
+    value = "sha256:" + hashlib.sha256(result.stdout).hexdigest()
     if re.fullmatch(r"sha256:[0-9a-f]{64}", value) is None:
         raise ValueError("Invalid registry digest")
     return value

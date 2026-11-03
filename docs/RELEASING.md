@@ -11,13 +11,89 @@ promotion. Do not describe 2.0.4 as published until the workflow has completed.
    defaults, test defaults, changelog and `RELEASE.md` consistent. Keep the
    changelog entry marked Unreleased until the publication date is known.
 2. Run the static checks and review runtime, release-policy and registry tests.
-   CI must pass on the reviewed commit. Merge into `main` before tagging.
+   Pushes to `dev`, pull requests and `main` run intensive CI, including real
+   PHP/Laravel applications, restart tests, scans and multi-architecture builds.
+   Require the checks before merging the reviewed pull request into `main`.
 3. Confirm that the `release` GitHub environment permits `v*` tags and dispatch
    from `main`, contains the scoped `DOCKERHUB_TOKEN`, and has the intended
-   reviewers. Main must require Runtime tests and Multi-architecture build.
+   reviewers. Main must require pull requests, Runtime tests and
+   Multi-architecture build, with strict/up-to-date checks.
 4. Confirm access to native amd64 and arm64 runners, Docker Hub, the vulnerability
    database, GitHub OIDC and Sigstore. `scripts/configure-repository.py` is an
    administrative tool: review its requested protections before applying it.
+
+## Automatic releases after main CI
+
+After both required main CI jobs succeed, the release-request job creates the
+stable tag matching `VERSION` and explicitly dispatches Release from `main`.
+Keep the version defaults, `RELEASE.md`, README and changelog consistent in the
+pull request. Already published versions are skipped, so documentation-only
+merges do not rebuild or overwrite their images. A superseded main revision
+cannot request a release; its replacement must pass its own CI.
+
+The release source remains the exact tested/tagged commit. Existing conflicting
+tags stop automation. A failed release can resume only with the original tag and
+candidate digests; a later commit under the same VERSION cannot move that tag.
+Release notes combine the curated `RELEASE.md`, the Git source diff/commits, and
+the exact per-image/per-architecture package comparison. The comparison starts
+from the preceding **published** stable GitHub Release, excluding drafts and
+prereleases. Source comparison data is attached as `release-changes.md/.json`.
+
+## Monthly package refresh
+
+`monthly.yml` runs on day **1 at 00:00 Europe/Lisbon**, following Portugal's summer
+and winter time automatically, or manually from `main`. The monthly release period
+also uses Lisbon time, so summer midnight selects the new month even while UTC
+is still on the previous day. Merge these workflow changes into the default
+`main` branch to activate scheduling. GitHub may delay a scheduled run; this is a
+calendar schedule rather than a guarantee that packages are never over a month
+old. Failed validation retains the previous public version.
+
+This is the only scheduled package-refresh workflow; there is no separate daily
+maintenance workflow. Keep `ci.yml` and `release.yml`: the monthly workflow uses
+them to validate and publish the refreshed images. Package updates stay within
+the pinned Alpine branch and selected PHP branches; changing those branches
+requires a separate reviewed update. Packages are never upgraded at container
+startup.
+
+The monthly workflow:
+
+1. Requires the current main VERSION to be the latest published stable release.
+2. Creates one `maintenance/monthly-YYYY-MM` branch and pull request, increments
+   only the patch version, synchronizes build/test/documentation defaults, and
+   writes monthly release notes/changelog metadata.
+3. Explicitly dispatches CI for that branch and waits for a new successful run
+   of the exact commit. CI performs fresh, no-cache builds and intensive tests.
+4. Requests a squash merge through normal branch protections, with the tested
+   head SHA. It neither approves itself nor uses an administrator bypass.
+5. Explicitly requests main CI after merging. Successful main CI requests Release;
+   Release rebuilds once into staging, scans/tests exact digests on native amd64
+   and ARM64, signs, and only then moves version tags and eligible stable aliases.
+
+The workflow uses `GITHUB_TOKEN`; no additional personal access token is needed.
+Enable **Settings → Actions → General → Allow GitHub Actions to create and approve
+pull requests**, and allow squash merging. Existing required human reviews and
+release-environment approvals still apply. For unattended monthly releases,
+configure zero required human approvals while retaining required PRs and checks.
+`scripts/configure-repository.py` verifies these settings; `--apply` can enable
+missing settings without lowering existing review requirements.
+
+Repeated runs in the same month reuse the existing PR or resume main CI after a
+merge; they do not create another patch or overwrite version tags. Failed CI,
+changed PR heads, protected merges, stale main checkouts and unpublished current
+versions stop the process. Inspect the failed run/PR and rerun after resolving
+the cause. If main moved since the monthly branch was created, update/review the
+PR and rerun its checks before merging. Do not force a merge to bypass checks.
+
+For example, a successful refresh publishes `2.0.5-php8.5` and moves `php8.5` and
+`latest` to it; `2.0.4-php8.5` remains unchanged. Existing application containers
+need an image pull and recreation to consume the update. Before rollout, test
+the application against the new version and retain the previous version or
+digest for rollback. Passing the image suites reduces regression risk but does
+not guarantee compatibility with every application.
+
+References: [GitHub workflow events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows),
+[Actions repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository).
 
 For a local preparation run, use a separate image namespace:
 
@@ -115,6 +191,18 @@ evidence and promotion journal from the failed run before retrying.
 
 - Rerun failed jobs to reuse the staged indexes. Existing version tags with the
   same digest are accepted; a conflicting version tag stops promotion.
+- Signature verification retries only registry discovery errors reporting
+  `no signatures found`, with six attempts and bounded delays. Every attempt
+  requires the same digest, certificate identity and issuer. Identity, certificate
+  and claim failures still stop immediately; missing signatures also fail after
+  the retry limit. Rerun artifacts replace earlier files with the same name so
+  the preserved evidence describes the latest attempt.
+- Manifest-only checks use raw index bytes to avoid loading child configurations
+  and attestations repeatedly. Image configuration, SPDX and SLSA are read together.
+  After promotion, fresh pre-signing artifact contents may be reused only for
+  identical immutable digests and release identity; every final tag is still read
+  from the registry and compared with its expected digest. This reduces registry
+  requests without accepting different or unverified artifacts.
 - If staging tags are missing after a partial promotion, recover the saved
   candidate digests/tags. Do not rebuild with mutable APK repositories under an
   already partly published version.
@@ -124,6 +212,13 @@ evidence and promotion journal from the failed run before retrying.
   `repair_notes=true`. This does not promote images or publish an unfinished draft.
 - Registry conflicts require investigation or a new patch version. Do not delete
   or overwrite an immutable version tag to force a green run.
+
+The candidate/publishing jobs load release tooling from the workflow's exact
+commit SHA in a separate checkout. The image source remains the selected Git tag,
+with its original revision and staging digests. This lets a reviewed workflow fix
+on `main` recover an existing release through manual dispatch without rewriting
+its tag or rebuilding its images. Fresh native validation is still required in
+that new run; the publishing identity is then `@refs/heads/main`.
 
 ## Roll back an application
 
