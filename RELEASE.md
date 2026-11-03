@@ -28,7 +28,7 @@ Staging artifacts are built once with SBOM/provenance. Native amd64 and arm64 jo
 
 Package comparison with the previous stable release is prepared before public tags change. The publishing job signs and verifies the tested indexes using keyless Cosign and saves evidence to a draft GitHub Release. It copies those same indexes to version tags, then stable aliases. Existing version tags can only be reused when their digest matches; conflicts fail before promotion. A failed partial promotion can be rerun, and notes can be repaired independently without building or moving images. See [SUPPORT.md](SUPPORT.md#publishing-a-maintenance-correction).
 
-All workflow actions are pinned by complete commit SHA. Validation jobs have read-only repository permissions, checkout credentials are not persisted, and only publishing/signing jobs receive the required write/OIDC permissions. Monthly package refreshes use CI and native amd64/arm64 release validation before publication; weekly dependency update proposals keep base and action changes visible. The separate daily maintenance workflow has been removed.
+All workflow actions are pinned by complete commit SHA. Validation jobs have read-only repository permissions, checkout credentials are not persisted, and only publishing/signing jobs receive the required write/OIDC permissions. Monthly package refreshes use CI and native amd64/arm64 release validation before publication. Base digests and action references are updated through reviewed pull requests. The separate daily maintenance workflow and Dependabot configuration have been removed.
 
 ## Package evidence and publication
 

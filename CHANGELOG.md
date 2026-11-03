@@ -16,7 +16,8 @@ All notable changes to Production are documented in this file.
 - Retain runtime suite logs/results and scanned image identities; reject incomplete, stale or failed runtime evidence before promotion.
 - Verify registry platforms, release identity, populated SPDX SBOMs and SLSA provenance before signing and after promotion; verify final version/alias digests before publishing the GitHub Release.
 - Add release verification/recovery/rollback instructions and a private vulnerability reporting policy.
-- Pin Alpine 3.24 to its official multi-architecture image index and add weekly Dependabot proposals for base digest/patch updates.
+- Pin Alpine 3.24 to its official multi-architecture image index; update base references through reviewed pull requests.
+- Remove the Dependabot configuration; retain monthly package refreshes through CI and Release.
 - Consolidate scheduled package refreshes in the monthly workflow; remove the separate daily maintenance workflow while retaining CI and exact-artifact native amd64/arm64 release tests, APK inventories and digest-pinned Trivy scans before publication.
 - Reject fixable HIGH/CRITICAL candidate findings and incomplete scans; preserve evidence as workflow artifacts without publishing candidates.
 - Document PHP/Alpine support, community-repository limits, updates and end-of-support handling in `SUPPORT.md`.
@@ -32,7 +33,7 @@ All notable changes to Production are documented in this file.
 - Allowlist runtime build-context files, reject malformed PHP build versions and correct hardened mount ownership/capacity examples.
 - Check each save/compression stage in size measurements and reject partial/stale vulnerability evidence.
 - Build staging artifacts once; scan/test exact digests on native amd64/arm64, prepare package reports before promotion, sign/verify with Cosign, and recover matching partial promotions without rebuilding. Add independent release-note repair.
-- Pin all GitHub Actions by full commit SHA, update them through Dependabot and scope publishing permissions to their jobs.
+- Pin all GitHub Actions by full commit SHA, update references through reviewed pull requests and scope publishing permissions to their jobs.
 
 ### Fixed
 

@@ -30,7 +30,7 @@ following: upstream support, maintained Alpine packages for the complete variant
 availability on both architectures, and passing runtime/security validation.
 An upstream-supported PHP version is not sufficient by itself.
 
-## Base pin and update proposals
+## Base pin and reviewed updates
 
 `Dockerfile` uses a literal `alpine:3.24@sha256:...` reference to the official
 multi-architecture image index. The index pin selects the appropriate child
@@ -38,14 +38,12 @@ manifest for each architecture and prevents the base changing silently.
 The old floating `ALPINE_VERSION` build argument is no longer used; a different
 base requires an explicit Dockerfile change and review.
 
-Dependabot checks Docker dependencies weekly on Mondays at 04:00 UTC and
-proposes digest/patch updates. Minor and major Alpine changes are excluded from
-automatic proposals: a new branch requires a deliberate review of packages,
+Base digest/patch references and GitHub Actions commit pins are updated through
+reviewed pull requests. A new Alpine branch requires a review of packages,
 extension parity, architecture support and this policy. Pull requests run CI;
 release candidates additionally receive native amd64/arm64 validation before
-publication.
-Dependabot and scheduled workflows operate on the repository's default branch;
-these configurations become operational once merged there. No auto-merge is set.
+publication. The monthly workflow refreshes APK packages using the pinned base;
+it does not change the base digest or GitHub Actions references automatically.
 
 The base pin does **not** freeze `apk upgrade` or `apk add`. Repositories remain
 mutable. Each candidate therefore retains the actual package inventory and image

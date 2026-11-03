@@ -27,7 +27,7 @@ promover os mesmos manifests, com recuperação de falhas parciais.
 No GitHub, main já exige **Runtime tests** e **Multi-architecture build** com
 checks atualizados, preservando as regras de revisão e administradores existentes.
 O ambiente release está limitado à branch main e tags v*. A ativação dos workflows
-novos/fixados e das atualizações Dependabot depende do merge na branch predefinida.
+novos/fixados depende do merge na branch predefinida.
 Nenhum resultado local substitui os gates da publicação nem os scans dos digests
 finais. As propostas P2 de redução de tamanho exigem medição e preservação dos
 contratos atuais.
@@ -41,7 +41,7 @@ contratos atuais.
 - [x] Manter extensões comuns no Generic e acrescentar no Laravel drivers de bases de dados, Redis, intl, bcmath, pcntl e ZIP.
 - [x] Acrescentar Phar a Generic/Laravel nos três PHPs; validar em amd64 a leitura/execução de arquivos e manter phar.readonly ligado por defeito. Evidência em reports/phar-2026-10-30/REPORT.md.
 - [x] Definir metadados OCI e verificar localmente versão, identidade, extensões, entrypoint e comando nas seis imagens.
-- [x] Fixar Alpine 3.24 pelo digest do índice oficial com amd64/arm64 e configurar propostas semanais Dependabot para atualizações de digest/patch, preservando o inventário dos pacotes APK.
+- [x] Fixar Alpine 3.24 pelo digest do índice oficial com amd64/arm64, atualizar referências por pull requests revistos e preservar o inventário dos pacotes APK.
 - [x] Configurar candidatos diários, manuais e para pull requests relevantes, com builds limpos, testes, inventários e scans Trivy em jobs nativos amd64/arm64, sem publicar candidatos.
 - [x] Guardar a base, manifests, identificadores Docker/digests de configuração e inventários completos; verificar os layers da base e a identidade dos scans e reprovar relatórios incompletos ou vulnerabilidades HIGH/CRITICAL corrigíveis.
 - [x] Construir e validar localmente as seis novas candidatas amd64 com a suite completa, contrato de release e seis scans aprovados em 21/10/2026.
@@ -50,7 +50,7 @@ contratos atuais.
 
 ### Falta fazer
 
-- [ ] **Ativação/validação remota:** após integrar na branch predefinida, confirmar as propostas Dependabot e a primeira execução dos jobs GitHub amd64/arm64, incluindo retenção dos anexos. Não foi efetuada publicação nesta tarefa.
+- [ ] **Ativação/validação remota:** após integrar na branch predefinida, confirmar a primeira execução dos jobs GitHub amd64/arm64, incluindo retenção dos anexos. Não foi efetuada publicação nesta tarefa.
 
 ## 2. Arranque e gestão de processos — P1 · implementado, cenários de falha a ampliar
 
@@ -232,7 +232,7 @@ contratos atuais.
 - [x] Excluir do contexto vários diretórios de desenvolvimento e relatórios através de `.dockerignore`.
 - [x] Acrescentar 14 testes de manutenção para pin/manifests, layers da base, identidade do arquivo, scans incompletos e proteção de tags; aprovar os 27 testes Python existentes e novos.
 - [x] Concluir a auditoria de 21/10/2026: suite em 243 s, aplicações PHP/Laravel nos três PHPs, reinícios, contrato de release, actionlint e scans; não detetar segredos com Gitleaks no histórico disponível e no snapshot do código.
-- [x] Fixar todas as GitHub Actions por SHA completo, manter versão em comentário e propostas semanais Dependabot.
+- [x] Fixar todas as GitHub Actions por SHA completo, manter versão em comentário e atualizar referências por pull requests revistos.
 - [x] Separar jobs de validação read-only e publicação/assinatura, limitar contents-write/OIDC e desativar persistência de credenciais checkout.
 - [x] **A06:** aplicar e verificar no GitHub os checks obrigatórios com app_id GitHub Actions e strict=true; limitar o ambiente release a main/v*.
 - [x] **A09:** verificar docker save e gzip em passos separados; ambas as suites de tamanho reprovam perante erro de qualquer comando.

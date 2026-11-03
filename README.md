@@ -833,7 +833,7 @@ Release validation additionally includes:
 # Support and maintenance
 
 See [SUPPORT.md](SUPPORT.md) for the maintained PHP/Alpine matrix, upstream support
-limits, weekly base-digest update proposals and monthly package refreshes.
+limits, reviewed base-digest updates and monthly package refreshes.
 Monthly refreshes use the existing CI and Release workflows: all six candidate
 variants are scanned and tested on native amd64/arm64 before the exact validated
 artifacts can replace eligible stable aliases. There is no separate daily
