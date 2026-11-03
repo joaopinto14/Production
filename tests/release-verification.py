@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Registry verification regressions without a live registry."""
 import copy
+from datetime import datetime, timedelta, timezone
+import hashlib
 import json
 from pathlib import Path
 import runpy
 import unittest
+from unittest.mock import Mock
 
 VERIFY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/verify-release.py"))
 
@@ -97,6 +100,58 @@ class VerificationTests(unittest.TestCase):
         self.registry.clear()
         with self.assertRaises(KeyError):
             self.verify()
+
+    def test_reusing_verified_indexes_still_reads_all_final_tags_and_rejects_drift(self):
+        artifacts = self.verify()
+        reads = []
+        def read(reference, field):
+            self.assertNotIn("@", reference)
+            self.assertEqual(field, "Manifest")
+            reads.append(reference)
+            return self.registry[reference][field]
+        VERIFY["verify"]("example/production", "2.0.4", "a" * 40, self.metadata,
+                         published=True, aliases=True, read=read, artifacts=artifacts)
+        self.assertEqual(len(reads), 15)
+        self.registry["example/production:latest"] = dict(Manifest=dict(digest="wrong"))
+        with self.assertRaisesRegex(ValueError, "latest"):
+            VERIFY["verify"]("example/production", "2.0.4", "a" * 40, self.metadata,
+                             published=True, aliases=True, read=read, artifacts=artifacts)
+
+    def test_stale_mismatched_incomplete_or_changed_prior_artifacts_are_rejected(self):
+        original = self.verify()
+        for mutation in ("stale", "revision", "digest", "missing", "duplicate", "empty-sbom"):
+            value = copy.deepcopy(original)
+            if mutation == "stale":
+                value["created_at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+            elif mutation == "revision":
+                value["revision"] = "wrong"
+            elif mutation == "digest":
+                value["images"][0]["reference"] = "wrong"
+            elif mutation == "missing":
+                value["images"].pop()
+            elif mutation == "duplicate":
+                value["images"].append(value["images"][0])
+            else:
+                value["images"][0]["sbom"]["linux/arm64"]["SPDX"]["packages"] = []
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                self.verify(published=True, artifacts=value)
+
+
+class ReaderTests(unittest.TestCase):
+    def test_raw_index_digest_and_single_combined_content_read(self):
+        raw = b'{"schemaVersion":2,"manifests":[]}\n'
+        contents = {"Image": {"config": "test"}, "SBOM": {"SPDX": "test"}, "Provenance": {"SLSA": "test"}}
+        run = Mock(side_effect=[raw, json.dumps(contents).encode()])
+        read = VERIFY["RegistryReader"](run=run)
+        reference = "example/production@sha256:" + "a" * 64
+        self.assertEqual(read(reference, "Manifest")["digest"], "sha256:" + hashlib.sha256(raw).hexdigest())
+        for field in contents:
+            self.assertEqual(read(reference, field), contents[field])
+        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_args_list[0].args[0][-1], "--raw")
+        self.assertIn(".Image", run.call_args_list[1].args[0][-1])
+        self.assertIn(".SBOM", run.call_args_list[1].args[0][-1])
+        self.assertIn(".Provenance", run.call_args_list[1].args[0][-1])
 
 
 if __name__ == "__main__":

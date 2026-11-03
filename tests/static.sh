@@ -10,6 +10,9 @@ assert_eq "${TEST_VERSION}" "${version_file}" "VERSION file mismatch"
 
 grep -F "ARG VERSION=${TEST_VERSION}" Dockerfile >/dev/null || fail "Dockerfile VERSION default is not ${TEST_VERSION}."
 grep -F "default = \"${TEST_VERSION}\"" docker-bake.hcl >/dev/null || fail "docker-bake.hcl VERSION default is not ${TEST_VERSION}."
+grep -F "# Production ${TEST_VERSION}" RELEASE.md >/dev/null || fail "RELEASE.md does not describe ${TEST_VERSION}."
+grep -F "# Production ${TEST_VERSION}" README.md >/dev/null || fail "README.md version is not ${TEST_VERSION}."
+grep -F "## ${TEST_VERSION} - " CHANGELOG.md >/dev/null || fail "CHANGELOG.md has no entry for ${TEST_VERSION}."
 grep -F "apk upgrade --no-cache" Dockerfile >/dev/null || fail "Dockerfile must refresh Alpine security packages with apk upgrade --no-cache."
 grep -F 'ARG WWW_UID=10001' Dockerfile >/dev/null || fail "Dockerfile WWW_UID default must remain 10001."
 grep -F 'ARG WWW_GID=10001' Dockerfile >/dev/null || fail "Dockerfile WWW_GID default must remain 10001."
@@ -31,6 +34,8 @@ python3 tests/maintenance.py
 python3 tests/release-promotion.py
 python3 tests/release-verification.py
 python3 tests/candidate-validation.py
+python3 tests/signature-verification.py
+python3 tests/release-automation.py
 python3 -c 'import runpy; from pathlib import Path; runpy.run_path("scripts/check-candidates.py")["base_reference"](Path("Dockerfile").read_text())'
 for script in entrypoint/*.sh tests/*.sh; do
     sh -n "${script}" || fail "Shell syntax error in ${script}."

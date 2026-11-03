@@ -2,6 +2,7 @@
 """Read registry artifacts and verify release platforms, identity and attestations."""
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -12,10 +13,24 @@ CANDIDATES = runpy.run_path(str(Path(__file__).with_name("release-candidates.py"
 PLATFORMS = ("linux/amd64", "linux/arm64")
 
 
-def inspect(reference, field):
-    return json.loads(subprocess.check_output(
-        ["docker", "buildx", "imagetools", "inspect", reference,
-         "--format", "{{json ." + field + "}}"], text=True, timeout=180))
+class RegistryReader:
+    def __init__(self, run=subprocess.check_output):
+        self.run = run
+        self.contents = {}
+
+    def __call__(self, reference, field):
+        command = ["docker", "buildx", "imagetools", "inspect", reference]
+        if field == "Manifest":
+            # --format loads child manifests/configurations even for .Manifest.
+            # Raw output preserves the bytes used to compute the registry digest.
+            raw = self.run(command + ["--raw"], timeout=180)
+            manifest = json.loads(raw)
+            manifest["digest"] = "sha256:" + hashlib.sha256(raw).hexdigest()
+            return manifest
+        if reference not in self.contents:
+            template = '{"Image":{{json .Image}},"SBOM":{{json .SBOM}},"Provenance":{{json .Provenance}}}'
+            self.contents[reference] = json.loads(self.run(command + ["--format", template], timeout=180))
+        return self.contents[reference][field]
 
 
 def validate_index(manifest, expected_digest):
@@ -62,21 +77,39 @@ def validate_contents(images, sboms, provenance, version, revision, suffix):
             raise ValueError("Missing SLSA provenance: " + platform)
 
 
-def verify(repository, version, revision, metadata, published=False, aliases=False, read=inspect):
+def verify(repository, version, revision, metadata, published=False, aliases=False, read=None, artifacts=None):
+    read = read or RegistryReader()
     targets = list(CANDIDATES["targets"](version))
     if set(metadata) != {target for target, _ in targets}:
         raise ValueError("Expected exactly six release candidates")
     if re.fullmatch(r"[0-9a-f]{40}", revision) is None:
         raise ValueError("Expected a complete source commit SHA")
+    previous = {}
+    if artifacts is not None:
+        if (not published or artifacts.get("version") != version
+                or artifacts.get("revision") != revision or artifacts.get("repository") != repository):
+            raise ValueError("Prior artifact verification has the wrong release identity")
+        stamp = datetime.fromisoformat(artifacts["created_at"].replace("Z", "+00:00"))
+        if not -300 <= (datetime.now(timezone.utc) - stamp).total_seconds() <= 24 * 3600:
+            raise ValueError("Prior artifact verification is stale or future-dated")
+        previous = {item["target"]: item for item in artifacts["images"]}
+        if len(previous) != len(artifacts["images"]) or set(previous) != set(metadata):
+            raise ValueError("Prior artifact verification is incomplete or duplicated")
     evidence = []
     for target, suffix in targets:
         digest = metadata[target]["containerimage.digest"]
         if re.fullmatch(r"sha256:[0-9a-f]{64}", digest) is None:
             raise ValueError("Invalid candidate digest")
         reference = f"{repository}@{digest}"
-        manifest = read(reference, "Manifest")
+        saved = previous.get(target)
+        if saved is not None and saved.get("reference") != reference:
+            raise ValueError("Prior artifact verification has a different candidate digest")
+        manifest = saved["manifest"] if saved else read(reference, "Manifest")
         platforms = validate_index(manifest, digest)
-        images, sboms, provenance = (read(reference, field) for field in ("Image", "SBOM", "Provenance"))
+        if saved:
+            images, sboms, provenance = (saved[key] for key in ("configurations", "sbom", "provenance"))
+        else:
+            images, sboms, provenance = (read(reference, field) for field in ("Image", "SBOM", "Provenance"))
         validate_contents(images, sboms, provenance, version, revision, suffix)
         tags = []
         if published:
@@ -105,14 +138,19 @@ def main():
     parser.add_argument("--metadata", type=Path, required=True)
     parser.add_argument("--published", action="store_true", help="Also check all seven public version tags")
     parser.add_argument("--aliases", action="store_true", help="Also check aliases; requires --published")
+    parser.add_argument("--verified-artifacts", type=Path,
+                        help="Reuse fresh verified immutable index contents; still read every published tag")
     parser.add_argument("--output", type=Path, default=Path("release-verification.json"))
     args = parser.parse_args()
     if args.aliases and not args.published:
         parser.error("--aliases requires --published")
+    if args.verified_artifacts and not args.published:
+        parser.error("--verified-artifacts requires --published")
     # Never leave an earlier successful result after a failed verification.
     args.output.unlink(missing_ok=True)
     result = verify(args.repository, args.version, args.revision,
-                    json.loads(args.metadata.read_text()), args.published, args.aliases)
+                    json.loads(args.metadata.read_text()), args.published, args.aliases,
+                    artifacts=json.loads(args.verified_artifacts.read_text()) if args.verified_artifacts else None)
     args.output.write_text(json.dumps(result, indent=2) + "\n")
     print("Verified all six registry indexes, both platforms, SPDX SBOMs and SLSA provenance.")
 

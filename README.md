@@ -833,9 +833,18 @@ Release validation additionally includes:
 # Support and maintenance
 
 See [SUPPORT.md](SUPPORT.md) for the maintained PHP/Alpine matrix, upstream support
-limits, weekly base-digest update proposals and daily maintenance candidates.
-Candidates are built and tested on amd64/arm64, inventoried and scanned outside
-the runtime image. They are local validation images, not automatic releases.
+limits, weekly base-digest update proposals and monthly package refreshes.
+Monthly refreshes use the existing CI and Release workflows: all six candidate
+variants are scanned and tested on native amd64/arm64 before the exact validated
+artifacts can replace eligible stable aliases. There is no separate daily
+maintenance workflow.
+
+Pushes to `dev` and pull requests run intensive CI. After a new VERSION passes
+CI on `main`, the release workflow validates and publishes it. On day 1 of each
+month at 00:00 Europe/Lisbon, a separate workflow prepares a new patch release through a
+tested pull request to refresh packages. Versioned tags remain immutable; stable
+aliases move only after successful release validation. See the
+[automation and monthly release setup](docs/RELEASING.md#monthly-package-refresh).
 
 The Alpine base is pinned by multi-architecture index digest; APK package versions
 are still refreshed at build time and recorded in inventories. Maintenance fixes

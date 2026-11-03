@@ -10,11 +10,14 @@ All notable changes to Production are documented in this file.
 
 ### Maintenance
 
+- Run intensive CI on dev pushes and pull requests; request new main releases only after both required checks pass.
+- Schedule monthly package refreshes on day 1 at 00:00 Europe/Lisbon via tested patch-version pull requests, preserving immutable version tags and existing review protections.
+- Attach source changes/commits alongside package comparisons against the previous published stable release.
 - Retain runtime suite logs/results and scanned image identities; reject incomplete, stale or failed runtime evidence before promotion.
 - Verify registry platforms, release identity, populated SPDX SBOMs and SLSA provenance before signing and after promotion; verify final version/alias digests before publishing the GitHub Release.
 - Add release verification/recovery/rollback instructions and a private vulnerability reporting policy.
 - Pin Alpine 3.24 to its official multi-architecture image index and add weekly Dependabot proposals for base digest/patch updates.
-- Add daily/manual/pull-request maintenance candidates on native amd64 and arm64, with clean builds, runtime tests, APK inventories and digest-pinned Trivy scans outside the runtime image.
+- Consolidate scheduled package refreshes in the monthly workflow; remove the separate daily maintenance workflow while retaining CI and exact-artifact native amd64/arm64 release tests, APK inventories and digest-pinned Trivy scans before publication.
 - Reject fixable HIGH/CRITICAL candidate findings and incomplete scans; preserve evidence as workflow artifacts without publishing candidates.
 - Document PHP/Alpine support, community-repository limits, updates and end-of-support handling in `SUPPORT.md`.
 - Preserve immutable version tags; resume partial promotions only when existing tags match the exact validated digests. Registry failures fail closed.

@@ -97,7 +97,7 @@ assert_contains "${workflow}" '--notes-file release-notes.md' "GitHub Release pa
 assert_contains "${workflow}" '--metadata release-metadata.json' "exact published package inventory"
 assert_contains "${workflow}" 'gh release upload' "package evidence assets"
 assert_contains "${workflow}" 'repair_notes:' "independent release-note repair"
-assert_contains "${workflow}" 'cosign verify' "signature verification"
+assert_contains "${workflow}" 'scripts/verify-signature.py' "bounded signature discovery verification"
 assert_contains "${workflow}" 'release-evidence-arm64' "ARM64 release evidence"
 assert_not_contains "${workflow}" 'docker buildx bake release --push' "public images must not be rebuilt after validation"
 
