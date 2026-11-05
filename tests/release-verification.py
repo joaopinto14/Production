@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import runpy
+import subprocess
 import unittest
 from unittest.mock import Mock
 
@@ -138,6 +139,45 @@ class VerificationTests(unittest.TestCase):
 
 
 class ReaderTests(unittest.TestCase):
+    def test_transient_registry_errors_retry_reads_without_weakening_validation(self):
+        for message in (b'429 Too Many Requests', b'503 Service Unavailable'):
+            run = Mock(side_effect=[subprocess.CalledProcessError(1, ['docker'], stderr=message), b'{}'])
+            sleep = Mock()
+            reader = VERIFY['RegistryReader'](run=run, sleep=sleep)
+            with self.subTest(message=message):
+                self.assertEqual(reader('example/image:version', 'Manifest')['digest'],
+                                 'sha256:' + hashlib.sha256(b'{}').hexdigest())
+                self.assertEqual(run.call_count, 2)
+                sleep.assert_called_once_with(5)
+                self.assertTrue(all(call.args[0][-1] == '--raw' for call in run.call_args_list))
+
+    def test_persistent_rate_limit_and_timeout_retries_are_bounded(self):
+        for error in (subprocess.CalledProcessError(1, ['docker'], stderr=b'429 Too Many Requests'),
+                      subprocess.TimeoutExpired(['docker'], 180)):
+            run, sleep = Mock(side_effect=error), Mock()
+            reader = VERIFY['RegistryReader'](run=run, sleep=sleep)
+            with self.subTest(error=type(error).__name__), self.assertRaises(type(error)):
+                reader('example/image:version', 'Manifest')
+            self.assertEqual(run.call_count, 4)
+            self.assertEqual([call.args[0] for call in sleep.call_args_list], [5, 15, 30])
+
+    def test_authentication_missing_artifacts_and_invalid_json_fail_immediately(self):
+        for message in (b'401 Unauthorized', b'403 Forbidden', b'manifest unknown'):
+            run = Mock(side_effect=subprocess.CalledProcessError(1, ['docker'], stderr=message))
+            sleep = Mock()
+            reader = VERIFY['RegistryReader'](run=run, sleep=sleep)
+            with self.subTest(message=message), self.assertRaises(subprocess.CalledProcessError):
+                reader('example/image:version', 'Manifest')
+            self.assertEqual(run.call_count, 1)
+            sleep.assert_not_called()
+        run = Mock(return_value=b'incomplete json')
+        sleep = Mock()
+        reader = VERIFY['RegistryReader'](run=run, sleep=sleep)
+        with self.assertRaises(json.JSONDecodeError):
+            reader('example/image:version', 'Manifest')
+        self.assertEqual(run.call_count, 1)
+        sleep.assert_not_called()
+
     def test_raw_index_digest_and_single_combined_content_read(self):
         raw = b'{"schemaVersion":2,"manifests":[]}\n'
         contents = {"Image": {"config": "test"}, "SBOM": {"SPDX": "test"}, "Provenance": {"SLSA": "test"}}

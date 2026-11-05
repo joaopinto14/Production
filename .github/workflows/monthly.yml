@@ -18,7 +18,7 @@ jobs:
     name: Prepare and test the monthly patch release
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 150
     permissions:
       contents: write
       pull-requests: write
@@ -31,4 +31,4 @@ jobs:
       - name: Prepare patch, await CI, merge through protections and request main CI
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/release-automation.py monthly --timeout 6600
+        run: python3 scripts/release-automation.py monthly --timeout 8400

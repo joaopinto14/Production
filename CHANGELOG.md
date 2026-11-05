@@ -10,7 +10,9 @@ All notable changes to Production are documented in this file.
 
 ### Maintenance
 
-- Run intensive CI on dev pushes and pull requests; request new main releases only after both required checks pass.
+- Keep CI read-only and limited to validation; start Release after successful main CI and prepare/publish within the same release workflow.
+- Recover pending releases using their original immutable tag when it is an ancestor of tested main with matching VERSION; never retag a newer commit as the same version. Monthly runs recover an unpublished baseline before creating another patch.
+- Retry transient registry reads with bounded backoff and allow monthly branch CI to finish within its runtime-test budget.
 - Schedule monthly package refreshes on day 1 at 00:00 Europe/Lisbon via tested patch-version pull requests, preserving immutable version tags and existing review protections.
 - Attach source changes/commits alongside package comparisons against the previous published stable release.
 - Retain runtime suite logs/results and scanned image identities; reject incomplete, stale or failed runtime evidence before promotion.

@@ -8,28 +8,57 @@ from pathlib import Path
 import re
 import runpy
 import subprocess
+import time
 
 CANDIDATES = runpy.run_path(str(Path(__file__).with_name("release-candidates.py")))
 PLATFORMS = ("linux/amd64", "linux/arm64")
 
 
 class RegistryReader:
-    def __init__(self, run=subprocess.check_output):
+    def __init__(self, run=subprocess.check_output, sleep=time.sleep):
         self.run = run
+        self.sleep = sleep
         self.contents = {}
+
+    def output(self, command):
+        # Retry reads only. Authentication, missing artifacts and validation
+        # failures must still fail closed; no registry writes are retried here.
+        delays = (5, 15, 30)
+        for attempt in range(len(delays) + 1):
+            try:
+                return self.run(command, timeout=180, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError as error:
+                detail = error.stderr or b''
+                if isinstance(detail, bytes):
+                    detail = detail.decode(errors='replace')
+                transient = any(token in detail.lower() for token in (
+                    '429', 'too many requests', 'toomanyrequests',
+                    '500 internal server error', '502 bad gateway',
+                    '503 service unavailable', '504 gateway timeout',
+                    'connection reset', 'tls handshake timeout'))
+                if not transient or attempt == len(delays):
+                    # Keep the registry's diagnostic visible in Actions logs.
+                    if detail:
+                        print(detail, flush=True)
+                    raise
+            except subprocess.TimeoutExpired:
+                if attempt == len(delays):
+                    raise
+            print(f'Temporary registry read failure; retrying in {delays[attempt]} seconds.', flush=True)
+            self.sleep(delays[attempt])
 
     def __call__(self, reference, field):
         command = ["docker", "buildx", "imagetools", "inspect", reference]
         if field == "Manifest":
             # --format loads child manifests/configurations even for .Manifest.
             # Raw output preserves the bytes used to compute the registry digest.
-            raw = self.run(command + ["--raw"], timeout=180)
+            raw = self.output(command + ["--raw"])
             manifest = json.loads(raw)
             manifest["digest"] = "sha256:" + hashlib.sha256(raw).hexdigest()
             return manifest
         if reference not in self.contents:
             template = '{"Image":{{json .Image}},"SBOM":{{json .SBOM}},"Provenance":{{json .Provenance}}}'
-            self.contents[reference] = json.loads(self.run(command + ["--format", template], timeout=180))
+            self.contents[reference] = json.loads(self.output(command + ["--format", template]))
         return self.contents[reference][field]
 
 

@@ -54,8 +54,11 @@ Independent rebuilds are not claimed to be byte-for-byte reproducible.
 
 `.github/workflows/monthly.yml` is the only scheduled package-refresh workflow.
 It runs on day **1 at 00:00 Europe/Lisbon**, or manually from `main`. It prepares
-one patch-version pull request, runs CI and requests a protected merge. Main CI
-then requests Release, where publication requires all of the following:
+one patch-version pull request, runs CI and requests a protected merge. If main's
+current version is unpublished, it requests main CI to recover that version first
+and exits without preparing a second version. CI only validates changes; its
+successful completion on main starts Release, where publication requires all of
+the following:
 
 1. Build all six variants with `--pull --no-cache`, using the pinned Alpine base
    and the available APK package updates. Keep the supported Alpine/PHP branches
@@ -121,6 +124,13 @@ as described in [SECURITY.md](SECURITY.md).
 5. Native amd64/arm64 jobs pull these digests and run full runtime and real-application suites. Scans must match the complete APK inventory and the expected configuration digest; report age is limited to 24 hours and database update/download age to 48 hours. Old output files are discarded before scanning. Registry, scanner and database errors fail closed.
 6. Package comparisons are generated before publication. The publishing job signs all six tested indexes through GitHub OIDC/Cosign, verifies those signatures, and saves inventories/scans/metadata to a draft GitHub Release before touching public version tags or aliases.
 7. Promotion copies the original indexes intact. It preflights all version tags: absent tags and identical digests are accepted, conflicting digests are refused before any write. All version tags are completed before aliases move. A promotion journal is saved as an Actions artifact even when a registry operation fails. The GitHub Release becomes public only after promotion succeeds.
+
+For a pending GitHub Release whose tag is an ancestor of a newer tested main,
+Release can recover the original tagged source automatically after successful
+main CI. It never moves the Git tag or includes newer source changes under that
+version; an unrelated tag or VERSION mismatch fails closed. Registry reads retry
+transient errors at most four times, with waits of 5, 15 and 30 seconds. Persistent
+quota/network failures and authentication errors still block publication.
 
 Registry updates across multiple tags cannot be atomic. If a registry/network failure interrupts promotion, inspect the saved metadata, reports and promotion journal, then rerun failed workflow jobs or dispatch the same tag. Matching version tags are skipped and the remaining operations continue. Fresh full validation is required for a new workflow run; stale evidence never authorizes promotion. Never delete or overwrite a conflicting version tag to bypass the guard: investigate or use a new version. This protection covers this workflow, not independent registry publishers.
 
