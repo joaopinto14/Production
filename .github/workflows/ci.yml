@@ -72,3 +72,25 @@ jobs:
 
       - name: Build amd64 and arm64 variants
         run: docker buildx bake multiarch
+
+  release:
+    name: Request release after main passes
+    needs: [runtime-tests, multiarch-build]
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: production-release-request
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Tag a new version and explicitly dispatch its release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ github.sha }}
+        run: python3 scripts/release-automation.py start --revision "${REVISION}"
