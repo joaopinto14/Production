@@ -31,6 +31,7 @@ log "Checking shell syntax"
 python3 tests/release-policy.py
 python3 tests/package-report.py
 python3 tests/maintenance.py
+python3 tests/release-candidates.py
 python3 tests/release-promotion.py
 python3 tests/release-verification.py
 python3 tests/candidate-validation.py

@@ -233,8 +233,16 @@ evidence and promotion journal from the failed run before retrying.
   from the registry and compared with its expected digest. This reduces registry
   requests without accepting different or unverified artifacts.
 - If staging tags are missing after a partial promotion, recover the saved
-  candidate digests/tags. Do not rebuild with mutable APK repositories under an
-  already partly published version.
+  candidate digests/tags. Candidate creation automatically recovers missing
+  digests from immutable version tags, including the bare version for PHP 8.5,
+  and rejects conflicts with surviving staging tags. It never uses moving aliases.
+  All six indexes must be recoverable once any version tag exists; otherwise
+  restore the original saved candidates or use a new version. Recovery writes
+  metadata only; it still requires registry identity/attestation verification and
+  fresh native tests/scans before signing and promotion. Do not rebuild with
+  mutable APK repositories under an already partly published version.
+- If candidate creation fails before writing metadata, its artifact upload is
+  skipped. Metadata from a partially completed build is still preserved.
 - A fresh workflow run must revalidate candidates. Evidence older than the
   configured freshness limits cannot be reused to bypass validation.
 - For notes-only repair, dispatch Release with the existing tag and

@@ -34,6 +34,58 @@ def targets(version):
             yield f'{prefix}php{php.replace(".", "")}-release', f"{prefix}php{php}"
 
 
+def create_candidates(repository, version, revision, output, inspect=None, run=None):
+    inspect = inspect or digest
+    run = run or subprocess.run
+    if re.fullmatch(r"[0-9a-f]{40}", revision) is None:
+        raise ValueError("Expected a complete Git commit SHA")
+    plan = [(target, suffix, f"{repository}:candidate-{version}-{revision}-{suffix}")
+            for target, suffix in targets(version)]
+    output.unlink(missing_ok=True)
+    metadata = {}
+    for target, _, reference in plan:
+        value = inspect(reference)
+        if value is not None:
+            metadata[target] = {"containerimage.digest": value, "staging_reference": reference}
+
+    # Preflight all seven immutable version tags, including the PHP 8.5 shorthand.
+    # A lost staging tag can be recovered from the original public index without
+    # rebuilding or changing registry state. Moving aliases are never candidates.
+    published = False
+    for target, suffix, _ in plan:
+        tags = [f"{version}-{suffix}"] + ([version] if suffix == "php8.5" else [])
+        for tag in tags:
+            reference = f"{repository}:{tag}"
+            value = inspect(reference)
+            if value is None:
+                continue
+            published = True
+            if target in metadata and metadata[target]["containerimage.digest"] != value:
+                raise ValueError(f"Immutable tag conflicts with candidate digest: {reference}")
+            if target not in metadata:
+                metadata[target] = {"containerimage.digest": value, "recovered_reference": reference}
+                print(f"Recovered candidate from {reference}@{value}")
+
+    missing = [target for target, _, _ in plan if target not in metadata]
+    if published and missing:
+        raise ValueError("Version tags already exist but candidate digests are missing for: "
+                         + ", ".join(missing) + ". Restore the original saved candidate digests "
+                         "or publish a new version; rebuilding a partly published version is forbidden.")
+    if metadata:
+        output.write_text(json.dumps(metadata, indent=2) + "\n")
+    for target, _, reference in plan:
+        if target not in metadata:
+            run(["docker", "buildx", "bake", target, "--push", "--pull", "--no-cache",
+                 "--set", f"{target}.tags={reference}", "--set", f"{target}.args.VERSION={version}",
+                 "--set", f"{target}.args.VCS_REF={revision}"], check=True)
+            value = inspect(reference)
+            if value is None:
+                raise ValueError("Build did not produce a registry candidate")
+            metadata[target] = {"containerimage.digest": value, "staging_reference": reference}
+            output.write_text(json.dumps(metadata, indent=2) + "\n")
+    return metadata
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", default="joaopinto14/production")
@@ -41,26 +93,7 @@ def main():
     parser.add_argument("--revision", required=True)
     parser.add_argument("--output", type=Path, default=Path("release-metadata.json"))
     args = parser.parse_args()
-    if re.fullmatch(r"[0-9a-f]{40}", args.revision) is None:
-        raise ValueError("Expected a complete Git commit SHA")
-    plan = [(target, suffix, f"{args.repository}:candidate-{args.version}-{args.revision}-{suffix}")
-            for target, suffix in targets(args.version)]
-    found = {target: digest(reference) for target, _, reference in plan}
-    # Missing staging tags after a partial public promotion must be recovered
-    # from saved metadata, never silently rebuilt with mutable APK repositories.
-    if not all(found.values()):
-        TAGS["check_tags"](args.repository, args.version)
-    metadata = {}
-    for target, suffix, reference in plan:
-        if found[target] is None:
-            subprocess.run(["docker", "buildx", "bake", target, "--push", "--pull", "--no-cache",
-                            "--set", f"{target}.tags={reference}", "--set", f"{target}.args.VERSION={args.version}",
-                            "--set", f"{target}.args.VCS_REF={args.revision}"], check=True)
-            found[target] = digest(reference)
-            if found[target] is None:
-                raise ValueError("Build did not produce a registry candidate")
-        metadata[target] = {"containerimage.digest": found[target], "staging_reference": reference}
-        args.output.write_text(json.dumps(metadata, indent=2) + "\n")
+    create_candidates(args.repository, args.version, args.revision, args.output)
 
 
 if __name__ == "__main__":

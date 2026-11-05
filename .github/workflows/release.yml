@@ -141,7 +141,7 @@ jobs:
           python3 release-tools/scripts/verify-release.py --version "${VERSION}" --revision "${REVISION}" \
             --metadata release-metadata.json --output release-artifacts.json
       - name: Preserve immutable candidate metadata
-        if: ${{ always() }}
+        if: ${{ !cancelled() && (hashFiles('release-metadata.json') != '' || hashFiles('release-artifacts.json') != '') }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-candidates

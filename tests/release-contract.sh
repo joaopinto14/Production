@@ -85,7 +85,7 @@ assert_contains "${workflow}" 'contents: write' "GitHub Release write permission
 assert_contains "${workflow}" 'Verify tag matches VERSION' "tag/VERSION validation"
 assert_contains "${workflow}" 'group: production-release' "serialized releases"
 assert_contains "${workflow}" 'scripts/release-policy.py' "stable alias policy"
-assert_contains "$(cat scripts/release-candidates.py)" 'check_tags' "version tag overwrite protection"
+assert_contains "$(cat scripts/release-candidates.py)" 'Immutable tag conflicts with candidate digest' "version tag overwrite protection"
 assert_contains "${workflow}" 'git rev-parse HEAD' "release revision resolution"
 assert_contains "${workflow}" 'scripts/release-candidates.py' "build-once staging"
 assert_contains "${workflow}" 'scripts/promote-release.py' "exact digest promotion"
