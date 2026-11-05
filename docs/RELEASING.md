@@ -24,16 +24,39 @@ promotion. Do not describe 2.0.4 as published until the workflow has completed.
 
 ## Automatic releases after main CI
 
-After both required main CI jobs succeed, the release-request job creates the
-stable tag matching `VERSION` and explicitly dispatches Release from `main`.
-Keep the version defaults, `RELEASE.md`, README and changelog consistent in the
-pull request. Already published versions are skipped, so documentation-only
-merges do not rebuild or overwrite their images. A superseded main revision
-cannot request a release; its replacement must pass its own CI.
+Each workflow has one responsibility:
 
-The release source remains the exact tested/tagged commit. Existing conflicting
-tags stop automation. A failed release can resume only with the original tag and
-candidate digests; a later commit under the same VERSION cannot move that tag.
+| Workflow | Responsibility |
+|---|---|
+| `ci.yml` | Build, test and scan changes. Repository access is read-only; CI never creates tags or publishes images. |
+| `release.yml` | After successful main CI, prepare or recover the version and run the publication gates in the same workflow. Tags and manual runs remain supported. |
+| `monthly.yml` | Prepare the monthly patch PR, await its tests, merge through protections and request main CI. |
+
+Release listens for completed CI runs using `workflow_run`. Only successful
+`push` or `workflow_dispatch` runs on this repository's `main` branch can prepare
+a release; pull requests, forks, failed CI and superseded main revisions cannot.
+The request job checks out the exact tested SHA and rechecks the current main
+revision before continuing. Already published versions are skipped. Keep the
+version defaults, `RELEASE.md`, README and changelog consistent in the pull request.
+
+If an unpublished version already has a tag at an earlier commit, automation
+checks that the tagged commit is an ancestor of tested main and that its VERSION
+matches. It then recovers the **original tagged source**, without moving the tag
+or including newer main changes in that version. The release gates still require
+fresh native tests/scans for the original candidate digests. Tags outside main's
+history or with mismatched VERSION fail. New source changes require a new version.
+
+To recover the pending 2.0.4 release after these changes reach main, run **CI** on
+`main` (or let the merge's main CI finish). A successful CI starts Release, which
+recovers `v2.0.4` without retagging it. Alternatively dispatch **Release** from
+`main` with `tag=v2.0.4` and `repair_notes=false`.
+
+Registry reads retry transient rate limits, server errors and timeouts up to
+four attempts, waiting 5, 15 and 30 seconds. Authentication/missing-artifact and
+validation errors still fail immediately; persistent failures stop publication.
+The existing combined content reads and verified-index reuse reduce Docker Hub
+requests. These measures cannot guarantee that an exhausted Docker Hub quota
+will recover within the retry window.
 Release notes combine the curated `RELEASE.md`, the Git source diff/commits, and
 the exact per-image/per-architecture package comparison. The comparison starts
 from the preceding **published** stable GitHub Release, excluding drafts and
@@ -58,7 +81,10 @@ startup.
 
 The monthly workflow:
 
-1. Requires the current main VERSION to be the latest published stable release.
+1. If the current main VERSION is still unpublished, requests main CI to recover
+   it and exits without creating another version. Run monthly again after recovery
+   to prepare the month's patch. Otherwise requires main to match the latest
+   published stable release.
 2. Creates one `maintenance/monthly-YYYY-MM` branch and pull request, increments
    only the patch version, synchronizes build/test/documentation defaults, and
    writes monthly release notes/changelog metadata.
@@ -66,8 +92,8 @@ The monthly workflow:
    of the exact commit. CI performs fresh, no-cache builds and intensive tests.
 4. Requests a squash merge through normal branch protections, with the tested
    head SHA. It neither approves itself nor uses an administrator bypass.
-5. Explicitly requests main CI after merging. Successful main CI requests Release;
-   Release rebuilds once into staging, scans/tests exact digests on native amd64
+5. Explicitly requests main CI after merging. Its successful completion starts
+   Release, which builds once into staging and scans/tests exact digests on native amd64
    and ARM64, signs, and only then moves version tags and eligible stable aliases.
 
 The workflow uses `GITHUB_TOKEN`; no additional personal access token is needed.
@@ -80,8 +106,11 @@ missing settings without lowering existing review requirements.
 
 Repeated runs in the same month reuse the existing PR or resume main CI after a
 merge; they do not create another patch or overwrite version tags. Failed CI,
-changed PR heads, protected merges, stale main checkouts and unpublished current
-versions stop the process. Inspect the failed run/PR and rerun after resolving
+changed PR heads, protected merges and stale main checkouts stop the process.
+An unpublished current version takes the recovery route instead of creating a
+second version. The monthly job allows 140 minutes for branch CI within its
+150-minute job budget, so a valid 120-minute runtime test is not cut short by the
+previous 110-minute polling limit. Inspect the failed run/PR and rerun after resolving
 the cause. If main moved since the monthly branch was created, update/review the
 PR and rerun its checks before merging. Do not force a merge to bypass checks.
 

@@ -6,6 +6,7 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -123,6 +124,25 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(writes[1], ('actions/workflows/release.yml/dispatches', 'POST',
                                     {'ref': 'main', 'inputs': {'tag': 'v2.0.5', 'repair_notes': 'false'}}))
 
+    def test_prepare_continues_in_the_same_workflow_without_dispatching_another_run(self):
+        with patch.object(automation, 'api', return_value=None) as api:
+            result = automation.start_release(REPO, MAIN, self.root, dispatch=False)
+        self.assertEqual(result, dict(tag='v2.0.5', revision=MAIN))
+        writes = [call.args for call in api.call_args_list if len(call.args) > 2]
+        self.assertEqual(writes, [(REPO, 'git/refs', 'POST', {'ref': 'refs/tags/v2.0.5', 'sha': MAIN})])
+
+    def test_prepare_outputs_the_original_source_and_leaves_skipped_runs_empty(self):
+        for result in (dict(tag='v2.0.5', revision=CANDIDATE), None):
+            output = self.root / 'output'
+            output.write_text('')
+            with self.subTest(result=result), patch.object(sys, 'argv', [
+                    'release-automation.py', '--repository', REPO, 'prepare',
+                    '--revision', MAIN, '--output', str(output)]), \
+                    patch.object(automation, 'start_release', return_value=result) as start:
+                automation.main()
+            start.assert_called_once_with(REPO, MAIN, dispatch=False)
+            self.assertEqual(output.read_text(), f'tag=v2.0.5\nrevision={CANDIDATE}\n' if result else '')
+
     def test_published_version_and_superseded_ci_never_dispatch(self):
         for name, value in (('published_versions', ['2.0.4', '2.0.5']), ('main_revision', MERGE)):
             with self.subTest(name=name), patch.object(automation, name, return_value=value), \
@@ -131,9 +151,45 @@ class ReleaseTests(unittest.TestCase):
                 api.assert_not_called()
 
     def test_conflicting_existing_tag_is_never_moved_or_rebuilt(self):
-        with patch.object(automation, 'api', return_value={'object': {'type': 'commit', 'sha': CANDIDATE}}) as api:
+        with patch.object(automation, 'api', side_effect=[
+                {'object': {'type': 'commit', 'sha': CANDIDATE}},
+                {'status': 'diverged', 'merge_base_commit': {'sha': MERGE}}]) as api:
             with self.assertRaisesRegex(ValueError, 'immutable tag'):
                 automation.start_release(REPO, MAIN, self.root)
+        self.assertEqual(api.call_count, 2)
+        self.assertTrue(all(len(call.args) == 2 for call in api.call_args_list))
+
+    def test_older_tag_on_main_resumes_original_source_without_moving_it(self):
+        for annotated in (False, True):
+            responses = ([{'object': {'type': 'tag', 'sha': MERGE}}] if annotated else []) + [
+                {'object': {'type': 'commit', 'sha': CANDIDATE}},
+                {'status': 'ahead', 'merge_base_commit': {'sha': CANDIDATE}},
+                {'content': base64.b64encode(b'2.0.5\n').decode()}, None]
+            with self.subTest(annotated=annotated), patch.object(automation, 'api', side_effect=responses) as api:
+                automation.start_release(REPO, MAIN, self.root)
+            reads = [call.args[1] for call in api.call_args_list if len(call.args) == 2]
+            self.assertIn(f'compare/{CANDIDATE}...{MAIN}', reads)
+            self.assertIn('contents/VERSION?ref=' + CANDIDATE, reads)
+            writes = [call.args for call in api.call_args_list if len(call.args) > 2]
+            self.assertEqual(writes, [(REPO, 'actions/workflows/release.yml/dispatches', 'POST',
+                                      {'ref': 'main', 'inputs': {'tag': 'v2.0.5', 'repair_notes': 'false'}})])
+
+    def test_recovery_rejects_wrong_tag_version_and_unproven_ancestry(self):
+        for comparison, tag_version in (
+                ({'status': 'ahead', 'merge_base_commit': {'sha': MERGE}}, b'2.0.5'),
+                ({'status': 'ahead', 'merge_base_commit': {'sha': CANDIDATE}}, b'2.0.4')):
+            responses = [{'object': {'type': 'commit', 'sha': CANDIDATE}}, comparison,
+                         {'content': base64.b64encode(tag_version).decode()}]
+            with self.subTest(comparison=comparison), patch.object(automation, 'api', side_effect=responses) as api:
+                with self.assertRaisesRegex(ValueError, 'immutable tag'):
+                    automation.start_release(REPO, MAIN, self.root)
+            self.assertTrue(all(len(call.args) == 2 for call in api.call_args_list))
+
+    def test_main_advancing_during_preparation_prevents_dispatch(self):
+        with patch.object(automation, 'main_revision', side_effect=[MAIN, MERGE]), \
+                patch.object(automation, 'api', side_effect=[
+                    {'object': {'type': 'commit', 'sha': MAIN}}]) as api:
+            automation.start_release(REPO, MAIN, self.root)
         self.assertEqual(api.call_count, 1)
 
     def test_matching_annotated_tag_can_resume_publication(self):
@@ -220,12 +276,20 @@ class MonthlyTests(unittest.TestCase):
             automation.monthly_release(REPO, '2026-12', 100, self.root)
         api.assert_not_called()
 
-    def test_unpublished_current_version_blocks_another_monthly_release(self):
+    def test_unpublished_current_version_requests_recovery_without_a_new_patch(self):
         with patch.object(automation, 'published_versions', return_value=['2.0.3']), \
                 patch.object(automation, 'api') as api:
-            with self.assertRaisesRegex(ValueError, 'Publish the current'):
-                automation.monthly_release(REPO, '2026-12', 100, self.root)
-        api.assert_not_called()
+            automation.monthly_release(REPO, '2026-12', 100, self.root)
+        api.assert_called_once_with(REPO, 'actions/workflows/ci.yml/dispatches', 'POST', {'ref': 'main'})
+
+    def test_older_main_and_missing_published_baseline_never_create_or_publish(self):
+        for published in ([], ['2.0.5']):
+            with self.subTest(published=published), \
+                    patch.object(automation, 'published_versions', return_value=published), \
+                    patch.object(automation, 'api') as api:
+                with self.assertRaises(ValueError):
+                    automation.monthly_release(REPO, '2026-12', 100, self.root)
+            api.assert_not_called()
 
     def test_pending_monthly_release_resumes_main_ci_without_new_patch(self):
         with patch.object(automation, 'read_marker', return_value=dict(period='2026-12', version='2.0.5')), \

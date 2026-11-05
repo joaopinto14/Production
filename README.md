@@ -833,14 +833,17 @@ Release validation additionally includes:
 # Support and maintenance
 
 See [SUPPORT.md](SUPPORT.md) for the maintained PHP/Alpine matrix, upstream support
-limits, weekly base-digest update proposals and monthly package refreshes.
+limits, reviewed base-digest updates and monthly package refreshes.
 Monthly refreshes use the existing CI and Release workflows: all six candidate
 variants are scanned and tested on native amd64/arm64 before the exact validated
 artifacts can replace eligible stable aliases. There is no separate daily
 maintenance workflow.
 
-Pushes to `dev` and pull requests run intensive CI. After a new VERSION passes
-CI on `main`, the release workflow validates and publishes it. On day 1 of each
+CI only builds, tests and scans changes on `dev`, `main` and pull requests.
+Successful main CI starts Release, which prepares the version and runs the
+publication gates in the same workflow. A pending version is recovered using its
+original tag and tested candidate digests, even if main has advanced; newer source
+changes require a new version. On day 1 of each
 month at 00:00 Europe/Lisbon, a separate workflow prepares a new patch release through a
 tested pull request to refresh packages. Versioned tags remain immutable; stable
 aliases move only after successful release validation. See the

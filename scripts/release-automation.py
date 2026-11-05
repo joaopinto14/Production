@@ -74,7 +74,7 @@ def dispatch_ci(repository, branch):
     api(repository, "actions/workflows/ci.yml/dispatches", "POST", {'ref': branch})
 
 
-def start_release(repository, revision, root=Path('.')):
+def start_release(repository, revision, root=Path('.'), dispatch=True):
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise ValueError("Expected a full commit SHA")
     if subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip() != revision:
@@ -92,6 +92,7 @@ def start_release(repository, revision, root=Path('.')):
         raise ValueError("Automatic releases must be newer than the latest published version")
     previous_version(current, published)
     tag = f'v{current}'
+    release_revision = revision
     reference = api(repository, f'git/ref/tags/{tag}', missing=True)
     if reference is None:
         api(repository, 'git/refs', 'POST', {'ref': f'refs/tags/{tag}', 'sha': revision})
@@ -103,12 +104,29 @@ def start_release(repository, revision, root=Path('.')):
             if target['type'] != 'tag':
                 raise ValueError("Release tag does not identify a commit")
             target = api(repository, f"git/tags/{target['sha']}")['object']
-        if target['type'] != 'commit' or target['sha'] != revision:
-            raise ValueError("Existing immutable tag identifies another revision; recover that release or use a new version")
-    # Tag creation with GITHUB_TOKEN does not trigger Release's push event.
-    api(repository, 'actions/workflows/release.yml/dispatches', 'POST',
-        {'ref': 'main', 'inputs': {'tag': tag, 'repair_notes': 'false'}})
-    print(f"Requested Release for {tag} at {revision}.")
+        if target['type'] != 'commit' or not re.fullmatch(r'[0-9a-f]{40}', target['sha']):
+            raise ValueError("Release tag does not identify a complete commit SHA")
+        if target['sha'] != revision:
+            # A newer main commit must never replace an already reserved source.
+            # Resume that original source only when it is part of reviewed main.
+            comparison = api(repository, f"compare/{target['sha']}...{revision}")
+            if (comparison.get('status') != 'ahead'
+                    or comparison.get('merge_base_commit', {}).get('sha') != target['sha']):
+                raise ValueError("Existing immutable tag is outside main history; review it or use a new version")
+            item = api(repository, 'contents/VERSION?ref=' + target['sha'])
+            if base64.b64decode(item['content']).decode().strip() != current:
+                raise ValueError("Existing immutable tag does not match VERSION")
+            print(f"Recovering {tag} at its original commit {target['sha']}; newer main changes are not included.")
+        release_revision = target['sha']
+    if main_revision(repository) != revision:
+        print("main advanced while preparing the release; its newer CI must complete first.")
+        return
+    if dispatch:
+        # Compatibility for older CI revisions and explicit recovery commands.
+        api(repository, 'actions/workflows/release.yml/dispatches', 'POST',
+            {'ref': 'main', 'inputs': {'tag': tag, 'repair_notes': 'false'}})
+    print(f"Prepared Release for {tag} at {release_revision}.")
+    return dict(tag=tag, revision=release_revision)
 
 
 def monthly_files(root, current, period):
@@ -197,8 +215,12 @@ def monthly_release(repository, period, timeout, root=Path('.')):
         return
     current = (root / 'VERSION').read_text().strip()
     published = published_versions(repository)
-    if not published or current != published[-1]:
-        raise ValueError('Publish the current main VERSION before preparing another monthly patch')
+    if not published or version(current) < version(published[-1]):
+        raise ValueError('Current main VERSION must not be older than the latest published release')
+    if current not in published:
+        dispatch_ci(repository, 'main')
+        print('Current VERSION is not published; requested main CI to recover it before preparing another patch.')
+        return
     branch = 'maintenance/monthly-' + period
     reference = api(repository, 'git/ref/heads/' + branch, missing=True)
     if reference is None:
@@ -259,16 +281,22 @@ def main():
     sub = parser.add_subparsers(dest='command', required=True)
     start = sub.add_parser('start')
     start.add_argument('--revision', required=True)
+    prepare = sub.add_parser('prepare')
+    prepare.add_argument('--revision', required=True)
+    prepare.add_argument('--output', type=Path, required=True)
     previous = sub.add_parser('previous')
     previous.add_argument('--version', required=True)
     monthly = sub.add_parser('monthly')
     monthly.add_argument('--period', default=monthly_period())
-    monthly.add_argument('--timeout', type=int, default=6600)
+    monthly.add_argument('--timeout', type=int, default=8400)
     args = parser.parse_args()
     if not args.repository or not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', args.repository):
         parser.error('Provide --repository OWNER/REPO or GITHUB_REPOSITORY')
-    if args.command == 'start':
-        start_release(args.repository, args.revision)
+    if args.command in ('start', 'prepare'):
+        result = start_release(args.repository, args.revision, dispatch=args.command == 'start')
+        if args.command == 'prepare' and result:
+            with args.output.open('a') as output:
+                output.write(f"tag={result['tag']}\nrevision={result['revision']}\n")
     elif args.command == 'previous':
         print('previous_version=' + previous_version(args.version, published_versions(args.repository)))
     else:
