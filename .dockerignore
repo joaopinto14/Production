@@ -3,6 +3,8 @@
 !Dockerfile
 !entrypoint/entrypoint.sh
 !entrypoint/runtime.sh
+!entrypoint/production.sh
+!entrypoint/healthcheck.sh
 !nginx/nginx.conf
 !nginx/default.conf.template
 !nginx/laravel.conf.template

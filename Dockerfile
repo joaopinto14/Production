@@ -3,7 +3,7 @@
 # Keep the reviewed multi-architecture base reference explicit.
 FROM alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
 
-ARG VERSION=2.0.4
+ARG VERSION=2.0.5
 ARG PHP_VERSION=8.5
 ARG VARIANT=generic
 ARG VCS_REF=unknown
@@ -118,8 +118,11 @@ COPY nginx/laravel.conf.template /etc/nginx/laravel.conf.template
 
 COPY entrypoint/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY entrypoint/runtime.sh /usr/local/bin/production-runtime
+COPY entrypoint/production.sh /usr/local/bin/production
+COPY entrypoint/healthcheck.sh /usr/local/bin/production-healthcheck
 
-RUN chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime
+RUN chmod 0755 /usr/local/bin/entrypoint.sh /usr/local/bin/production-runtime \
+    /usr/local/bin/production /usr/local/bin/production-healthcheck
 
 WORKDIR /var/www/html
 
@@ -128,12 +131,12 @@ USER www
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget -q -T 2 -O /dev/null http://127.0.0.1:8080/readyz || exit 1
+    CMD /usr/local/bin/production-healthcheck || exit 1
 
 STOPSIGNAL SIGTERM
 
 # Keep an actual init in front of web AND CLI commands. Subreaper mode also
 # handles an outer Docker --init without losing adopted grandchildren.
 # Forward to the direct child only: group forwarding would bypass web draining.
-ENTRYPOINT ["/sbin/tini", "-s", "--", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/production"]
 CMD ["/usr/local/bin/production-runtime"]

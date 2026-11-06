@@ -1,9 +1,10 @@
 # Releasing Production
 
-This procedure applies to the new release workflow prepared for **2.0.4**.
+This procedure applies to the release workflow used for **2.0.5** and recovery
+of the original **2.0.4** artifacts.
 Older Git tags retain their original workflows. A local test run is preparation;
 the native GitHub jobs and the evidence for the staged registry digests authorize
-promotion. Do not describe 2.0.4 as published until the workflow has completed.
+promotion. Do not describe a version as published until its workflow has completed.
 
 ## Prepare the source
 

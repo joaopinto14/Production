@@ -1,5 +1,5 @@
 variable "VERSION" {
-  default = "2.0.4"
+  default = "2.0.5"
 }
 
 variable "IMAGE_NAME" {

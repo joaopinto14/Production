@@ -27,6 +27,7 @@ fi
 run_suite "4/11 Image contracts" ./tests/image-contract.sh
 run_suite "5/11 Smoke matrix" ./tests/smoke-all.sh
 run_suite "6/11 Runtime configuration" ./tests/configuration.sh
+run_suite "Laravel service shortcuts and CLI health" ./tests/service-modes.sh
 run_suite "7/11 Deep HTTP contract" ./tests/http-contract.sh
 run_suite "8/11 Concurrent workload" ./tests/concurrency.sh
 run_suite "9/11 Logging contract" ./tests/logging.sh

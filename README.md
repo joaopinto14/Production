@@ -1,13 +1,13 @@
-# Production 2.0.4
+# Production 2.0.5
 
-> **Release status:** 2.0.4 is being prepared and is not yet published. Examples
+> **Release status:** 2.0.5 is being prepared and is not yet published. Examples
 > below describe the target release; use a published version until its release
 > workflow succeeds. See the [release procedure](docs/RELEASING.md) and
 > [security policy](SECURITY.md).
 
 **Production** is a small, production-focused Docker image for running **PHP applications** with **Nginx + PHP-FPM** already configured.
 
-Production 2.0.4 blocks PHP source-file exposure, drains active requests during shutdown and checks PHP-FPM readiness. Releases scan and test the exact staged digests on both architectures before signing and promotion.
+Production 2.0.5 simplifies Laravel services with `scheduler`, `queue` and `artisan` commands, a stable `production` entrypoint and automatic web/CLI health checks. Releases scan and test the exact staged digests on both architectures before signing and promotion.
 
 It is designed to keep deployment simple: your application is prepared during the build/deployment stage, mounted or copied into the container, and Production provides the web runtime.
 
@@ -72,7 +72,7 @@ If your application has an `index.php` file in its root directory:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.4-php8.5
+  joaopinto14/production:2.0.5-php8.5
 ```
 
 Open:
@@ -105,7 +105,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.4-laravel-php8.5
+  joaopinto14/production:2.0.5-laravel-php8.5
 ```
 
 Open:
@@ -131,15 +131,15 @@ as its document root.
 Use the Generic variant for PHP applications that do not need Laravel-specific configuration or extensions.
 
 ```text
-joaopinto14/production:2.0.4-php8.3
-joaopinto14/production:2.0.4-php8.4
-joaopinto14/production:2.0.4-php8.5
+joaopinto14/production:2.0.5-php8.3
+joaopinto14/production:2.0.5-php8.4
+joaopinto14/production:2.0.5-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.4-php8.5
+joaopinto14/production:2.0.5-php8.5
 ```
 
 ## Laravel
@@ -147,15 +147,15 @@ joaopinto14/production:2.0.4-php8.5
 Use the Laravel variant for Laravel applications.
 
 ```text
-joaopinto14/production:2.0.4-laravel-php8.3
-joaopinto14/production:2.0.4-laravel-php8.4
-joaopinto14/production:2.0.4-laravel-php8.5
+joaopinto14/production:2.0.5-laravel-php8.3
+joaopinto14/production:2.0.5-laravel-php8.4
+joaopinto14/production:2.0.5-laravel-php8.5
 ```
 
 Recommended example for PHP 8.5:
 
 ```text
-joaopinto14/production:2.0.4-laravel-php8.5
+joaopinto14/production:2.0.5-laravel-php8.5
 ```
 
 The Laravel variant adds commonly required extensions for MySQL/MariaDB, PostgreSQL, SQLite, Redis, `intl`, `bcmath`, `pcntl`, and `zip`.
@@ -165,16 +165,16 @@ The Laravel variant adds commonly required extensions for MySQL/MariaDB, Postgre
 
 # Stable tags
 
-Production 2.0.4 publishes immutable version tags and convenient stable aliases.
+Production 2.0.5 publishes immutable version tags and convenient stable aliases.
 
 | Purpose | Tag |
 |---|---|
-| Generic PHP 8.3 | `joaopinto14/production:2.0.4-php8.3` |
-| Generic PHP 8.4 | `joaopinto14/production:2.0.4-php8.4` |
-| Generic PHP 8.5 | `joaopinto14/production:2.0.4-php8.5` |
-| Laravel PHP 8.3 | `joaopinto14/production:2.0.4-laravel-php8.3` |
-| Laravel PHP 8.4 | `joaopinto14/production:2.0.4-laravel-php8.4` |
-| Laravel PHP 8.5 | `joaopinto14/production:2.0.4-laravel-php8.5` |
+| Generic PHP 8.3 | `joaopinto14/production:2.0.5-php8.3` |
+| Generic PHP 8.4 | `joaopinto14/production:2.0.5-php8.4` |
+| Generic PHP 8.5 | `joaopinto14/production:2.0.5-php8.5` |
+| Laravel PHP 8.3 | `joaopinto14/production:2.0.5-laravel-php8.3` |
+| Laravel PHP 8.4 | `joaopinto14/production:2.0.5-laravel-php8.4` |
+| Laravel PHP 8.5 | `joaopinto14/production:2.0.5-laravel-php8.5` |
 
 Stable aliases:
 
@@ -251,7 +251,7 @@ Example:
 ```bash
 docker run --rm --no-healthcheck \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.4-laravel-php8.5 \
+  joaopinto14/production:2.0.5-laravel-php8.5 \
   php artisan about
 ```
 
@@ -282,7 +282,7 @@ Run it with:
 docker run --rm \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.4-php8.5
+  joaopinto14/production:2.0.5-php8.5
 ```
 
 ## Custom document root
@@ -294,7 +294,7 @@ docker run --rm \
   -p 8080:8080 \
   -e DOCUMENT_ROOT=/var/www/html/public \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.4-php8.5
+  joaopinto14/production:2.0.5-php8.5
 ```
 
 ---
@@ -354,7 +354,7 @@ docker run --rm \
   -v "$PWD:/var/www/html:ro" \
   -v "$PWD/storage:/var/www/html/storage" \
   -v "$PWD/bootstrap/cache:/var/www/html/bootstrap/cache" \
-  joaopinto14/production:2.0.4-laravel-php8.5
+  joaopinto14/production:2.0.5-laravel-php8.5
 ```
 
 ## Direct PHP file protection
@@ -383,49 +383,79 @@ This reduces the application's exposed PHP surface and keeps requests routed thr
 
 The same Laravel image can be used for different application services.
 
+| Command | Runs | Example with arguments |
+|---|---|---|
+| `scheduler` | `php artisan schedule:work` | `scheduler --verbose` |
+| `queue` | `php artisan queue:work` | `queue --queue=critical,default --tries=3` |
+| `artisan` | `php artisan` | `artisan migrate --force` |
+
+These shortcuts require the Laravel image and a prepared application, including
+`artisan` and `vendor/`, mounted in `/var/www/html` or the configured working
+directory. Arguments after the shortcut are passed to Artisan unchanged.
+
 ## Queue worker
 
 ```bash
-docker run --rm --no-healthcheck \
+docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.4-laravel-php8.5 \
-  php artisan queue:work
+  joaopinto14/production:2.0.5-laravel-php8.5 \
+  queue --tries=3
 ```
 
 ## Scheduler
 
 ```bash
-docker run --rm --no-healthcheck \
+docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.4-laravel-php8.5 \
-  php artisan schedule:work
+  joaopinto14/production:2.0.5-laravel-php8.5 \
+  scheduler
 ```
 
 ## Migrations
 
 ```bash
-docker run --rm --no-healthcheck \
+docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.4-laravel-php8.5 \
-  php artisan migrate --force
+  joaopinto14/production:2.0.5-laravel-php8.5 \
+  artisan migrate --force
 ```
 
 ## Other Artisan commands
 
 ```bash
-docker run --rm --no-healthcheck \
+docker run --rm \
   -v "$PWD:/var/www/html" \
-  joaopinto14/production:2.0.4-laravel-php8.5 \
-  php artisan about
+  joaopinto14/production:2.0.5-laravel-php8.5 \
+  artisan about
 ```
 
-Tini remains active in CLI mode to collect adopted descendants after their parents exit. Keep the image entrypoint when overriding `command`; replacing `entrypoint` bypasses the built-in init unless the replacement retains `/sbin/tini -s --`. A wrapper script should `exec` its main command so signals reach it.
+The shortcuts are available in Laravel images and preserve arguments. Full
+commands such as `php artisan schedule:work` remain supported. A missing Artisan
+application or a shortcut used on a Generic image fails with a clear error.
+
+The stable `production` entrypoint starts Tini, which collects adopted descendants
+after their parents exit. Keep this entrypoint when overriding `command`.
+For an existing Swarm/Portainer service with a saved `php artisan` entrypoint,
+replace that override explicitly:
+
+```yaml
+entrypoint: ["production"]
+command: ["scheduler"]
+```
+
+New services can omit `entrypoint`. A replacement entrypoint bypasses the image's
+initialization unless it invokes `production` or retains the original Tini chain.
+A wrapper script should `exec` its main command so signals reach it.
 
 An init can reap adopted orphans, but cannot call `wait` for children still owned by a living application process. Such a parent must use `proc_close`/`waitpid` (or its process library's equivalent). Use PPID to identify that case; zombies are already dead, so sending them SIGKILL does not remove them.
 
 For older images, Docker's `--init` or Compose `init: true` adds an init without waiting for this release. Recreate the affected container to apply it; restarting an unchanged container does not add init. For example, add `init: true` to the existing affected service, then run `docker compose up -d --force-recreate <service>` during an appropriate restart window. Keep its existing volumes/environment and use its normal shutdown grace period. See [Docker's init documentation](https://docs.docker.com/reference/compose-file/services/#init). Run `python3 scripts/zombie-report.py` on the affected Docker host to map zombies to containers and parent PIDs without collecting process arguments or environment values.
 
-In CLI mode, **Nginx and PHP-FPM are not started**. Disable the inherited HTTP health check with `--no-healthcheck` (or Compose `healthcheck: { disable: true }`), or replace it with a check appropriate to the worker. Disabling it does not monitor queue progress.
+In CLI mode, **Nginx and PHP-FPM are not started**. The built-in health check
+automatically checks foreground process liveness, so workers and schedulers do
+not need to disable an HTTP probe. This does not monitor task progress or queue
+throughput. An application-specific health check can still replace it, and
+`--no-healthcheck` remains available.
 
 ---
 
@@ -450,7 +480,7 @@ docker run --rm \
   -e PHP_MEMORY_LIMIT=512M \
   -e UPLOAD_MAX_SIZE=64M \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.4-php8.5
+  joaopinto14/production:2.0.5-php8.5
 ```
 
 Values are validated before configuration files are written. Memory accepts bytes, K/M/G suffixes, or `-1`; upload size accepts bytes or K/M/G suffixes (case-insensitive). Web document roots must be absolute paths containing letters, digits, `/`, `.`, `_`, or `-`. Line breaks and configuration directives are rejected.
@@ -487,9 +517,9 @@ Expected response:
 ok
 ```
 
-`/healthz` is Nginx liveness and retains its `ok` response. `/readyz` also sends a FastCGI ping to PHP-FPM and returns `ready`; a missing/unresponsive FPM socket makes readiness fail. Docker's default HEALTHCHECK now uses `/readyz` with a two-second request timeout. Both paths are reserved runtime endpoints and disclose no FPM status or application details. Application database/cache readiness belongs in the application's own endpoint.
+`/healthz` is Nginx liveness and retains its `ok` response. `/readyz` also sends a FastCGI ping to PHP-FPM and returns `ready`; a missing/unresponsive FPM socket makes readiness fail. Docker's default HEALTHCHECK uses `production-healthcheck`: it probes `/readyz` with a two-second timeout in web mode and checks foreground process liveness in CLI mode. Both HTTP paths are reserved runtime endpoints and disclose no FPM status or application details. Application database/cache readiness belongs in the application's own endpoint.
 
-On TERM/INT/QUIT the runtime first drains Nginx, then stops PHP-FPM. `SHUTDOWN_TIMEOUT` is an integer from 1 to 300 seconds (default 30) for the complete shutdown. At the deadline the runtime kills remaining masters and exits with error. Set Docker `--stop-timeout` or Compose `stop_grace_period` above this value (for example 40 seconds for the default); otherwise the orchestrator can kill the container before it drains. Requests exceeding this deadline may be interrupted. For CLI workers/schedulers disable the inherited web probe with `--no-healthcheck` and define an application-specific check.
+On TERM/INT/QUIT the runtime first drains Nginx, then stops PHP-FPM. `SHUTDOWN_TIMEOUT` is an integer from 1 to 300 seconds (default 30) for the complete shutdown. At the deadline the runtime kills remaining masters and exits with error. Set Docker `--stop-timeout` or Compose `stop_grace_period` above this value (for example 40 seconds for the default); otherwise the orchestrator can kill the container before it drains. Requests exceeding this deadline may be interrupted. CLI workers/schedulers receive forwarded signals and use process liveness checks; use an application-specific check when task progress must be monitored.
 
 ---
 
@@ -541,7 +571,7 @@ docker run --rm \
   --tmpfs /tmp:rw,nosuid,nodev,noexec,size=128m,mode=1777 \
   -p 8080:8080 \
   -v "$PWD:/var/www/html:ro" \
-  joaopinto14/production:2.0.4-php8.5
+  joaopinto14/production:2.0.5-php8.5
 ```
 
 `/run/production` needs the runtime UID/GID even for CLI commands: the entrypoint writes PHP configuration there. If you build with custom `WWW_UID`/`WWW_GID`, use those values in every writable mount. `/tmp` needs mode `1777` for PHP upload/session temporary files.
@@ -552,7 +582,7 @@ For Laravel, `storage/` and `bootstrap/cache/` need separate writable volumes ow
 
 ## File permissions
 
-Production 2.0.4 **does not run `chown -R` or `chmod -R` on your application at startup**. The container starts directly as the non-root `www` user and never needs a privileged permission-fixing phase.
+Production 2.0.5 **does not run `chown -R` or `chmod -R` on your application at startup**. The container starts directly as the non-root `www` user and never needs a privileged permission-fixing phase.
 
 The official images use a stable runtime identity:
 
@@ -581,8 +611,8 @@ The rest of the application can remain read-only to the runtime user.
 You can verify the runtime identity directly from the image:
 
 ```bash
-UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.4-php8.5 -u)
-GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.4-php8.5 -g)
+UID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.5-php8.5 -u)
+GID_RUNTIME=$(docker run --rm --entrypoint id joaopinto14/production:2.0.5-php8.5 -g)
 
 echo "$UID_RUNTIME:$GID_RUNTIME"
 ```
@@ -684,7 +714,7 @@ Production runtime
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.4-php8.5
+    image: joaopinto14/production:2.0.5-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -700,7 +730,7 @@ services:
 ```yaml
 services:
   web:
-    image: joaopinto14/production:2.0.4-laravel-php8.5
+    image: joaopinto14/production:2.0.5-laravel-php8.5
     ports:
       - "8080:8080"
     environment:
@@ -713,19 +743,15 @@ services:
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
 
   queue:
-    image: joaopinto14/production:2.0.4-laravel-php8.5
-    command: php artisan queue:work
-    healthcheck:
-      disable: true
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["queue"]
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
 
   scheduler:
-    image: joaopinto14/production:2.0.4-laravel-php8.5
-    command: php artisan schedule:work
-    healthcheck:
-      disable: true
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["scheduler"]
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
@@ -733,11 +759,51 @@ services:
 
 In production, secrets and application configuration should be supplied using the mechanism appropriate for your deployment platform.
 
+## Docker Swarm / Portainer scheduler
+
+This complete stack example uses the Laravel scheduler shortcut. Replace
+`/srv/my-laravel-app` with the prepared application directory on the node where
+the task runs. Keep the application's own database/network configuration, and
+add Swarm placement constraints if the bind mount is available on only one node.
+
+```yaml
+services:
+  scheduler:
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    entrypoint: ["production"]
+    command: ["scheduler"]
+    environment:
+      TIMEZONE: Europe/Lisbon
+      PHP_MEMORY_LIMIT: 256M
+    volumes:
+      - /srv/my-laravel-app:/var/www/html
+    healthcheck:
+      test: ["CMD", "production-healthcheck"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 10s
+```
+
+The explicit `entrypoint` replaces a previously saved `php artisan` override;
+the explicit health check replaces a previously disabled HTTP check. New services
+can inherit both settings from the image. After updating the stack, confirm
+that the new task runs with Tini as PID 1 and reports a healthy CLI process:
+
+```bash
+docker exec <new-container-id> cat /proc/1/comm
+docker exec <new-container-id> production-healthcheck
+```
+
+The first command should print `tini`; the second should exit successfully.
+To run a queue worker instead, use `command: ["queue", "--tries=3"]`.
+
 ---
 
 # Multi-architecture support
 
-Production 2.0.4 is built and validated for:
+Production 2.0.5 is built and validated for:
 
 ```text
 linux/amd64
@@ -759,7 +825,7 @@ These attestations are registry metadata attached to the published image index. 
 
 The release workflow builds staging tags once and records their immutable index digests. Native amd64/arm64 jobs pull, inventory, scan and test those exact artifacts, including real applications. Reports must contain the complete APK package/version set and a vulnerability database updated/downloaded within 48 hours; fixable HIGH/CRITICAL vulnerabilities block promotion. Package comparisons and a draft GitHub Release are saved before version tags or aliases move. Keyless Cosign signatures are verified before promotion; copying the original index preserves its SBOM/provenance.
 
-To verify a tag-triggered release after publication, use `cosign verify --certificate-identity https://github.com/joaopinto14/Production/.github/workflows/release.yml@refs/tags/v2.0.4 --certificate-oidc-issuer https://token.actions.githubusercontent.com joaopinto14/production@sha256:<digest>`. A manually dispatched run uses the workflow's dispatch branch in the certificate identity (normally `refs/heads/main`); check its recorded run/ref. Always verify an immutable digest and the expected workflow identity.
+To verify a tag-triggered release after publication, use `cosign verify --certificate-identity https://github.com/joaopinto14/Production/.github/workflows/release.yml@refs/tags/v2.0.5 --certificate-oidc-issuer https://token.actions.githubusercontent.com joaopinto14/production@sha256:<digest>`. A manually dispatched run uses the workflow's dispatch branch in the certificate identity (normally `refs/heads/main`); check its recorded run/ref. Always verify an immutable digest and the expected workflow identity.
 
 Attestations are intentionally enabled only for registry release targets. Local and test builds remain compatible with Docker engines using image stores that do not support attestations.
 
@@ -776,7 +842,7 @@ If the Linux host can reach registries/GitHub but the Docker bridge cannot, crea
 To compare existing local amd64 images during release preparation:
 
 ```bash
-python3 scripts/package-report.py --previous-version 2.0.3 --version 2.0.4 \
+python3 scripts/package-report.py --previous-version 2.0.3 --version 2.0.5 \
   --repository production --platforms linux/amd64 --local --output reports/package-changes
 ```
 

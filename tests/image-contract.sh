@@ -28,10 +28,10 @@ for variant in ${VARIANTS}; do
         health="$(docker image inspect "${image}" --format '{{json .Config.Healthcheck.Test}}')"
         envs="$(docker image inspect "${image}" --format '{{range .Config.Env}}{{println .}}{{end}}')"
 
-        assert_eq '["/sbin/tini","-s","--","/usr/local/bin/entrypoint.sh"]' "${entrypoint}" "init/entrypoint contract"
+        assert_eq '["/usr/local/bin/production"]' "${entrypoint}" "init/entrypoint contract"
         assert_eq '["/usr/local/bin/production-runtime"]' "${command}" "command contract"
         assert_contains "${ports}" '8080/tcp' "exposed port contract"
-        assert_contains "${health}" '/readyz' "healthcheck contract"
+        assert_contains "${health}" '/usr/local/bin/production-healthcheck' "healthcheck contract"
         assert_contains "${envs}" 'TIMEZONE=UTC' "timezone default"
         assert_contains "${envs}" 'PHP_MEMORY_LIMIT=128M' "memory default"
         assert_contains "${envs}" 'UPLOAD_MAX_SIZE=8M' "upload default"
@@ -55,6 +55,8 @@ for variant in ${VARIANTS}; do
             ! command -v python3 >/dev/null 2>&1
             ! apk info -e supervisor >/dev/null 2>&1
             test -x /usr/local/bin/production-runtime
+            test -x /usr/local/bin/production
+            test -x /usr/local/bin/production-healthcheck
             test -x /sbin/tini
         "
 

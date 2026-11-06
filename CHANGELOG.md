@@ -2,6 +2,19 @@
 
 All notable changes to Production are documented in this file.
 
+## 2.0.5 - Unreleased
+
+### Added
+
+- Add `scheduler`, `queue` and `artisan` commands to Laravel images, preserving trailing arguments and application exit statuses.
+- Provide a stable `production` entrypoint that starts Tini for web and CLI services; Swarm services can replace a stale entrypoint override with this single executable.
+- Select health checks automatically: PHP-FPM readiness for web and foreground process liveness for CLI. Workers and schedulers no longer need to disable the inherited HTTP check.
+
+### Validation
+
+- Cover service shortcuts on all PHP versions, read-only runtime operation, literal arguments, signal forwarding, CLI health failures and 200 adopted orphan processes per scheduler/queue scenario.
+- Retain full PHP/Artisan command compatibility and run existing Laravel release checks through the Artisan shortcut.
+
 ## 2.0.4 - Unreleased
 
 ### Added

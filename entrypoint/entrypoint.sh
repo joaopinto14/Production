@@ -105,6 +105,20 @@ configure_nginx() {
         "${NGINX_TEMPLATE}" > "${NGINX_CONF}"
 }
 
+case "${1:-}" in
+    scheduler|queue|artisan)
+        shortcut="$1"
+        shift
+        [ "${PRODUCTION_VARIANT}" = laravel ] || fail "${shortcut} requires the Laravel image."
+        [ -f artisan ] || fail "Artisan not found in $(pwd). Mount the Laravel application and set working_dir."
+        case "${shortcut}" in
+            scheduler) set -- php artisan schedule:work "$@" ;;
+            queue) set -- php artisan queue:work "$@" ;;
+            artisan) set -- php artisan "$@" ;;
+        esac
+        ;;
+esac
+
 validate_configuration "${1:-}"
 prepare_runtime
 configure_timezone
@@ -119,7 +133,12 @@ case "${1:-}" in
         log "Runtime user: $(id -u):$(id -g)"
         log "Document root: ${DOCUMENT_ROOT}"
         log "Listening on: 8080"
+        printf '%s\n' web > /run/production/mode
+        ;;
+    *)
+        printf '%s\n' cli > /run/production/mode
         ;;
 esac
 
+printf '%s\n' "$$" > /run/production/command.pid
 exec "$@"

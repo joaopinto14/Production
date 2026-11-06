@@ -15,6 +15,7 @@ fi
 PHP_VERSIONS='8.5' ./tests/image-contract.sh
 PHP_VERSIONS='8.5' ./tests/smoke-all.sh
 ./tests/configuration.sh
+PHP_VERSIONS='8.5' ./tests/service-modes.sh
 ./tests/http-contract.sh
 
 printf '%s\n' 'Fast developer test suite passed.'

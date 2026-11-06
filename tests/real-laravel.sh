@@ -164,7 +164,7 @@ run_artisan() {
     docker run --rm \
         $(common_env_args) \
         -v "${APP_DIR}:/var/www/html" \
-        "${image}" php artisan "$@"
+        "${image}" artisan "$@"
 }
 
 for php_version in 8.3 8.4 8.5; do

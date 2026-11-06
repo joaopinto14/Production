@@ -16,7 +16,8 @@ with tempfile.TemporaryDirectory() as directory:
         path = context / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("synthetic-secret")
-    for name in ("entrypoint/runtime.sh", "nginx/default.conf.template", "php/www.conf"):
+    for name in ("entrypoint/runtime.sh", "entrypoint/production.sh", "entrypoint/healthcheck.sh",
+                 "nginx/default.conf.template", "php/www.conf"):
         path = context / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("runtime-source")
@@ -24,5 +25,6 @@ with tempfile.TemporaryDirectory() as directory:
     output = root / "output"
     subprocess.run(["docker", "buildx", "build", "--output", f"type=local,dest={output}", str(context)], check=True)
     included = {str(path.relative_to(output)) for path in output.rglob("*") if path.is_file()}
-    assert included == {"Dockerfile", "entrypoint/runtime.sh", "nginx/default.conf.template", "php/www.conf"}, included
+    assert included == {"Dockerfile", "entrypoint/runtime.sh", "entrypoint/production.sh",
+                        "entrypoint/healthcheck.sh", "nginx/default.conf.template", "php/www.conf"}, included
     print("Synthetic build-context exclusion passed.")

@@ -1,5 +1,28 @@
 # Production Migration Guide
 
+## Moving to 2.0.5: simpler Laravel services
+
+The image now exposes `production` as its entrypoint. It retains Tini as PID 1
+and accepts Laravel shortcuts:
+
+```yaml
+command: ["scheduler"]
+# Or: command: ["queue", "--tries=3"]
+```
+
+Full PHP/Artisan commands remain supported. New services can omit `entrypoint`.
+For an existing Swarm/Portainer service whose saved entrypoint is `php artisan`,
+replace it explicitly with `entrypoint: ["production"]` before redeploying.
+Otherwise that service override still bypasses the image initialization.
+
+The image health check now selects PHP-FPM readiness for web containers and
+foreground process liveness for CLI. Existing disabled/custom health checks
+remain valid. Remove a saved `healthcheck: {test: ["NONE"]}` override if you want
+to use the new CLI liveness check. Liveness does not measure task progress.
+
+Recreate/redeploy the service with the new image and configuration. Existing
+2.0.4 version tags and running containers are not modified by this upgrade.
+
 This document contains the breaking changes and practical upgrade steps for moving from Production 1.1.3 to Production 2.0.0.
 
 # Migrating Production 1.1.3 to 2.0.0
