@@ -393,7 +393,14 @@ These shortcuts require the Laravel image and a prepared application, including
 `artisan` and `vendor/`, mounted in `/var/www/html` or the configured working
 directory. Arguments after the shortcut are passed to Artisan unchanged.
 
+Each example below includes a Docker command and a standalone Compose setup.
+For Compose, save the YAML as `compose.yaml` in the application directory, then
+run the command shown below it. Migrations and other one-off commands use the
+`tools` profile so a normal `docker compose up` does not start them.
+
 ## Queue worker
+
+**Docker command**
 
 ```bash
 docker run --rm \
@@ -402,7 +409,25 @@ docker run --rm \
   queue --tries=3
 ```
 
+**Docker Compose**
+
+```yaml
+services:
+  queue:
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["queue", "--tries=3"]
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+```
+
+```bash
+docker compose up -d queue
+```
+
 ## Scheduler
+
+**Docker command**
 
 ```bash
 docker run --rm \
@@ -411,7 +436,25 @@ docker run --rm \
   scheduler
 ```
 
+**Docker Compose**
+
+```yaml
+services:
+  scheduler:
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["scheduler"]
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+```
+
+```bash
+docker compose up -d scheduler
+```
+
 ## Migrations
+
+**Docker command**
 
 ```bash
 docker run --rm \
@@ -420,13 +463,47 @@ docker run --rm \
   artisan migrate --force
 ```
 
+**Docker Compose**
+
+```yaml
+services:
+  migrate:
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["artisan", "migrate", "--force"]
+    profiles: ["tools"]
+    volumes:
+      - ./:/var/www/html
+```
+
+```bash
+docker compose --profile tools run --rm migrate
+```
+
 ## Other Artisan commands
+
+**Docker command**
 
 ```bash
 docker run --rm \
   -v "$PWD:/var/www/html" \
   joaopinto14/production:2.0.5-laravel-php8.5 \
   artisan about
+```
+
+**Docker Compose**
+
+```yaml
+services:
+  artisan:
+    image: joaopinto14/production:2.0.5-laravel-php8.5
+    command: ["artisan", "about"]
+    profiles: ["tools"]
+    volumes:
+      - ./:/var/www/html
+```
+
+```bash
+docker compose --profile tools run --rm artisan
 ```
 
 The shortcuts are available in Laravel images and preserve arguments. Full
